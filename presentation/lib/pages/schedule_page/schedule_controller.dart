@@ -1,10 +1,13 @@
 import 'package:domain/modules/schedule/use_cases/get_schedule_use_case.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
+import 'package:presentation/util/mappers/schedule_mapper.dart';
+import 'package:presentation/view_models/schedule_view_model.dart';
 import 'package:uuid/uuid.dart';
 
 class ScheduleController extends GetxController {
  GetScheduleUseCase getScheduleUseCase=GetIt.instance<GetScheduleUseCase>();
+ Rxn<ScheduleViewModel> scheduleVm=Rxn();
 
  void getSchedule() {
 
@@ -12,9 +15,10 @@ class ScheduleController extends GetxController {
      either.fold(
            (failure) {},
            (scheduleApi) {
-         print('schedule id: ${scheduleApi.groupId}');
-         print('schedule monday: ${scheduleApi.monday[0].subject}');
-         print('schedule room: ${scheduleApi.monday[0].room}');
+             scheduleVm.value= scheduleApi.toModel;
+         print('schedule id: ${scheduleVm.value?.groupId}');
+         print('schedule monday: ${scheduleVm.value?.monday[0].subject}');
+         print('schedule room: ${scheduleVm.value?.monday[0].room}');
        },
      );
    });
