@@ -3,7 +3,12 @@ part of 'index.dart';
 abstract class ScheduleEntity with _$ScheduleEntity {
   const factory ScheduleEntity({
     required String group,
-    required Uuid groupId,
-    Map<String, List<ScheduleItemEntity>>? schedule,
+    required String groupId,
+    required  List<ScheduleItemEntity> monday,
+    required  List<ScheduleItemEntity> tuesday,
+    required  List<ScheduleItemEntity> wednesday,
+    required  List<ScheduleItemEntity> thursday,
+    required  List<ScheduleItemEntity> friday,
+
   }) = _ScheduleEntity;
 }

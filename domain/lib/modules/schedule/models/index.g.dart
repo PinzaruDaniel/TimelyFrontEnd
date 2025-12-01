@@ -10,8 +10,8 @@ _ScheduleItemEntity _$ScheduleItemEntityFromJson(Map<String, dynamic> json) =>
     _ScheduleItemEntity(
       time: json['time'] as String,
       subject: json['subject'] as String,
-      teacher: json['teacher'] as String,
-      room: json['room'] as String,
+      teacher: json['teacher'] as String?,
+      room: json['room'] as String?,
       period: json['period'] as String,
     );
 

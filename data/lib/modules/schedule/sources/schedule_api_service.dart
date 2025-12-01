@@ -12,6 +12,6 @@ part 'schedule_api_service.g.dart';
 abstract class ScheduleApiService {
   factory ScheduleApiService(Dio dio) = _ScheduleApiService;
 
-  @GET('/Homework/group/{groupId}')
-  Future<ScheduleApiDto> getSchedule(@Path() Uuid groupId);
+  @GET('/Schedule/group/{groupId}')
+  Future<ScheduleApiDto> getSchedule(@Path() String groupId);
 }

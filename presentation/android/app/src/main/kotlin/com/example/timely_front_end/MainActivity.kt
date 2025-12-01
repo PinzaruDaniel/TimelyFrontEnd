@@ -1,4 +1,4 @@
-package com.example.timely_front_end
+package com.example.presentation
 
 import io.flutter.embedding.android.FlutterActivity
 

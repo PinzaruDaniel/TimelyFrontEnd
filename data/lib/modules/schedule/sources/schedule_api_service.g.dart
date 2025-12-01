@@ -20,7 +20,7 @@ class _ScheduleApiService implements ScheduleApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ScheduleApiDto> getSchedule(Uuid groupId) async {
+  Future<ScheduleApiDto> getSchedule(String groupId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -29,7 +29,7 @@ class _ScheduleApiService implements ScheduleApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/Homework/group/${groupId}',
+            '/Schedule/group/${groupId}',
             queryParameters: queryParameters,
             data: _data,
           )

@@ -7,18 +7,18 @@ import 'package:uuid/uuid.dart';
 import '../schedule_repository.dart';
 
 class GetScheduleUseCase extends UseCase<ScheduleEntity, GetScheduleParams> {
-  final ScheduleRepository _repository;
+  final ScheduleRepository repository;
 
-  GetScheduleUseCase(this._repository);
+  GetScheduleUseCase({required this.repository});
 
   @override
   Future<Either<Failure, ScheduleEntity>> call(params) {
-    return _repository.getSchedule(params.groupId);
+    return repository.getSchedule(params.groupId);
   }
 }
 
 class GetScheduleParams {
-  final Uuid groupId;
+  final String groupId;
 
   GetScheduleParams(this.groupId);
 }

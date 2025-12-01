@@ -11,30 +11,33 @@ part of 'index.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+
 /// @nodoc
 mixin _$ScheduleApiDto {
 
- String get group; Uuid get groupId; Map<String, List<ScheduleItemDto>>? get schedule;
+ String get group; String get groupId;@JsonKey(name: 'Luni') List<ScheduleItemDto> get monday;@JsonKey(name: 'Marti') List<ScheduleItemDto> get tuesday;@JsonKey(name: 'Miercuri') List<ScheduleItemDto> get wednesday;@JsonKey(name: 'Joi') List<ScheduleItemDto> get thursday;@JsonKey(name: 'Vineri') List<ScheduleItemDto> get friday;
 /// Create a copy of ScheduleApiDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $ScheduleApiDtoCopyWith<ScheduleApiDto> get copyWith => _$ScheduleApiDtoCopyWithImpl<ScheduleApiDto>(this as ScheduleApiDto, _$identity);
 
+  /// Serializes this ScheduleApiDto to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduleApiDto&&(identical(other.group, group) || other.group == group)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&const DeepCollectionEquality().equals(other.schedule, schedule));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduleApiDto&&(identical(other.group, group) || other.group == group)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&const DeepCollectionEquality().equals(other.monday, monday)&&const DeepCollectionEquality().equals(other.tuesday, tuesday)&&const DeepCollectionEquality().equals(other.wednesday, wednesday)&&const DeepCollectionEquality().equals(other.thursday, thursday)&&const DeepCollectionEquality().equals(other.friday, friday));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,group,groupId,const DeepCollectionEquality().hash(schedule));
+int get hashCode => Object.hash(runtimeType,group,groupId,const DeepCollectionEquality().hash(monday),const DeepCollectionEquality().hash(tuesday),const DeepCollectionEquality().hash(wednesday),const DeepCollectionEquality().hash(thursday),const DeepCollectionEquality().hash(friday));
 
 @override
 String toString() {
-  return 'ScheduleApiDto(group: $group, groupId: $groupId, schedule: $schedule)';
+  return 'ScheduleApiDto(group: $group, groupId: $groupId, monday: $monday, tuesday: $tuesday, wednesday: $wednesday, thursday: $thursday, friday: $friday)';
 }
 
 
@@ -45,7 +48,7 @@ abstract mixin class $ScheduleApiDtoCopyWith<$Res>  {
   factory $ScheduleApiDtoCopyWith(ScheduleApiDto value, $Res Function(ScheduleApiDto) _then) = _$ScheduleApiDtoCopyWithImpl;
 @useResult
 $Res call({
- String group, Uuid groupId, Map<String, List<ScheduleItemDto>>? schedule
+ String group, String groupId,@JsonKey(name: 'Luni') List<ScheduleItemDto> monday,@JsonKey(name: 'Marti') List<ScheduleItemDto> tuesday,@JsonKey(name: 'Miercuri') List<ScheduleItemDto> wednesday,@JsonKey(name: 'Joi') List<ScheduleItemDto> thursday,@JsonKey(name: 'Vineri') List<ScheduleItemDto> friday
 });
 
 
@@ -62,12 +65,16 @@ class _$ScheduleApiDtoCopyWithImpl<$Res>
 
 /// Create a copy of ScheduleApiDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? group = null,Object? groupId = null,Object? schedule = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? group = null,Object? groupId = null,Object? monday = null,Object? tuesday = null,Object? wednesday = null,Object? thursday = null,Object? friday = null,}) {
   return _then(_self.copyWith(
 group: null == group ? _self.group : group // ignore: cast_nullable_to_non_nullable
 as String,groupId: null == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
-as Uuid,schedule: freezed == schedule ? _self.schedule : schedule // ignore: cast_nullable_to_non_nullable
-as Map<String, List<ScheduleItemDto>>?,
+as String,monday: null == monday ? _self.monday : monday // ignore: cast_nullable_to_non_nullable
+as List<ScheduleItemDto>,tuesday: null == tuesday ? _self.tuesday : tuesday // ignore: cast_nullable_to_non_nullable
+as List<ScheduleItemDto>,wednesday: null == wednesday ? _self.wednesday : wednesday // ignore: cast_nullable_to_non_nullable
+as List<ScheduleItemDto>,thursday: null == thursday ? _self.thursday : thursday // ignore: cast_nullable_to_non_nullable
+as List<ScheduleItemDto>,friday: null == friday ? _self.friday : friday // ignore: cast_nullable_to_non_nullable
+as List<ScheduleItemDto>,
   ));
 }
 
@@ -152,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String group,  Uuid groupId,  Map<String, List<ScheduleItemDto>>? schedule)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String group,  String groupId, @JsonKey(name: 'Luni')  List<ScheduleItemDto> monday, @JsonKey(name: 'Marti')  List<ScheduleItemDto> tuesday, @JsonKey(name: 'Miercuri')  List<ScheduleItemDto> wednesday, @JsonKey(name: 'Joi')  List<ScheduleItemDto> thursday, @JsonKey(name: 'Vineri')  List<ScheduleItemDto> friday)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ScheduleApiDto() when $default != null:
-return $default(_that.group,_that.groupId,_that.schedule);case _:
+return $default(_that.group,_that.groupId,_that.monday,_that.tuesday,_that.wednesday,_that.thursday,_that.friday);case _:
   return orElse();
 
 }
@@ -173,10 +180,10 @@ return $default(_that.group,_that.groupId,_that.schedule);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String group,  Uuid groupId,  Map<String, List<ScheduleItemDto>>? schedule)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String group,  String groupId, @JsonKey(name: 'Luni')  List<ScheduleItemDto> monday, @JsonKey(name: 'Marti')  List<ScheduleItemDto> tuesday, @JsonKey(name: 'Miercuri')  List<ScheduleItemDto> wednesday, @JsonKey(name: 'Joi')  List<ScheduleItemDto> thursday, @JsonKey(name: 'Vineri')  List<ScheduleItemDto> friday)  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleApiDto():
-return $default(_that.group,_that.groupId,_that.schedule);case _:
+return $default(_that.group,_that.groupId,_that.monday,_that.tuesday,_that.wednesday,_that.thursday,_that.friday);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +200,10 @@ return $default(_that.group,_that.groupId,_that.schedule);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String group,  Uuid groupId,  Map<String, List<ScheduleItemDto>>? schedule)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String group,  String groupId, @JsonKey(name: 'Luni')  List<ScheduleItemDto> monday, @JsonKey(name: 'Marti')  List<ScheduleItemDto> tuesday, @JsonKey(name: 'Miercuri')  List<ScheduleItemDto> wednesday, @JsonKey(name: 'Joi')  List<ScheduleItemDto> thursday, @JsonKey(name: 'Vineri')  List<ScheduleItemDto> friday)?  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleApiDto() when $default != null:
-return $default(_that.group,_that.groupId,_that.schedule);case _:
+return $default(_that.group,_that.groupId,_that.monday,_that.tuesday,_that.wednesday,_that.thursday,_that.friday);case _:
   return null;
 
 }
@@ -205,21 +212,47 @@ return $default(_that.group,_that.groupId,_that.schedule);case _:
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _ScheduleApiDto implements ScheduleApiDto {
-  const _ScheduleApiDto({required this.group, required this.groupId, final  Map<String, List<ScheduleItemDto>>? schedule}): _schedule = schedule;
-  
+  const _ScheduleApiDto({required this.group, required this.groupId, @JsonKey(name: 'Luni') required final  List<ScheduleItemDto> monday, @JsonKey(name: 'Marti') required final  List<ScheduleItemDto> tuesday, @JsonKey(name: 'Miercuri') required final  List<ScheduleItemDto> wednesday, @JsonKey(name: 'Joi') required final  List<ScheduleItemDto> thursday, @JsonKey(name: 'Vineri') required final  List<ScheduleItemDto> friday}): _monday = monday,_tuesday = tuesday,_wednesday = wednesday,_thursday = thursday,_friday = friday;
+  factory _ScheduleApiDto.fromJson(Map<String, dynamic> json) => _$ScheduleApiDtoFromJson(json);
 
 @override final  String group;
-@override final  Uuid groupId;
- final  Map<String, List<ScheduleItemDto>>? _schedule;
-@override Map<String, List<ScheduleItemDto>>? get schedule {
-  final value = _schedule;
-  if (value == null) return null;
-  if (_schedule is EqualUnmodifiableMapView) return _schedule;
+@override final  String groupId;
+ final  List<ScheduleItemDto> _monday;
+@override@JsonKey(name: 'Luni') List<ScheduleItemDto> get monday {
+  if (_monday is EqualUnmodifiableListView) return _monday;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableMapView(value);
+  return EqualUnmodifiableListView(_monday);
+}
+
+ final  List<ScheduleItemDto> _tuesday;
+@override@JsonKey(name: 'Marti') List<ScheduleItemDto> get tuesday {
+  if (_tuesday is EqualUnmodifiableListView) return _tuesday;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_tuesday);
+}
+
+ final  List<ScheduleItemDto> _wednesday;
+@override@JsonKey(name: 'Miercuri') List<ScheduleItemDto> get wednesday {
+  if (_wednesday is EqualUnmodifiableListView) return _wednesday;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_wednesday);
+}
+
+ final  List<ScheduleItemDto> _thursday;
+@override@JsonKey(name: 'Joi') List<ScheduleItemDto> get thursday {
+  if (_thursday is EqualUnmodifiableListView) return _thursday;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_thursday);
+}
+
+ final  List<ScheduleItemDto> _friday;
+@override@JsonKey(name: 'Vineri') List<ScheduleItemDto> get friday {
+  if (_friday is EqualUnmodifiableListView) return _friday;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_friday);
 }
 
 
@@ -229,20 +262,23 @@ class _ScheduleApiDto implements ScheduleApiDto {
 @pragma('vm:prefer-inline')
 _$ScheduleApiDtoCopyWith<_ScheduleApiDto> get copyWith => __$ScheduleApiDtoCopyWithImpl<_ScheduleApiDto>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$ScheduleApiDtoToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScheduleApiDto&&(identical(other.group, group) || other.group == group)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&const DeepCollectionEquality().equals(other._schedule, _schedule));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScheduleApiDto&&(identical(other.group, group) || other.group == group)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&const DeepCollectionEquality().equals(other._monday, _monday)&&const DeepCollectionEquality().equals(other._tuesday, _tuesday)&&const DeepCollectionEquality().equals(other._wednesday, _wednesday)&&const DeepCollectionEquality().equals(other._thursday, _thursday)&&const DeepCollectionEquality().equals(other._friday, _friday));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,group,groupId,const DeepCollectionEquality().hash(_schedule));
+int get hashCode => Object.hash(runtimeType,group,groupId,const DeepCollectionEquality().hash(_monday),const DeepCollectionEquality().hash(_tuesday),const DeepCollectionEquality().hash(_wednesday),const DeepCollectionEquality().hash(_thursday),const DeepCollectionEquality().hash(_friday));
 
 @override
 String toString() {
-  return 'ScheduleApiDto(group: $group, groupId: $groupId, schedule: $schedule)';
+  return 'ScheduleApiDto(group: $group, groupId: $groupId, monday: $monday, tuesday: $tuesday, wednesday: $wednesday, thursday: $thursday, friday: $friday)';
 }
 
 
@@ -253,7 +289,7 @@ abstract mixin class _$ScheduleApiDtoCopyWith<$Res> implements $ScheduleApiDtoCo
   factory _$ScheduleApiDtoCopyWith(_ScheduleApiDto value, $Res Function(_ScheduleApiDto) _then) = __$ScheduleApiDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String group, Uuid groupId, Map<String, List<ScheduleItemDto>>? schedule
+ String group, String groupId,@JsonKey(name: 'Luni') List<ScheduleItemDto> monday,@JsonKey(name: 'Marti') List<ScheduleItemDto> tuesday,@JsonKey(name: 'Miercuri') List<ScheduleItemDto> wednesday,@JsonKey(name: 'Joi') List<ScheduleItemDto> thursday,@JsonKey(name: 'Vineri') List<ScheduleItemDto> friday
 });
 
 
@@ -270,12 +306,16 @@ class __$ScheduleApiDtoCopyWithImpl<$Res>
 
 /// Create a copy of ScheduleApiDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? group = null,Object? groupId = null,Object? schedule = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? group = null,Object? groupId = null,Object? monday = null,Object? tuesday = null,Object? wednesday = null,Object? thursday = null,Object? friday = null,}) {
   return _then(_ScheduleApiDto(
 group: null == group ? _self.group : group // ignore: cast_nullable_to_non_nullable
 as String,groupId: null == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
-as Uuid,schedule: freezed == schedule ? _self._schedule : schedule // ignore: cast_nullable_to_non_nullable
-as Map<String, List<ScheduleItemDto>>?,
+as String,monday: null == monday ? _self._monday : monday // ignore: cast_nullable_to_non_nullable
+as List<ScheduleItemDto>,tuesday: null == tuesday ? _self._tuesday : tuesday // ignore: cast_nullable_to_non_nullable
+as List<ScheduleItemDto>,wednesday: null == wednesday ? _self._wednesday : wednesday // ignore: cast_nullable_to_non_nullable
+as List<ScheduleItemDto>,thursday: null == thursday ? _self._thursday : thursday // ignore: cast_nullable_to_non_nullable
+as List<ScheduleItemDto>,friday: null == friday ? _self._friday : friday // ignore: cast_nullable_to_non_nullable
+as List<ScheduleItemDto>,
   ));
 }
 
@@ -286,7 +326,7 @@ as Map<String, List<ScheduleItemDto>>?,
 /// @nodoc
 mixin _$ScheduleItemDto {
 
- String get time; String get subject; String get teacher; String get room; String get period;
+ String get time; String get subject; String? get teacher; String? get room; String get period;
 /// Create a copy of ScheduleItemDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -319,7 +359,7 @@ abstract mixin class $ScheduleItemDtoCopyWith<$Res>  {
   factory $ScheduleItemDtoCopyWith(ScheduleItemDto value, $Res Function(ScheduleItemDto) _then) = _$ScheduleItemDtoCopyWithImpl;
 @useResult
 $Res call({
- String time, String subject, String teacher, String room, String period
+ String time, String subject, String? teacher, String? room, String period
 });
 
 
@@ -336,13 +376,13 @@ class _$ScheduleItemDtoCopyWithImpl<$Res>
 
 /// Create a copy of ScheduleItemDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? time = null,Object? subject = null,Object? teacher = null,Object? room = null,Object? period = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? time = null,Object? subject = null,Object? teacher = freezed,Object? room = freezed,Object? period = null,}) {
   return _then(_self.copyWith(
 time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
 as String,subject: null == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
-as String,teacher: null == teacher ? _self.teacher : teacher // ignore: cast_nullable_to_non_nullable
-as String,room: null == room ? _self.room : room // ignore: cast_nullable_to_non_nullable
-as String,period: null == period ? _self.period : period // ignore: cast_nullable_to_non_nullable
+as String,teacher: freezed == teacher ? _self.teacher : teacher // ignore: cast_nullable_to_non_nullable
+as String?,room: freezed == room ? _self.room : room // ignore: cast_nullable_to_non_nullable
+as String?,period: null == period ? _self.period : period // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -428,7 +468,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String time,  String subject,  String teacher,  String room,  String period)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String time,  String subject,  String? teacher,  String? room,  String period)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ScheduleItemDto() when $default != null:
 return $default(_that.time,_that.subject,_that.teacher,_that.room,_that.period);case _:
@@ -449,7 +489,7 @@ return $default(_that.time,_that.subject,_that.teacher,_that.room,_that.period);
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String time,  String subject,  String teacher,  String room,  String period)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String time,  String subject,  String? teacher,  String? room,  String period)  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleItemDto():
 return $default(_that.time,_that.subject,_that.teacher,_that.room,_that.period);case _:
@@ -469,7 +509,7 @@ return $default(_that.time,_that.subject,_that.teacher,_that.room,_that.period);
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String time,  String subject,  String teacher,  String room,  String period)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String time,  String subject,  String? teacher,  String? room,  String period)?  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleItemDto() when $default != null:
 return $default(_that.time,_that.subject,_that.teacher,_that.room,_that.period);case _:
@@ -484,13 +524,13 @@ return $default(_that.time,_that.subject,_that.teacher,_that.room,_that.period);
 @JsonSerializable()
 
 class _ScheduleItemDto implements ScheduleItemDto {
-  const _ScheduleItemDto({required this.time, required this.subject, required this.teacher, required this.room, required this.period});
+  const _ScheduleItemDto({required this.time, required this.subject, this.teacher, this.room, required this.period});
   factory _ScheduleItemDto.fromJson(Map<String, dynamic> json) => _$ScheduleItemDtoFromJson(json);
 
 @override final  String time;
 @override final  String subject;
-@override final  String teacher;
-@override final  String room;
+@override final  String? teacher;
+@override final  String? room;
 @override final  String period;
 
 /// Create a copy of ScheduleItemDto
@@ -526,7 +566,7 @@ abstract mixin class _$ScheduleItemDtoCopyWith<$Res> implements $ScheduleItemDto
   factory _$ScheduleItemDtoCopyWith(_ScheduleItemDto value, $Res Function(_ScheduleItemDto) _then) = __$ScheduleItemDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String time, String subject, String teacher, String room, String period
+ String time, String subject, String? teacher, String? room, String period
 });
 
 
@@ -543,13 +583,13 @@ class __$ScheduleItemDtoCopyWithImpl<$Res>
 
 /// Create a copy of ScheduleItemDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? time = null,Object? subject = null,Object? teacher = null,Object? room = null,Object? period = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? time = null,Object? subject = null,Object? teacher = freezed,Object? room = freezed,Object? period = null,}) {
   return _then(_ScheduleItemDto(
 time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
 as String,subject: null == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
-as String,teacher: null == teacher ? _self.teacher : teacher // ignore: cast_nullable_to_non_nullable
-as String,room: null == room ? _self.room : room // ignore: cast_nullable_to_non_nullable
-as String,period: null == period ? _self.period : period // ignore: cast_nullable_to_non_nullable
+as String,teacher: freezed == teacher ? _self.teacher : teacher // ignore: cast_nullable_to_non_nullable
+as String?,room: freezed == room ? _self.room : room // ignore: cast_nullable_to_non_nullable
+as String?,period: null == period ? _self.period : period // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

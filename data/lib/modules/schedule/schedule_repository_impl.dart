@@ -9,15 +9,18 @@ import 'package:uuid/uuid.dart';
 import '../../mapper/schedule_mapper.dart';
 
 class ScheduleRepositoryImpl implements ScheduleRepository {
-  final ScheduleApiService _apiService;
+  final ScheduleApiService apiService;
 
-  ScheduleRepositoryImpl(this._apiService);
+  ScheduleRepositoryImpl({required this.apiService});
 
   @override
-  Future<Either<Failure, ScheduleEntity>> getSchedule(Uuid groupId) async {
+  Future<Either<Failure, ScheduleEntity>> getSchedule(String groupId) async {
     try {
-      return await _apiService.getSchedule(groupId).then((value) => Right(value.toEntity));
+      final value = await apiService.getSchedule(groupId);
+      print('Schedule received: ${value.group}');
+      return Right(value.toEntity);
     } catch (e, stackTrace) {
+      print('Schedule API failed: $e  ${e.runtimeType}');
       if (e is DioException) {
         return Left(Failure.dio(e));
       }

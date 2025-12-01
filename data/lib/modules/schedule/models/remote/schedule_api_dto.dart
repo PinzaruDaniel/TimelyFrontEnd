@@ -4,19 +4,22 @@ part of 'index.dart';
 abstract class ScheduleApiDto with _$ScheduleApiDto {
   const factory ScheduleApiDto({
     required String group,
-    required Uuid groupId,
-    Map<String, List<ScheduleItemDto>>? schedule,
+    required String groupId,
+    @JsonKey(name: 'Luni')
+    required List<ScheduleItemDto> monday,
+    @JsonKey(name: 'Marti')
+    required List<ScheduleItemDto> tuesday,
+    @JsonKey(name: 'Miercuri')
+
+    required List<ScheduleItemDto> wednesday,
+    @JsonKey(name: 'Joi')
+
+    required List<ScheduleItemDto> thursday,
+    @JsonKey(name: 'Vineri')
+
+    required List<ScheduleItemDto> friday,
+
   }) = _ScheduleApiDto;
 
-  factory ScheduleApiDto.fromJson(Map<String, dynamic> json) {
-    final scheduleMap = <String, List<ScheduleItemDto>>{};
-
-    json.forEach((key, value) {
-      if (value is List) {
-        scheduleMap[key] = value.map((e) => ScheduleItemDto.fromJson(e as Map<String, dynamic>)).toList();
-      }
-    });
-
-    return ScheduleApiDto(group: json['group'], groupId: json['groupId'], schedule: scheduleMap);
-  }
+  factory ScheduleApiDto.fromJson(Map<String, dynamic> json) => _$ScheduleApiDtoFromJson(json);
 }
