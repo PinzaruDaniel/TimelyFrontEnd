@@ -32,6 +32,8 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(backgroundColor: Colors.white,),
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const SchedulePage(),

@@ -12,7 +12,7 @@ class ScheduleController extends GetxController {
     getScheduleUseCase.call(GetScheduleParams('cb41031e-f64e-484b-a38b-3ac7c6995c38')).then((either) {
       either.fold(
         (failure) {
-          print('fail');
+          print('failure');
         },
         (scheduleApi) {
           scheduleVm.value = scheduleApi.toModel;
