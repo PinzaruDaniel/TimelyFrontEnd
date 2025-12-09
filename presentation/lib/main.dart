@@ -1,6 +1,7 @@
 import 'package:di/di.dart';
 import 'package:flutter/material.dart';
 import 'package:presentation/pages/schedule_page/schedule_page.dart';
+import 'package:presentation/util/widgets/main_navigation_bar_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +17,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        useMaterial3: true,
+
         // This is the theme of your application.
         //
         // TRY THIS: Try running your application with "flutter run". You'll see
@@ -33,10 +37,10 @@ class MyApp extends StatelessWidget {
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
         scaffoldBackgroundColor: Colors.white,
+
         appBarTheme: AppBarTheme(backgroundColor: Colors.white,),
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SchedulePage(),
-    );
+      home: MainNavigationPage(),    );
   }
 }

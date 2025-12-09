@@ -1,5 +1,5 @@
 class ApiConstants {
-  static const String baseUrl = 'http://172.20.10.11:5267/api';
+  static const String baseUrl = 'http://192.168.0.75:5267';
       //'http://localhost:5267/api';
   static const Map<String, String> authHeader = {
     'Authorization': 'Bearer YourSuperSecretKeyThatIsAtLeast32CharactersLongForHS256Algorithm'
