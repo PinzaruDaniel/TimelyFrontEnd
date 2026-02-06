@@ -7,6 +7,9 @@ abstract class UseCase<T, Params> {
 abstract class UseCaseStream<T, Params>{
   Stream<T> call(Params params);
 }
+abstract class UseCaseStreamEither<T, Params>{
+  Stream<Either<Failure, T>> call(Params params);
+}
 
 abstract class UseCaseNoParams<T> {
   Future<Either<Failure, T>> call();

@@ -7,7 +7,7 @@ import 'package:get_it/get_it.dart';
 Future<void> init() async {
   var dataDi = GetIt.instance;
   dataDi.registerLazySingleton<GetScheduleUseCase>(() => GetScheduleUseCase(repository: dataDi<ScheduleRepository>()));
-  dataDi.registerLazySingleton<AddScheduleUseCase>(() => AddScheduleUseCase(repository: dataDi<ScheduleRepository>()));
+  //dataDi.registerLazySingleton<AddScheduleUseCase>(() => AddScheduleUseCase(repository: dataDi<ScheduleRepository>()));
   dataDi.registerLazySingleton<SetScheduleUseCase>(
     () => SetScheduleUseCase(scheduleRepository: dataDi<ScheduleRepository>()),
   );

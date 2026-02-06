@@ -2,7 +2,6 @@ import 'package:common/constants/failure_class.dart';
 import 'package:dartz/dartz.dart';
 import 'package:domain/core/usecase.dart';
 import 'package:domain/modules/schedule/models/index.dart';
-import 'package:uuid/uuid.dart';
 
 import '../schedule_repository.dart';
 

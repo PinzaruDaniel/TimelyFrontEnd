@@ -1,4 +1,5 @@
 
+
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
@@ -20,3 +21,4 @@ class ScheduleItemBox {
     required this.period,
   });
 }
+

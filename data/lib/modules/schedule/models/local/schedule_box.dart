@@ -1,3 +1,4 @@
+
 import 'package:data/modules/schedule/models/local/schedule_item_box.dart';
 import 'package:objectbox/objectbox.dart';
 

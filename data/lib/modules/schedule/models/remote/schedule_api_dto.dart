@@ -1,4 +1,6 @@
+
 part of 'index.dart';
+
 
 @freezed
 abstract class ScheduleApiDto with _$ScheduleApiDto {
@@ -23,3 +25,4 @@ abstract class ScheduleApiDto with _$ScheduleApiDto {
 
   factory ScheduleApiDto.fromJson(Map<String, dynamic> json) => _$ScheduleApiDtoFromJson(json);
 }
+

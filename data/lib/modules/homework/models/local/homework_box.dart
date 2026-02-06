@@ -1,22 +1,26 @@
-
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
 class HomeworkBox {
-  @Id(assignable: true)
-  int id;
+  @Id()
+  int id = 0;
+
+  @Unique()
   String homeworkId;
+
   String subject;
   String description;
+
+  @Property(type: PropertyType.date)
   DateTime dueDate;
+
   String? imageUrl;
 
   HomeworkBox({
-    this.id = 0,
     required this.homeworkId,
     required this.subject,
     required this.description,
     required this.dueDate,
-    required this.imageUrl,
+    this.imageUrl,
   });
 }

@@ -1,3 +1,4 @@
+
 part of 'index.dart';
 @freezed
 abstract class ScheduleItemDto with _$ScheduleItemDto {

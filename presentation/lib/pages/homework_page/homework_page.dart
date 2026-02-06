@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:presentation/pages/homework_page/homework_controller.dart';
 import 'package:presentation/util/resources/app_colors.dart';
 
+import '../../util/widgets/main_circular_progress_indicator_widget.dart';
+
 class HomeworkPage extends StatefulWidget {
   const HomeworkPage({super.key});
 
@@ -30,7 +32,7 @@ class _HomeworkPageState extends State<HomeworkPage> {
       body: SafeArea(
         child: Obx(() {
           if (homeworkController.homeworks.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
+            return MainCircularProgressIndicatorWidget();
           }
 
           return ListView.builder(

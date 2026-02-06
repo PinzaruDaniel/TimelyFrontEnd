@@ -26,7 +26,6 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   final List<Widget> _pages = [
     const SchedulePage(),
     const HomeworkPage(),
-    ProfilePage(),
     const ChatPage(),
     const ProfilePage(),
   ];
@@ -71,7 +70,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           ),
           BottomBarItem(
             icon: Icon(Icons.person_outline_rounded),
-            selectedIcon: Icon(Icons.person_rounded),
+            selectedIcon: Icon(Icons.person_rounded,),
             unSelectedColor: AppColors.grey,
             selectedColor: AppColors.primaryBlue,
             title: Text('Profile'),
@@ -82,7 +81,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         fabLocation: StylishBarFabLocation.center,
         hasNotch: true,
         notchStyle: NotchStyle.circle,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffeceff1),
         onTap: (index) {
           if (index == _currentIndex) return;
           controller.jumpToPage(index);
@@ -102,11 +101,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
                   child: ListBody(
                     children: <Widget>[
                       TextField(
-                        //controller: _nameController,
                         decoration: const InputDecoration(hintText: "Name"),
                       ),
                       TextField(
-                        //controller: _emailController,
                         decoration: const InputDecoration(hintText: "Email"),
                         keyboardType: TextInputType.emailAddress,
                       ),
@@ -117,16 +114,15 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
                   TextButton(
                     child: const Text('Cancel'),
                     onPressed: () {
-                      Navigator.of(context).pop(); // closes the dialog
+                      Navigator.of(context).pop();
                     },
                   ),
                   TextButton(
                     child: const Text('Submit'),
                     onPressed: () {
-                      // Process form data from controllers
-                      String name = '_nameController.text'; // replace with actual controller
+                      String name = '_nameController.text';
                       String email = '_emailController.text';
-                      Navigator.of(context).pop({'name': name, 'email': email}); // returns data
+                      Navigator.of(context).pop({'name': name, 'email': email});
                     },
                   ),
                 ],

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "918988440210",
+    "project_id": "timely-aeb0ba",
+    "storage_bucket": "timely-aeb0ba.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918988440210:android:fb40449e5f55309dfb1c4b",
+        "android_client_info": {
+          "package_name": "com.example.presentation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPRKc2-QOy-efG-YQq-SCK3GxSZRC_0kE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

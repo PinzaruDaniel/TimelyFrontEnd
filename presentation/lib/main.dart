@@ -1,11 +1,13 @@
 import 'package:di/di.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:presentation/pages/schedule_page/schedule_page.dart';
-import 'package:presentation/util/widgets/main_navigation_bar_widget.dart';
+import 'package:presentation/firebase_test.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initDi();
+ // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Timely',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
@@ -38,9 +40,11 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         scaffoldBackgroundColor: Colors.white,
 
-        appBarTheme: AppBarTheme(backgroundColor: Colors.white,),
+        appBarTheme: AppBarTheme(backgroundColor: Colors.white),
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: MainNavigationPage(),    );
+      home: FirebaseTest(),
+      // MainNavigationPage(),
+    );
   }
 }

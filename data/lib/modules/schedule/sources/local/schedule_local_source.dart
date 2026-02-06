@@ -1,5 +1,7 @@
+
 import 'package:data/modules/schedule/models/local/schedule_box.dart';
 import 'package:domain/modules/schedule/models/index.dart';
+import 'package:objectbox/objectbox.dart';
 
 import '../../../../objectbox.g.dart';
 import '../../models/local/schedule_item_box.dart';
@@ -70,5 +72,13 @@ class ScheduleLocalSourceImpl implements ScheduleLocalSource {
     );
 
     await scheduleBox.putAsync(scheduleDb);
+
+
+   var schedules= await scheduleBox.getAllAsync();
+    for (var s in schedules){
+      print('id: ${s.groupId}');
+
+    }
   }
 }
+

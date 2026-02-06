@@ -1,0 +1,148 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:9053494043617025232",
+      "lastPropertyId": "6:1007424516597279154",
+      "name": "HomeworkBox",
+      "properties": [
+        {
+          "id": "1:157814605924391779",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1365095936950897487",
+          "name": "homeworkId",
+          "indexId": "1:966039025658548335",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:1069872847218804476",
+          "name": "subject",
+          "type": 9
+        },
+        {
+          "id": "4:4601836147206682428",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "5:133662776536298298",
+          "name": "dueDate",
+          "type": 10
+        },
+        {
+          "id": "6:1007424516597279154",
+          "name": "imageUrl",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:6774720726009855404",
+      "lastPropertyId": "3:3673243315146197248",
+      "name": "ScheduleBox",
+      "properties": [
+        {
+          "id": "1:842901112772044309",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5223957150987982997",
+          "name": "group",
+          "type": 9
+        },
+        {
+          "id": "3:3673243315146197248",
+          "name": "groupId",
+          "type": 9
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:6893663170567280639",
+          "name": "monday",
+          "targetId": "3:8454491335270727914"
+        },
+        {
+          "id": "2:8449219194342601396",
+          "name": "tuesday",
+          "targetId": "3:8454491335270727914"
+        },
+        {
+          "id": "3:5448718805994984733",
+          "name": "wednesday",
+          "targetId": "3:8454491335270727914"
+        },
+        {
+          "id": "4:6137659983517564927",
+          "name": "thursday",
+          "targetId": "3:8454491335270727914"
+        },
+        {
+          "id": "5:5579319385102700080",
+          "name": "friday",
+          "targetId": "3:8454491335270727914"
+        }
+      ]
+    },
+    {
+      "id": "3:8454491335270727914",
+      "lastPropertyId": "6:224407082411132609",
+      "name": "ScheduleItemBox",
+      "properties": [
+        {
+          "id": "1:1287731885767440713",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2389190963463686103",
+          "name": "time",
+          "type": 9
+        },
+        {
+          "id": "3:8924481928545512967",
+          "name": "subject",
+          "type": 9
+        },
+        {
+          "id": "4:2560884080895321642",
+          "name": "teacher",
+          "type": 9
+        },
+        {
+          "id": "5:7191860708625728892",
+          "name": "room",
+          "type": 9
+        },
+        {
+          "id": "6:224407082411132609",
+          "name": "period",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "3:8454491335270727914",
+  "lastIndexId": "1:966039025658548335",
+  "lastRelationId": "5:5579319385102700080",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

@@ -1,3 +1,4 @@
+
 import 'dart:io';
 
 import 'package:common/constants/failure_class.dart';
@@ -52,7 +53,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   @override
   Future<ScheduleEntity> getScheduleFromCache(String groupId) async {
     var scheduleBox = await localSource.getScheduleFromCache(groupId);
-    return scheduleBox.toEntity;
+    return ScheduleBoxToEntityMapper(scheduleBox).toEntity;
   }
 
   @override
@@ -60,3 +61,4 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     localSource.setSchedule(schedule);
   }
 }
+
