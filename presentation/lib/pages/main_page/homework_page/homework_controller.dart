@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:presentation/view_models/homework_view_model.dart';
 
-import '../../util/mappers/homework_mapper.dart';
+import '../../../util/mappers/homework_mapper.dart';
+
 
 class HomeworkController extends GetxController {
   GetHomeworksUseCase getHomeworksUseCase = GetIt.instance<GetHomeworksUseCase>();

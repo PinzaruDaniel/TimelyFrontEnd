@@ -4,6 +4,8 @@ class AppColors {
   static const Color primaryBlue = Color(0xff016ffd);
   static const Color primaryCian = Color(0xff11c6b6);
   static const Color grey = Color(0xff9da9ac);
+  static const hintColor = Color(0xffa5a8ad);
+  static const borderColor = Color(0xFF373f4f);
 
   static const LinearGradient electricViolet = LinearGradient(
     colors: [Color(0xFF667eea), Color(0xFF764ba2)], // deep purple to violet

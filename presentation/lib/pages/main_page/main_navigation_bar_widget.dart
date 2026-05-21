@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:presentation/pages/homework_page/homework_page.dart';
-import 'package:presentation/pages/schedule_page/schedule_page.dart';
+import 'package:presentation/pages/main_page/schedule_page/schedule_page.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
-import '../resources/app_colors.dart';
+import '../../util/resources/app_colors.dart';
+import 'homework_page/homework_page.dart';
 
 class MainNavigationPage extends StatefulWidget {
   const MainNavigationPage({super.key});

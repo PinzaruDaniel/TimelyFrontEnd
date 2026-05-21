@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:presentation/pages/homework_page/homework_controller.dart';
 import 'package:presentation/util/resources/app_colors.dart';
 
-import '../../util/widgets/main_circular_progress_indicator_widget.dart';
+import '../../../util/widgets/main_circular_progress_indicator_widget.dart';
+import 'homework_controller.dart';
 
 class HomeworkPage extends StatefulWidget {
   const HomeworkPage({super.key});

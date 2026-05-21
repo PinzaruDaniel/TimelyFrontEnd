@@ -3,8 +3,6 @@
 import 'package:data/modules/homework/models/local/homework_box.dart';
 import 'package:data/modules/schedule/models/local/schedule_box.dart';
 import 'package:data/modules/schedule/models/local/schedule_item_box.dart';
-import 'package:objectbox/objectbox.dart';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import '../objectbox.g.dart';

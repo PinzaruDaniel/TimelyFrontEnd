@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:presentation/pages/schedule_page/schedule_controller.dart';
 import 'package:presentation/util/widgets/main_circular_progress_indicator_widget.dart';
+import 'package:presentation/pages/main_page/schedule_page/schedule_controller.dart';
 
-import '../../util/resources/app_colors.dart';
-import '../../view_models/schedule_item_view_model.dart';
+import '../../../util/resources/app_colors.dart';
+import '../../../view_models/schedule_item_view_model.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
