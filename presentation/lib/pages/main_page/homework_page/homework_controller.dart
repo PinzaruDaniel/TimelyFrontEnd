@@ -20,13 +20,7 @@ class HomeworkController extends GetxController {
         },
         (homeworkList) {
           homeworks.value = homeworkList.map((hw) => hw.toModel).toList();
-
-          print('homeworks count: ${homeworks.length}');
           if (homeworks.isNotEmpty) {
-            print('first homework id: ${homeworks[0].homeworkId}');
-            print('first homework subject: ${homeworks[0].subject}');
-            print('first homework description: ${homeworks[0].description}');
-            print('first homework dueDate: ${homeworks[0].dueDate}');
             setHomeworkUseCase.call(SetHomeworkParams(homeworksEntity: homeworkList));
           }
         },

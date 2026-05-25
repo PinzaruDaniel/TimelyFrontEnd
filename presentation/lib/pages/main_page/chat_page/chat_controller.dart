@@ -1,9 +1,15 @@
+import 'dart:async';
+
+import 'package:common/constants/failure_class.dart';
+import 'package:dartz/dartz.dart';
+import 'package:domain/modules/chat/models/index.dart';
 import 'package:domain/modules/chat/use_cases/create_direct_chat_use_case.dart';
 import 'package:domain/modules/chat/use_cases/create_group_chat_use_case.dart';
 import 'package:domain/modules/chat/use_cases/get_chat_messages_use_case.dart';
 import 'package:domain/modules/chat/use_cases/get_user_chats_use_case.dart';
 import 'package:domain/modules/chat/use_cases/mark_message_as_read_use_case.dart';
 import 'package:domain/modules/chat/use_cases/send_message_use_case.dart';
+import 'package:domain/modules/chat/use_cases/upload_chat_media_use_case.dart';
 import 'package:domain/modules/messaging/use_cases/get_fcm_token_use_case.dart';
 import 'package:domain/modules/messaging/use_cases/request_permission_use_case.dart';
 import 'package:domain/modules/messaging/use_cases/set_auto_init_use_case.dart';
@@ -15,11 +21,6 @@ import 'package:get_it/get_it.dart';
 import 'package:presentation/controllers/controller_imports.dart';
 import 'package:presentation/util/mappers/user_mapper.dart';
 import 'package:presentation/view_models/user_profile_view_model.dart';
-import 'dart:async';
-import 'package:domain/modules/chat/models/index.dart';
-import 'package:dartz/dartz.dart';
-import 'package:common/constants/failure_class.dart';
-import 'package:domain/modules/chat/use_cases/upload_chat_media_use_case.dart';
 
 class ChatController extends GetxController {
   final UploadChatMediaUseCase uploadChatMediaUseCase;
@@ -97,24 +98,12 @@ class ChatController extends GetxController {
     fcmToken.value = await getFcmTokenUseCase.call();
   }
 
-  Future<void> sendMessage({
-    required String chatId,
-    required String senderId,
-    required String text,
-  }) {
-    return sendMessageUseCase.call(
-      SendMessageParams(chatId: chatId, senderId: senderId, text: text),
-    );
+  Future<void> sendMessage({required String chatId, required String senderId, required String text}) {
+    return sendMessageUseCase.call(SendMessageParams(chatId: chatId, senderId: senderId, text: text));
   }
 
-  Future<void> markMessageAsRead({
-    required String chatId,
-    required String messageId,
-    required String userId,
-  }) {
-    return markMessageAsReadUseCase.call(
-      MarkMessageAsReadParams(chatId: chatId, messageId: messageId, userId: userId),
-    );
+  Future<void> markMessageAsRead({required String chatId, required String messageId, required String userId}) {
+    return markMessageAsReadUseCase.call(MarkMessageAsReadParams(chatId: chatId, messageId: messageId, userId: userId));
   }
 
   Future<void> subscribeToTopic(String topic) {
@@ -140,7 +129,9 @@ class ChatController extends GetxController {
         groupUsersError.value = failure.message;
       },
       (users) {
-        groupUsers.assignAll(users.map((user) => user.toModel).where((e)=> e.id != userProfileController.userViewModel.value!.id));
+        groupUsers.assignAll(
+          users.map((user) => user.toModel).where((e) => e.id != userProfileController.userViewModel.value!.id),
+        );
       },
     );
 
@@ -153,9 +144,7 @@ class ChatController extends GetxController {
 
     activeChatId.value = chatId;
     await _messagesSub?.cancel();
-    _messagesSub = getChatMessagesUseCase
-        .call(GetChatMessagesParams(chatId: chatId))
-        .listen((either) {
+    _messagesSub = getChatMessagesUseCase.call(GetChatMessagesParams(chatId: chatId)).listen((either) {
       either.fold(
         (failure) {
           groupUsersError.value = failure.message;
@@ -167,41 +156,24 @@ class ChatController extends GetxController {
     });
   }
 
-  Future<String> createDirectChat({
-    required String currentUserId,
-    required String otherUserId,
-  }) {
-    return createDirectChatUseCase.call(
-      CreateDirectChatParams(userId1: currentUserId, userId2: otherUserId),
-    );
+  Future<String> createDirectChat({required String currentUserId, required String otherUserId}) {
+    return createDirectChatUseCase.call(CreateDirectChatParams(userId1: currentUserId, userId2: otherUserId));
   }
 
-  Future<String> createGroupChat({
-    required String groupId,
-    required String createdBy,
-  }) {
+  Future<String> createGroupChat({required String groupId, required String createdBy}) {
     final participants = groupUsers.map((user) => user.id).toSet().toList();
     if (!participants.contains(createdBy)) {
       participants.add(createdBy);
     }
     return createGroupChatUseCase.call(
-      CreateGroupChatParams(
-        groupName: 'Group $groupId',
-        participants: participants,
-        createdBy: createdBy,
-      ),
+      CreateGroupChatParams(groupName: 'Group $groupId', participants: participants, createdBy: createdBy),
     );
   }
 
-  Future<void> sendActiveChatMessage({
-    required String senderId,
-    required String text,
-  }) async {
+  Future<void> sendActiveChatMessage({required String senderId, required String text}) async {
     final chatId = activeChatId.value;
     if (chatId == null || chatId.isEmpty) return;
-    await sendMessageUseCase.call(
-      SendMessageParams(chatId: chatId, senderId: senderId, text: text),
-    );
+    await sendMessageUseCase.call(SendMessageParams(chatId: chatId, senderId: senderId, text: text));
   }
 
   Future<void> sendActiveChatMedia({
@@ -213,12 +185,7 @@ class ChatController extends GetxController {
     if (chatId == null || chatId.isEmpty) return;
 
     final uploadEither = await uploadChatMediaUseCase.call(
-      UploadChatMediaParams(
-        chatId: chatId,
-        senderId: senderId,
-        filePath: filePath,
-        mediaType: mediaType,
-      ),
+      UploadChatMediaParams(chatId: chatId, senderId: senderId, filePath: filePath, mediaType: mediaType),
     );
 
     await uploadEither.fold(
@@ -227,13 +194,7 @@ class ChatController extends GetxController {
       },
       (url) async {
         await sendMessageUseCase.call(
-          SendMessageParams(
-            chatId: chatId,
-            senderId: senderId,
-            text: '',
-            type: mediaType,
-            mediaUrl: url,
-          ),
+          SendMessageParams(chatId: chatId, senderId: senderId, text: '', type: mediaType, mediaUrl: url),
         );
       },
     );

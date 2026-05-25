@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:presentation/controllers/controller_imports.dart';
 import 'package:presentation/util/mappers/schedule_mapper.dart';
 import 'package:presentation/view_models/schedule_view_model.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 class ScheduleController extends GetxController {
   GetScheduleUseCase getScheduleUseCase = GetIt.instance<GetScheduleUseCase>();
@@ -20,11 +21,7 @@ class ScheduleController extends GetxController {
         },
         (scheduleEntity) {
           scheduleVm.value = scheduleEntity.toModel;
-          print('schedule id: ${scheduleVm.value?.groupId}');
-          print('schedule monday: ${scheduleVm.value?.monday[0].subject}');
-          print('schedule room: ${scheduleVm.value?.monday[0].room}');
           setScheduleUseCase.call(SetScheduleParams(scheduleEntity: scheduleEntity));
-
         },
       );
     });

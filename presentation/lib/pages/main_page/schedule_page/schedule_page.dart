@@ -17,9 +17,8 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMixin {
   late TabController tabController;
-
+  final refreshController = RefreshController();
   ScheduleController get scheduleController => Get.find();
-  RefreshController refreshController = .new();
 
   @override
   void initState() {
@@ -42,7 +41,12 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
           final schedule = scheduleController.scheduleVm.value!;
           return SmartRefresher(
             controller: refreshController,
-            onRefresh: () => scheduleController.getSchedule(userProfileController.userViewModel.value?.groupId ?? ''),
+            onRefresh: () async {
+              await scheduleController.getSchedule(userProfileController.userViewModel.value?.groupId ?? '');
+              refreshController.refreshCompleted();
+            },
+            header: ClassicHeader(
+            ),
             child: Column(
               children: [
                 Padding(
