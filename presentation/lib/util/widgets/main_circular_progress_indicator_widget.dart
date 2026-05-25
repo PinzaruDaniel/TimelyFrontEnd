@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:presentation/util/resources/app_colors.dart';
 
@@ -7,6 +8,6 @@ class MainCircularProgressIndicatorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SpinKitSpinningLines(color: AppColors.primaryBlue, size: 115,);
+    return SpinKitSpinningLines(color: AppColors.primaryBlue, size: 100.h, itemCount: 3,);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:presentation/pages/main_page/schedule_page/schedule_page.dart';
+import 'package:presentation/pages/main_page/chat_page/chat_page.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
 import '../../util/resources/app_colors.dart';
@@ -45,51 +46,55 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           children: _pages,
         ),
       ),
-      bottomNavigationBar: StylishBottomBar(
-        items: [
-          BottomBarItem(
-            icon: const Icon(Icons.house_outlined),
-            selectedIcon: const Icon(Icons.house_rounded),
-            unSelectedColor: AppColors.grey,
-            selectedColor: AppColors.primaryBlue,
-            title: Text('Home'),
-          ),
-          BottomBarItem(
-            icon: Icon(Icons.calendar_today_rounded),
-            selectedIcon: Icon(Icons.calendar_month),
-            unSelectedColor: AppColors.grey,
-            selectedColor: AppColors.primaryBlue,
-            title: Text('Homework'),
-          ),
-          BottomBarItem(
-            icon: Icon(Icons.chat_outlined),
-            selectedIcon: Icon(Icons.chat_rounded),
-            unSelectedColor: AppColors.grey,
-            selectedColor: AppColors.primaryBlue,
-            title: Text('Chat'),
-          ),
-          BottomBarItem(
-            icon: Icon(Icons.person_outline_rounded),
-            selectedIcon: Icon(Icons.person_rounded,),
-            unSelectedColor: AppColors.grey,
-            selectedColor: AppColors.primaryBlue,
-            title: Text('Profile'),
-          ),
-        ],
-        option: AnimatedBarOptions(iconStyle: IconStyle.animated),
-        currentIndex: _currentIndex,
-        fabLocation: StylishBarFabLocation.center,
-        hasNotch: true,
-        notchStyle: NotchStyle.circle,
-        backgroundColor: Color(0xffeceff1),
-        onTap: (index) {
-          if (index == _currentIndex) return;
-          controller.jumpToPage(index);
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+      bottomNavigationBar: Material(
+        elevation: 2,
+        child: StylishBottomBar(
+          items: [
+            BottomBarItem(
+              icon: const Icon(Icons.house_outlined),
+              selectedIcon: const Icon(Icons.house_rounded),
+              unSelectedColor: AppColors.grey,
+              selectedColor: AppColors.primaryBlue,
+              title: Text('Home'),
+            ),
+            BottomBarItem(
+              icon: Icon(Icons.calendar_today_rounded),
+              selectedIcon: Icon(Icons.calendar_month),
+              unSelectedColor: AppColors.grey,
+              selectedColor: AppColors.primaryBlue,
+              title: Text('Homework'),
+            ),
+            BottomBarItem(
+              icon: Icon(Icons.chat_outlined),
+              selectedIcon: Icon(Icons.chat_rounded),
+              unSelectedColor: AppColors.grey,
+              selectedColor: AppColors.primaryBlue,
+              title: Text('Chat'),
+            ),
+            BottomBarItem(
+              icon: Icon(Icons.person_outline_rounded),
+              selectedIcon: Icon(Icons.person_rounded,),
+              unSelectedColor: AppColors.grey,
+              selectedColor: AppColors.primaryBlue,
+              title: Text('Profile'),
+            ),
+          ],
+          option: AnimatedBarOptions(iconStyle: IconStyle.animated),
+          currentIndex: _currentIndex,
+          fabLocation: StylishBarFabLocation.center,
+          hasNotch: true,
+          notchStyle: NotchStyle.circle,
+          backgroundColor: Colors.white,
+          onTap: (index) {
+            if (index == _currentIndex) return;
+            controller.jumpToPage(index);
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+        ),
       ),
+/*
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
@@ -134,19 +139,8 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         shape: const CircleBorder(),
         child: const Icon(Icons.add_rounded, color: Colors.white, size: 42),
       ),
+*/
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
-  }
-}
-
-class ChatPage extends StatelessWidget {
-  const ChatPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Chat')),
-      body: const Center(child: Text('Chat Page', style: TextStyle(fontSize: 24))),
     );
   }
 }

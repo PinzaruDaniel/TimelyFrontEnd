@@ -7,6 +7,7 @@ abstract class MessageEntity with _$MessageEntity {
     required String senderId,
     required String text,
     required DateTime timestamp,
+    String? mediaUrl,
     @Default('text') String type,
     @Default([]) List<String> readBy,
   }) = _MessageEntity;

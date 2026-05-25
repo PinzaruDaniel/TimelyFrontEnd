@@ -8,6 +8,7 @@ abstract class MessageApiDto with _$MessageApiDto {
     required String senderId,
     required String text,
     required DateTime timestamp,
+    String? mediaUrl,
     @Default('text') String type,
     @Default([]) List<String> readBy,
   }) = _MessageApiDto;
@@ -22,6 +23,7 @@ abstract class MessageApiDto with _$MessageApiDto {
       senderId: data['senderId'] ?? '',
       text: data['text'] ?? '',
       timestamp: (data['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      mediaUrl: data['mediaUrl'],
       type: data['type'] ?? 'text',
       readBy: List<String>.from(data['readBy'] ?? []),
     );
@@ -32,6 +34,7 @@ abstract class MessageApiDto with _$MessageApiDto {
       'senderId': senderId,
       'text': text,
       'timestamp': Timestamp.fromDate(timestamp),
+      'mediaUrl': mediaUrl,
       'type': type,
       'readBy': readBy,
     };
@@ -43,6 +46,7 @@ abstract class MessageApiDto with _$MessageApiDto {
       senderId: senderId,
       text: text,
       timestamp: timestamp,
+      mediaUrl: mediaUrl,
       type: type,
       readBy: readBy,
     );

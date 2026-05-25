@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:presentation/util/widgets/main_circular_progress_indicator_widget.dart';
+import 'package:presentation/controllers/controller_imports.dart';
 import 'package:presentation/pages/main_page/schedule_page/schedule_controller.dart';
+import 'package:presentation/util/widgets/main_circular_progress_indicator_widget.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../../../util/resources/app_colors.dart';
 import '../../../view_models/schedule_item_view_model.dart';
@@ -17,12 +19,13 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
   late TabController tabController;
 
   ScheduleController get scheduleController => Get.find();
+  RefreshController refreshController = .new();
 
   @override
   void initState() {
     super.initState();
     Get.put(ScheduleController());
-    scheduleController.getSchedule();
+    scheduleController.getSchedule(userProfileController.userViewModel.value?.groupId ?? '');
 
     tabController = TabController(length: 5, vsync: this);
   }
@@ -30,63 +33,60 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("My Schedule"),
-      ),
+      appBar: AppBar(title: const Text("My Schedule")),
       body: SafeArea(
         child: Obx(() {
           if (scheduleController.scheduleVm.value == null) {
             return MainCircularProgressIndicatorWidget();
           }
-
           final schedule = scheduleController.scheduleVm.value!;
-
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.white,
-                    boxShadow:[ BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 3)]
-                  ),
-                  child: TabBar(
-                    indicatorWeight: 0,
-                    dividerColor: Colors.transparent,
-                    controller: tabController,
-                    labelColor: Colors.white,
-                    indicatorColor: Colors.transparent,
-                    unselectedLabelColor: Colors.grey,
-                    indicator: BoxDecoration(
-                      color: AppColors.primaryCian,
+          return SmartRefresher(
+            controller: refreshController,
+            onRefresh: () => scheduleController.getSchedule(userProfileController.userViewModel.value?.groupId ?? ''),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
+                      color: Colors.white,
+                      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 3)],
                     ),
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    tabs: const [
-                      Tab(text: "MON"),
-                      Tab(text: "TUE"),
-                      Tab(text: "WED"),
-                      Tab(text: "THU"),
-                      Tab(text: "FRI"),
+                    child: TabBar(
+                      indicatorWeight: 0,
+                      dividerColor: Colors.transparent,
+                      controller: tabController,
+                      labelColor: Colors.white,
+                      indicatorColor: Colors.transparent,
+                      unselectedLabelColor: Colors.grey,
+                      indicator: BoxDecoration(color: AppColors.primaryCian, borderRadius: BorderRadius.circular(50)),
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      tabs: const [
+                        Tab(text: "MON"),
+                        Tab(text: "TUE"),
+                        Tab(text: "WED"),
+                        Tab(text: "THU"),
+                        Tab(text: "FRI"),
+                      ],
+                    ),
+                  ),
+                ),
+
+                Expanded(
+                  child: TabBarView(
+                    controller: tabController,
+                    children: [
+                      buildDay(schedule.monday),
+                      buildDay(schedule.tuesday),
+                      buildDay(schedule.wednesday),
+                      buildDay(schedule.thursday),
+                      buildDay(schedule.friday),
                     ],
                   ),
                 ),
-              ),
-
-              Expanded(
-                child: TabBarView(
-                  controller: tabController,
-                  children: [
-                    buildDay(schedule.monday),
-                    buildDay(schedule.tuesday),
-                    buildDay(schedule.wednesday),
-                    buildDay(schedule.thursday),
-                    buildDay(schedule.friday),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           );
         }),
       ),

@@ -5,14 +5,18 @@ import 'package:data/modules/schedule/models/local/schedule_box.dart';
 import 'package:data/modules/schedule/models/local/schedule_item_box.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import '../modules/auth/models/local/auth_token_box.dart';
 import '../objectbox.g.dart';
 
 class ObjectBoxStore {
   late final Store _store;
+  late final Box<AuthTokenBox> authTokenBox;
+
   late final Box<HomeworkBox> homeworkBox;
   late final Box<ScheduleBox> scheduleBox;
   late final Box<ScheduleItemBox> scheduleItemBox;
   ObjectBoxStore._create(this._store){
+    authTokenBox=Box<AuthTokenBox>(_store);
     homeworkBox=Box<HomeworkBox>(_store);
     scheduleBox=Box<ScheduleBox>(_store);
     scheduleItemBox=Box<ScheduleItemBox>(_store);

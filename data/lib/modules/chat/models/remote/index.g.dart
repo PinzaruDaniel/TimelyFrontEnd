@@ -39,6 +39,7 @@ _MessageApiDto _$MessageApiDtoFromJson(Map<String, dynamic> json) =>
       senderId: json['senderId'] as String,
       text: json['text'] as String,
       timestamp: DateTime.parse(json['timestamp'] as String),
+      mediaUrl: json['mediaUrl'] as String?,
       type: json['type'] as String? ?? 'text',
       readBy:
           (json['readBy'] as List<dynamic>?)
@@ -53,6 +54,7 @@ Map<String, dynamic> _$MessageApiDtoToJson(_MessageApiDto instance) =>
       'senderId': instance.senderId,
       'text': instance.text,
       'timestamp': instance.timestamp.toIso8601String(),
+      'mediaUrl': instance.mediaUrl,
       'type': instance.type,
       'readBy': instance.readBy,
     };

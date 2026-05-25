@@ -1,4 +1,7 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as path;
 
 import '../../models/remote/index.dart';
 
@@ -12,7 +15,20 @@ abstract class FirebaseChatDataSource {
     String? groupAvatar,
   });
 
-  Future<void> sendMessage({required String chatId, required String senderId, required String text, String type});
+  Future<void> sendMessage({
+    required String chatId,
+    required String senderId,
+    required String text,
+    String type = 'text',
+    String? mediaUrl,
+  });
+
+  Future<String> uploadChatMedia({
+    required String chatId,
+    required String senderId,
+    required String filePath,
+    required String mediaType,
+  });
 
   Stream<List<ChatApiDto>> getUserChats(String userId);
 
@@ -23,8 +39,9 @@ abstract class FirebaseChatDataSource {
 
 class FirebaseChatDataSourceImpl implements FirebaseChatDataSource {
   final FirebaseFirestore firestore;
+  final FirebaseStorage storage;
 
-  FirebaseChatDataSourceImpl({required this.firestore});
+  FirebaseChatDataSourceImpl({required this.firestore, required this.storage});
 
   @override
   Future<String> createDirectChat(String userId1, String userId2) async {
@@ -59,6 +76,17 @@ class FirebaseChatDataSourceImpl implements FirebaseChatDataSource {
     required String createdBy,
     String? groupAvatar,
   }) async {
+    final existingChat = await firestore
+        .collection('chats')
+        .where('type', isEqualTo: 'group')
+        .where('groupName', isEqualTo: groupName)
+        .limit(1)
+        .get();
+
+    if (existingChat.docs.isNotEmpty) {
+      return existingChat.docs.first.id;
+    }
+
     final chatRef = await firestore.collection('chats').add({
       'type': 'group',
       'groupName': groupName,
@@ -78,19 +106,40 @@ class FirebaseChatDataSourceImpl implements FirebaseChatDataSource {
     required String senderId,
     required String text,
     String type = 'text',
+    String? mediaUrl,
   }) async {
     await firestore.collection('messages').doc(chatId).collection('messages').add({
       'senderId': senderId,
       'text': text,
       'timestamp': FieldValue.serverTimestamp(),
       'type': type,
+      'mediaUrl': mediaUrl,
       'readBy': [senderId],
     });
 
     await firestore.collection('chats').doc(chatId).update({
-      'lastMessage': text,
+      'lastMessage': text.isEmpty ? type : text,
       'lastMessageTime': FieldValue.serverTimestamp(),
     });
+  }
+
+  @override
+  Future<String> uploadChatMedia({
+    required String chatId,
+    required String senderId,
+    required String filePath,
+    required String mediaType,
+  }) async {
+    final file = File(filePath);
+    final extension = path.extension(filePath);
+    final fileName = '${DateTime.now().millisecondsSinceEpoch}$extension';
+    final storageRef = storage.ref().child('chats/$chatId/$senderId/$fileName');
+    final metadata = SettableMetadata(
+      contentType: mediaType == 'video' ? 'video/mp4' : 'image/jpeg',
+    );
+
+    await storageRef.putFile(file, metadata);
+    return storageRef.getDownloadURL();
   }
 
   @override

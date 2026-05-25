@@ -1,21 +1,79 @@
+import 'dart:io';
+import 'package:common/core/config/firebase_options.dart';
 import 'package:di/di.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:presentation/controllers/binding/root_bindings_controllers.dart';
+import 'package:presentation/firebase_test.dart';
 import 'package:presentation/pages/auth/login_page/login_page.dart';
+import 'package:presentation/pages/main_page/main_navigation_bar_widget.dart';
 import 'package:presentation/util/resources/app_colors.dart';
+import 'package:presentation/view_models/user_profile_view_model.dart';
+
+import 'controllers/controller_imports.dart';
+
+bool _supportsFcm() {
+  return !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  debugPrint('Handling a background message: ${message.messageId}');
+}
+
+Future<void> _initializeFirebaseMessaging() async {
+  if (!_supportsFcm()) return;
+  final messaging = FirebaseMessaging.instance;
+
+  await messaging.setAutoInitEnabled(true);
+  await messaging.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    debugPrint('FCM message received in foreground: ${message.messageId}');
+  });
+
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    debugPrint('FCM message opened app: ${message.messageId}');
+  });
+
+  final initialMessage = await messaging.getInitialMessage();
+  if (initialMessage != null) {
+    debugPrint('FCM opened app from terminated: ${initialMessage.messageId}');
+  }
+
+  final token = await messaging.getToken();
+  if (token != null) {
+    debugPrint('FCM token: $token');
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initDi();
+  await initDi(onSessionExpired: (){});
   RootBindings().dependencies();
 
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  if (_supportsFcm()) {
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  }
+  await _initializeFirebaseMessaging();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
+    runApp(const MyApp());
+  });
+  await userProfileController.getUser();
+
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget with LoginSignIn {
   const MyApp({super.key});
 
   // This widget is the root of your application.
@@ -37,9 +95,19 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(backgroundColor: Colors.white),
           colorScheme: .fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: LoginPage(),
+        home: entryPage(userProfileController.userViewModel.value),
         // MainNavigationPage(),
       ),
     );
+  }
+
+}
+
+mixin LoginSignIn {
+  Widget entryPage(UserProfileViewModel? userVM){
+    if(userVM!=null){
+      return MainNavigationPage();
+    }
+    return LoginPage();
   }
 }

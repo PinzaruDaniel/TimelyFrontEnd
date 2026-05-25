@@ -15,6 +15,14 @@ abstract class ChatRepository {
     required String senderId,
     required String text,
     String type,
+    String? mediaUrl,
+  });
+
+  Future<String> uploadChatMedia({
+    required String chatId,
+    required String senderId,
+    required String filePath,
+    required String mediaType,
   });
 
   Stream<List<ChatEntity>> getUserChats(String userId);

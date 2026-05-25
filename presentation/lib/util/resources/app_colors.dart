@@ -5,7 +5,26 @@ class AppColors {
   static const Color primaryCian = Color(0xff11c6b6);
   static const Color grey = Color(0xff9da9ac);
   static const hintColor = Color(0xffa5a8ad);
-  static const borderColor = Color(0xFF373f4f);
+  static const Color borderColor = Color(0xFFE5E7EB);
+  static const Color textPrimary = Color(0xff111827);
+
+  static const Color textSecondary = Color(0xff6b7280);
+
+  static const Color background = Color(0xfff8fafc);
+
+  static const Color surface = Color(0xffffffff);
+
+  static const Color success = Color(0xff22c55e);
+
+  static const Color warning = Color(0xfff59e0b);
+
+  static const Color error = Color(0xffef4444);
+
+  static const Color divider = Color(0xffe5e7eb);
+
+  static const Color disabled = Color(0xffcbd5e1);
+
+  static const Color shadow = Color(0x14000000);
 
   static const LinearGradient electricViolet = LinearGradient(
     colors: [Color(0xFF667eea), Color(0xFF764ba2)], // deep purple to violet

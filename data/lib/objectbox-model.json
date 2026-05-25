@@ -132,9 +132,33 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "4:4531841651359351186",
+      "lastPropertyId": "3:2856123775455555910",
+      "name": "AuthTokenBox",
+      "properties": [
+        {
+          "id": "1:2265208049805978597",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:8542265296603499705",
+          "name": "accessToken",
+          "type": 9
+        },
+        {
+          "id": "3:2856123775455555910",
+          "name": "refreshToken",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "3:8454491335270727914",
+  "lastEntityId": "4:4531841651359351186",
   "lastIndexId": "1:966039025658548335",
   "lastRelationId": "5:5579319385102700080",
   "lastSequenceId": "0:0",

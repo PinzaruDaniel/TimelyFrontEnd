@@ -2,6 +2,10 @@
 
 A new Flutter project.
 
+## Chat Media
+
+The chat page supports image and video messages. Select a chat, then use the image or video button to upload media to Firebase Storage and send a message with the media URL.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

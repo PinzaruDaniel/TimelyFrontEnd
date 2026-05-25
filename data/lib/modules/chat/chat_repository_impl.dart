@@ -33,8 +33,30 @@ class ChatRepositoryImpl implements ChatRepository {
     required String senderId,
     required String text,
     String type = 'text',
+    String? mediaUrl,
   }) {
-    return dataSource.sendMessage(chatId: chatId, senderId: senderId, text: text, type: type);
+    return dataSource.sendMessage(
+      chatId: chatId,
+      senderId: senderId,
+      text: text,
+      type: type,
+      mediaUrl: mediaUrl,
+    );
+  }
+
+  @override
+  Future<String> uploadChatMedia({
+    required String chatId,
+    required String senderId,
+    required String filePath,
+    required String mediaType,
+  }) {
+    return dataSource.uploadChatMedia(
+      chatId: chatId,
+      senderId: senderId,
+      filePath: filePath,
+      mediaType: mediaType,
+    );
   }
 
   @override

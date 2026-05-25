@@ -305,7 +305,7 @@ as String?,
 /// @nodoc
 mixin _$MessageApiDto {
 
- String get messageId; String get senderId; String get text; DateTime get timestamp; String get type; List<String> get readBy;
+ String get messageId; String get senderId; String get text; DateTime get timestamp; String? get mediaUrl; String get type; List<String> get readBy;
 /// Create a copy of MessageApiDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -318,16 +318,16 @@ $MessageApiDtoCopyWith<MessageApiDto> get copyWith => _$MessageApiDtoCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageApiDto&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.senderId, senderId) || other.senderId == senderId)&&(identical(other.text, text) || other.text == text)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.readBy, readBy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageApiDto&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.senderId, senderId) || other.senderId == senderId)&&(identical(other.text, text) || other.text == text)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.mediaUrl, mediaUrl) || other.mediaUrl == mediaUrl)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.readBy, readBy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,messageId,senderId,text,timestamp,type,const DeepCollectionEquality().hash(readBy));
+int get hashCode => Object.hash(runtimeType,messageId,senderId,text,timestamp,mediaUrl,type,const DeepCollectionEquality().hash(readBy));
 
 @override
 String toString() {
-  return 'MessageApiDto(messageId: $messageId, senderId: $senderId, text: $text, timestamp: $timestamp, type: $type, readBy: $readBy)';
+  return 'MessageApiDto(messageId: $messageId, senderId: $senderId, text: $text, timestamp: $timestamp, mediaUrl: $mediaUrl, type: $type, readBy: $readBy)';
 }
 
 
@@ -338,7 +338,7 @@ abstract mixin class $MessageApiDtoCopyWith<$Res>  {
   factory $MessageApiDtoCopyWith(MessageApiDto value, $Res Function(MessageApiDto) _then) = _$MessageApiDtoCopyWithImpl;
 @useResult
 $Res call({
- String messageId, String senderId, String text, DateTime timestamp, String type, List<String> readBy
+ String messageId, String senderId, String text, DateTime timestamp, String? mediaUrl, String type, List<String> readBy
 });
 
 
@@ -355,13 +355,14 @@ class _$MessageApiDtoCopyWithImpl<$Res>
 
 /// Create a copy of MessageApiDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? messageId = null,Object? senderId = null,Object? text = null,Object? timestamp = null,Object? type = null,Object? readBy = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? messageId = null,Object? senderId = null,Object? text = null,Object? timestamp = null,Object? mediaUrl = freezed,Object? type = null,Object? readBy = null,}) {
   return _then(_self.copyWith(
 messageId: null == messageId ? _self.messageId : messageId // ignore: cast_nullable_to_non_nullable
 as String,senderId: null == senderId ? _self.senderId : senderId // ignore: cast_nullable_to_non_nullable
 as String,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String,timestamp: null == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
-as DateTime,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as DateTime,mediaUrl: freezed == mediaUrl ? _self.mediaUrl : mediaUrl // ignore: cast_nullable_to_non_nullable
+as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,readBy: null == readBy ? _self.readBy : readBy // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
@@ -448,10 +449,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String messageId,  String senderId,  String text,  DateTime timestamp,  String type,  List<String> readBy)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String messageId,  String senderId,  String text,  DateTime timestamp,  String? mediaUrl,  String type,  List<String> readBy)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MessageApiDto() when $default != null:
-return $default(_that.messageId,_that.senderId,_that.text,_that.timestamp,_that.type,_that.readBy);case _:
+return $default(_that.messageId,_that.senderId,_that.text,_that.timestamp,_that.mediaUrl,_that.type,_that.readBy);case _:
   return orElse();
 
 }
@@ -469,10 +470,10 @@ return $default(_that.messageId,_that.senderId,_that.text,_that.timestamp,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String messageId,  String senderId,  String text,  DateTime timestamp,  String type,  List<String> readBy)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String messageId,  String senderId,  String text,  DateTime timestamp,  String? mediaUrl,  String type,  List<String> readBy)  $default,) {final _that = this;
 switch (_that) {
 case _MessageApiDto():
-return $default(_that.messageId,_that.senderId,_that.text,_that.timestamp,_that.type,_that.readBy);case _:
+return $default(_that.messageId,_that.senderId,_that.text,_that.timestamp,_that.mediaUrl,_that.type,_that.readBy);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -489,10 +490,10 @@ return $default(_that.messageId,_that.senderId,_that.text,_that.timestamp,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String messageId,  String senderId,  String text,  DateTime timestamp,  String type,  List<String> readBy)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String messageId,  String senderId,  String text,  DateTime timestamp,  String? mediaUrl,  String type,  List<String> readBy)?  $default,) {final _that = this;
 switch (_that) {
 case _MessageApiDto() when $default != null:
-return $default(_that.messageId,_that.senderId,_that.text,_that.timestamp,_that.type,_that.readBy);case _:
+return $default(_that.messageId,_that.senderId,_that.text,_that.timestamp,_that.mediaUrl,_that.type,_that.readBy);case _:
   return null;
 
 }
@@ -504,13 +505,14 @@ return $default(_that.messageId,_that.senderId,_that.text,_that.timestamp,_that.
 @JsonSerializable()
 
 class _MessageApiDto extends MessageApiDto {
-  const _MessageApiDto({required this.messageId, required this.senderId, required this.text, required this.timestamp, this.type = 'text', final  List<String> readBy = const []}): _readBy = readBy,super._();
+  const _MessageApiDto({required this.messageId, required this.senderId, required this.text, required this.timestamp, this.mediaUrl, this.type = 'text', final  List<String> readBy = const []}): _readBy = readBy,super._();
   factory _MessageApiDto.fromJson(Map<String, dynamic> json) => _$MessageApiDtoFromJson(json);
 
 @override final  String messageId;
 @override final  String senderId;
 @override final  String text;
 @override final  DateTime timestamp;
+@override final  String? mediaUrl;
 @override@JsonKey() final  String type;
  final  List<String> _readBy;
 @override@JsonKey() List<String> get readBy {
@@ -533,16 +535,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageApiDto&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.senderId, senderId) || other.senderId == senderId)&&(identical(other.text, text) || other.text == text)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._readBy, _readBy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageApiDto&&(identical(other.messageId, messageId) || other.messageId == messageId)&&(identical(other.senderId, senderId) || other.senderId == senderId)&&(identical(other.text, text) || other.text == text)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.mediaUrl, mediaUrl) || other.mediaUrl == mediaUrl)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._readBy, _readBy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,messageId,senderId,text,timestamp,type,const DeepCollectionEquality().hash(_readBy));
+int get hashCode => Object.hash(runtimeType,messageId,senderId,text,timestamp,mediaUrl,type,const DeepCollectionEquality().hash(_readBy));
 
 @override
 String toString() {
-  return 'MessageApiDto(messageId: $messageId, senderId: $senderId, text: $text, timestamp: $timestamp, type: $type, readBy: $readBy)';
+  return 'MessageApiDto(messageId: $messageId, senderId: $senderId, text: $text, timestamp: $timestamp, mediaUrl: $mediaUrl, type: $type, readBy: $readBy)';
 }
 
 
@@ -553,7 +555,7 @@ abstract mixin class _$MessageApiDtoCopyWith<$Res> implements $MessageApiDtoCopy
   factory _$MessageApiDtoCopyWith(_MessageApiDto value, $Res Function(_MessageApiDto) _then) = __$MessageApiDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String messageId, String senderId, String text, DateTime timestamp, String type, List<String> readBy
+ String messageId, String senderId, String text, DateTime timestamp, String? mediaUrl, String type, List<String> readBy
 });
 
 
@@ -570,13 +572,14 @@ class __$MessageApiDtoCopyWithImpl<$Res>
 
 /// Create a copy of MessageApiDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? messageId = null,Object? senderId = null,Object? text = null,Object? timestamp = null,Object? type = null,Object? readBy = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? messageId = null,Object? senderId = null,Object? text = null,Object? timestamp = null,Object? mediaUrl = freezed,Object? type = null,Object? readBy = null,}) {
   return _then(_MessageApiDto(
 messageId: null == messageId ? _self.messageId : messageId // ignore: cast_nullable_to_non_nullable
 as String,senderId: null == senderId ? _self.senderId : senderId // ignore: cast_nullable_to_non_nullable
 as String,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String,timestamp: null == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
-as DateTime,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as DateTime,mediaUrl: freezed == mediaUrl ? _self.mediaUrl : mediaUrl // ignore: cast_nullable_to_non_nullable
+as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,readBy: null == readBy ? _self._readBy : readBy // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:presentation/util/resources/texts_styles.dart';
 
 import '../resources/app_colors.dart';
 
@@ -36,17 +37,36 @@ class TextFormFieldWidget extends StatefulWidget {
 
 class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
   bool isObscure = false;
-  TextEditingController editingController = .new();
+  late final TextEditingController editingController;
+  bool _ownsController = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _ownsController = widget.item.controller == null;
+    editingController = widget.item.controller ?? TextEditingController();
+    isObscure = widget.item.isPassword;
+  }
+
+  @override
+  void dispose() {
+    if (_ownsController) {
+      editingController.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final item = widget.item;
     return TextFormField(
       controller: editingController,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: item.keyboardType,
       autofillHints: item.autofillHints,
       obscureText: item.isPassword ? isObscure : false,
       validator: item.validator,
+      style: TextsStyles.input,
       decoration: InputDecoration(
         prefixIcon: item.prefixIcon,
         suffixIcon: item.isPassword
@@ -65,14 +85,14 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         hintText: item.hintText,
         labelText: item.labelText,
         isDense: true,
-        hintStyle: const TextStyle(color: AppColors.grey),
+        hintStyle:  TextsStyles.hint,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.r),
-          borderSide: const BorderSide(color: AppColors.grey),
+          borderSide: const BorderSide(color: AppColors.borderColor),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.r),
-          borderSide: const BorderSide(color: AppColors.grey),
+          borderSide: const BorderSide(color: AppColors.borderColor),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(25.r),

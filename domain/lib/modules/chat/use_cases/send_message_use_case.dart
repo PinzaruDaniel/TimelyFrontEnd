@@ -16,10 +16,11 @@ class SendMessageUseCase extends UseCase<void, SendMessageParams> {
         senderId: params.senderId,
         text: params.text,
         type: params.type,
+        mediaUrl: params.mediaUrl,
       );
       return Right(null);
-    } catch (e) {
-      return Left(e as Failure);
+    } catch (e, stackTrace) {
+      return Left(Failure.error(e, stackTrace));
     }
   }
 }
@@ -29,6 +30,13 @@ class SendMessageParams {
   final String senderId;
   final String text;
   final String type;
+  final String? mediaUrl;
 
-  SendMessageParams({required this.chatId, required this.senderId, required this.text, this.type = 'text'});
+  SendMessageParams({
+    required this.chatId,
+    required this.senderId,
+    required this.text,
+    this.type = 'text',
+    this.mediaUrl,
+  });
 }
