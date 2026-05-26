@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:presentation/controllers/controller_imports.dart';
 import 'package:presentation/pages/main_page/chat_page/chat_controller.dart';
 import 'package:presentation/pages/main_page/chat_page/chat_media_utils.dart';
+import 'package:presentation/util/resources/app_colors.dart';
 
+import '../../../util/widgets/main_circular_progress_indicator_widget.dart';
 import '../../../util/widgets/text_form_field_widget.dart';
 
 class ChatPage extends StatefulWidget {
@@ -16,18 +20,38 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final ChatController _controller = Get.put(ChatController.fromDi());
   final TextEditingController _messageController = TextEditingController();
+  final ScrollController _chatScrollController = ScrollController();
+  final FocusNode _messageFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     final groupId = userProfileController.userViewModel.value?.groupId ?? '';
     _controller.loadGroupUsers(groupId);
+    _messageFocusNode.addListener(() {
+      if (_messageFocusNode.hasFocus) {
+        _scrollToBottom();
+      }
+    });
   }
 
   @override
   void dispose() {
+    _messageFocusNode.dispose();
+    _chatScrollController.dispose();
     _messageController.dispose();
     super.dispose();
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_chatScrollController.hasClients) return;
+      _chatScrollController.animateTo(
+        _chatScrollController.position.maxScrollExtent +400 ,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOut,
+      );
+    });
   }
 
   void _sendMessage() {
@@ -39,9 +63,8 @@ class _ChatPageState extends State<ChatPage> {
 
     _controller.sendActiveChatMessage(senderId: senderId, text: text);
     _messageController.clear();
+    _scrollToBottom();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +72,24 @@ class _ChatPageState extends State<ChatPage> {
     final groupId = userProfileController.userViewModel.value?.groupId ?? '';
     final currentUserName = userProfileController.userViewModel.value?.fullName ?? '';
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat')),
+      appBar: AppBar(
+        title: Obx(() {
+          final type = _controller.activeChatType.value;
+          final title = _controller.activeChatTitle.value;
+          if (type == 'group' && title != null && title.isNotEmpty) {
+            return Text('Group chat');
+          }
+          if (type == 'direct' && title != null && title.isNotEmpty) {
+            return Text('Chat with $title');
+          }
+          return const Text('Chat');
+        }),
+      ),
       body: Column(
         children: [
           Obx(() {
             if (_controller.isLoadingGroupUsers.value) {
-              return const Padding(padding: EdgeInsets.all(16), child: CircularProgressIndicator());
+              return const Padding(padding: EdgeInsets.all(16), child: MainCircularProgressIndicatorWidget());
             }
             final error = _controller.groupUsersError.value;
             if (error != null && error.isNotEmpty) {
@@ -67,15 +102,17 @@ class _ChatPageState extends State<ChatPage> {
               return const Padding(padding: EdgeInsets.all(16), child: Text('No group members found.'));
             }
             return SizedBox(
-              height: 160,
+              height: 120.h,
               child: ListView.separated(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 scrollDirection: Axis.horizontal,
                 itemCount: _controller.groupUsers.length + 1,
-                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                separatorBuilder: (_, _) => const SizedBox(width: 12),
                 itemBuilder: (context, index) {
                   if (index == 0) {
+                    final isSelected = _controller.activeChatType.value == 'group';
                     return InkWell(
+                      borderRadius: BorderRadius.circular(12),
                       onTap: currentUserId.isEmpty || groupId.isEmpty
                           ? null
                           : () async {
@@ -83,15 +120,20 @@ class _ChatPageState extends State<ChatPage> {
                                 groupId: groupId,
                                 createdBy: currentUserId,
                               );
+                              _controller.setActiveChatContext(type: 'group', title: groupId);
                               await _controller.selectChat(chatId);
+                              setState(() {});
                             },
-                      child: Container(
-                        width: 160,
+                      child: Ink(
+                        width: 160.w,
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.blue.shade50,
+                          color: isSelected ? AppColors.primaryBlue.withAlpha(20) : Colors.blue.shade50,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.blue.shade200),
+                          border: Border.all(
+                            color: isSelected ? AppColors.primaryBlue : Colors.blue.shade200,
+                            width: isSelected ? 2 : 1,
+                          ),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,7 +166,10 @@ class _ChatPageState extends State<ChatPage> {
                     );
                   }
                   final user = _controller.groupUsers[index - 1];
+                  final isSelected =
+                      _controller.activeChatType.value == 'direct' && _controller.activeChatPeerId.value == user.id;
                   return InkWell(
+                    borderRadius: BorderRadius.circular(12),
                     onTap: currentUserId.isEmpty || user.id == currentUserId
                         ? null
                         : () async {
@@ -132,15 +177,20 @@ class _ChatPageState extends State<ChatPage> {
                               currentUserId: currentUserId,
                               otherUserId: user.id,
                             );
+                            _controller.setActiveChatContext(type: 'direct', title: user.fullName, peerId: user.id);
                             await _controller.selectChat(chatId);
+                            setState(() {});
                           },
                     child: Container(
-                      width: 160,
+                      width: 160.w,
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
+                        color: isSelected ? AppColors.primaryBlue.withAlpha(20) : Colors.grey.shade100,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey.shade300),
+                        border: Border.all(
+                          color: isSelected ? AppColors.primaryBlue : Colors.grey.shade300,
+                          width: isSelected ? 2 : 1,
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,25 +225,13 @@ class _ChatPageState extends State<ChatPage> {
               ),
             );
           }),
-          Obx(() {
-            final token = _controller.fcmToken.value;
-            if (token == null || token.isEmpty) return const SizedBox.shrink();
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: Text(
-                'FCM token: $token',
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            );
-          }),
           Expanded(
             child: Obx(() {
               if (_controller.activeChatId.value == null) {
                 return const Center(child: Text('Select a user to start chatting'));
               }
               return ListView.builder(
+                controller: _chatScrollController,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 itemCount: _controller.chatMessages.length,
                 itemBuilder: (context, index) {
@@ -237,7 +275,11 @@ class _ChatPageState extends State<ChatPage> {
                 children: [
                   Expanded(
                     child: TextFormFieldWidget(
-                      item: TextFieldViewItem(controller: _messageController, hintText: 'Type a message'),
+                      item: TextFieldViewItem(
+                        controller: _messageController,
+                        hintText: 'Type a message',
+                        focusNode: _messageFocusNode,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 8),

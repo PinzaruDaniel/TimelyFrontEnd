@@ -13,6 +13,7 @@ class TextFieldViewItem {
   final String? Function(String?)? validator;
   final bool isPassword;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
 
   const TextFieldViewItem({
     this.controller,
@@ -23,6 +24,7 @@ class TextFieldViewItem {
     this.prefixIcon,
     this.validator,
     this.isPassword = false,
+    this.focusNode,
   });
 }
 
@@ -61,6 +63,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
     final item = widget.item;
     return TextFormField(
       controller: editingController,
+      focusNode: item.focusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: item.keyboardType,
       autofillHints: item.autofillHints,
@@ -100,7 +103,9 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         ),
       ),
       onTapOutside: (_) {
-        FocusManager.instance.primaryFocus?.unfocus();
+        if(item.hintText!= 'Type a message') {
+          FocusManager.instance.primaryFocus?.unfocus();
+        }
       },
     );
   }

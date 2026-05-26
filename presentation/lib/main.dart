@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:common/core/config/firebase_options.dart';
 import 'package:di/di.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:presentation/controllers/binding/root_bindings_controllers.dart';
-import 'package:presentation/firebase_test.dart';
 import 'package:presentation/pages/auth/login_page/login_page.dart';
 import 'package:presentation/pages/main_page/main_navigation_bar_widget.dart';
 import 'package:presentation/util/resources/app_colors.dart';
@@ -31,11 +31,7 @@ Future<void> _initializeFirebaseMessaging() async {
   final messaging = FirebaseMessaging.instance;
 
   await messaging.setAutoInitEnabled(true);
-  await messaging.requestPermission(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+  await messaging.requestPermission(alert: true, badge: true, sound: true);
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     debugPrint('FCM message received in foreground: ${message.messageId}');
@@ -58,19 +54,19 @@ Future<void> _initializeFirebaseMessaging() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initDi(onSessionExpired: (){});
+  await initDi(onSessionExpired: () {});
   RootBindings().dependencies();
 
-   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   if (_supportsFcm()) {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
   await _initializeFirebaseMessaging();
+  await userProfileController.getUser();
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
     runApp(const MyApp());
   });
-  await userProfileController.getUser();
-
 }
 
 class MyApp extends StatelessWidget with LoginSignIn {
@@ -100,12 +96,11 @@ class MyApp extends StatelessWidget with LoginSignIn {
       ),
     );
   }
-
 }
 
 mixin LoginSignIn {
-  Widget entryPage(UserProfileViewModel? userVM){
-    if(userVM!=null){
+  Widget entryPage(UserProfileViewModel? userVM) {
+    if (userVM != null) {
       return MainNavigationPage();
     }
     return LoginPage();

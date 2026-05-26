@@ -77,6 +77,9 @@ class ChatController extends GetxController {
   final RxBool isLoadingGroupUsers = false.obs;
   final RxnString groupUsersError = RxnString();
   final RxnString activeChatId = RxnString();
+  final RxnString activeChatTitle = RxnString();
+  final RxnString activeChatType = RxnString();
+  final RxnString activeChatPeerId = RxnString();
   final RxList<MessageEntity> chatMessages = <MessageEntity>[].obs;
   StreamSubscription<Either<Failure, List<MessageEntity>>>? _messagesSub;
 
@@ -198,5 +201,15 @@ class ChatController extends GetxController {
         );
       },
     );
+  }
+
+  void setActiveChatContext({
+    required String type,
+    String? title,
+    String? peerId,
+  }) {
+    activeChatType.value = type;
+    activeChatTitle.value = title;
+    activeChatPeerId.value = peerId;
   }
 }

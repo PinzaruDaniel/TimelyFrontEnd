@@ -11,7 +11,7 @@ class AuthRegisterUseCase extends UseCase<void, AuthRegisterParams> {
 
   @override
   Future<Either<Failure, void>> call(params) async {
-    final result = await authRepository.register(params.email, params.password, params.name, params.group);
+    final result = await authRepository.register(params.name, params.email, params.password, params.group);
 
     return result.fold(
       (failure) {
