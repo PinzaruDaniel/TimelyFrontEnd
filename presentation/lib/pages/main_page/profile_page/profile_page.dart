@@ -70,7 +70,7 @@ class ProfilePage extends StatelessWidget {
               // Info section
               Text('Account Info', style: TextsStyles.titleSmall),
               12.verticalSpace,
-              _InfoTile(icon: Icons.person_outline_rounded, label: 'Full Name', value: user.fullName),
+              _InfoTile(icon: Icons.person_outline_rounded, label: 'Username', value: user.fullName),
               _InfoTile(icon: Icons.email_outlined, label: 'Email', value: user.email),
               _InfoTile(icon: Icons.group_outlined, label: 'Group', value: user.groupName, isLast: true),
               32.verticalSpace,
