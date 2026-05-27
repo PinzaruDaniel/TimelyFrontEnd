@@ -7,6 +7,7 @@ abstract class UserProfileApiDto with _$UserProfileApiDto {
     required String fullName,
     required String email,
     required String groupId,
+    required String groupName,
   }) = _UserProfileApiDto;
   factory UserProfileApiDto.fromJson(Map<String, dynamic> json) => _$UserProfileApiDtoFromJson(json);
 }

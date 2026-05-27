@@ -33,7 +33,7 @@ class RefreshInterceptor {
       String? refreshToken = await authLocalSource.getRefreshToken();
       consoleLog('refreshToken: $refreshToken');
       if (refreshToken != null) {
-        final response = await authApiService.refresh({'refresh_token': refreshToken});
+        final response = await authApiService.refresh({'refreshToken': refreshToken});
         await authLocalSource.insertAccessToken(response.accessToken!);
         success = true;
       }
@@ -112,11 +112,7 @@ class AuthInterceptor extends InterceptorsWrapper {
         errorText = data.toLowerCase();
       }
 
-      final shouldRefresh = (statusCode == 401 || statusCode == 403) &&
-          (errorText?.contains('invalid token') == true ||
-              errorText?.contains('jwt expired') == true ||
-              errorText?.contains('invalid signature') == true ||
-              errorText?.contains('token expired') == true);
+      final shouldRefresh = (statusCode == 401 || statusCode == 403);
 
       if (shouldRefresh) {
         consoleLog('Token expired/invalid, starting refresh... ${refreshInterceptor.lock.locked}');

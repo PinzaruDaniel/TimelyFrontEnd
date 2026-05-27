@@ -13,6 +13,7 @@ class HomeworkController extends GetxController {
   RxList<HomeworkViewModel> homeworks = RxList([]);
 
   void getHomeworks() {
+    mainAppController.addPendingIds(['getHomeworks']);
     getHomeworksUseCase
         .call(GetHomeworksParams(groupId: userProfileController.userViewModel.value?.groupId ?? ''))
         .then((either) {
@@ -28,5 +29,6 @@ class HomeworkController extends GetxController {
             },
           );
         });
+    mainAppController.removePendingIds(['getHomeworks']);
   }
 }

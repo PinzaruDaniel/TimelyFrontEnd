@@ -7,5 +7,6 @@ abstract class UserProfileEntity with _$UserProfileEntity {
     required String fullName,
     required String email,
     required String groupId,
+    required String groupName,
   }) = _UserProfileEntity;
 }

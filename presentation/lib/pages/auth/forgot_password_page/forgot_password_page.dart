@@ -32,7 +32,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      appBar: const BaseAppBarWidget(),
+      appBar: const BaseAppBarWidget(title: 'ForgotPassword',),
       pendingIds: [AppConstants.forgotPassword],
       builder: (context) {
         return SingleChildScrollView(

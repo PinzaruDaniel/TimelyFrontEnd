@@ -70,7 +70,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, AuthTokensEntity>> refresh(String refreshToken) async {
     try {
-      final response = await apiService.refresh({"refresh_token": refreshToken});
+      final response = await apiService.refresh({"refreshToken": refreshToken});
       return Right(response.toEntity);
     } catch (e, stackTrace) {
       if (e is DioException) {

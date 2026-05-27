@@ -27,7 +27,9 @@ class ButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => onTap.call(),
-      child: Container(
+      borderRadius: .circular(25.r),
+
+      child: Ink(
         width: double.infinity,
         decoration: BoxDecoration(
           boxShadow: [?boxShadow],

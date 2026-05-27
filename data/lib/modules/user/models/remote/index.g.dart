@@ -12,6 +12,7 @@ _UserProfileApiDto _$UserProfileApiDtoFromJson(Map<String, dynamic> json) =>
       fullName: json['fullName'] as String,
       email: json['email'] as String,
       groupId: json['groupId'] as String,
+      groupName: json['groupName'] as String,
     );
 
 Map<String, dynamic> _$UserProfileApiDtoToJson(_UserProfileApiDto instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$UserProfileApiDtoToJson(_UserProfileApiDto instance) =>
       'fullName': instance.fullName,
       'email': instance.email,
       'groupId': instance.groupId,
+      'groupName': instance.groupName,
     };

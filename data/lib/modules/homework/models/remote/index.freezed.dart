@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomeworkApiDto {
 
-@JsonKey(name: 'id') String get homeworkId; String get subject; String get description; DateTime get dueDate; String? get imageUrl;
+@JsonKey(name: 'id') String get homeworkId; String get subject; String get description; DateTime? get dueDate; String? get imageUrl;
 /// Create a copy of HomeworkApiDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $HomeworkApiDtoCopyWith<$Res>  {
   factory $HomeworkApiDtoCopyWith(HomeworkApiDto value, $Res Function(HomeworkApiDto) _then) = _$HomeworkApiDtoCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') String homeworkId, String subject, String description, DateTime dueDate, String? imageUrl
+@JsonKey(name: 'id') String homeworkId, String subject, String description, DateTime? dueDate, String? imageUrl
 });
 
 
@@ -65,13 +65,13 @@ class _$HomeworkApiDtoCopyWithImpl<$Res>
 
 /// Create a copy of HomeworkApiDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? homeworkId = null,Object? subject = null,Object? description = null,Object? dueDate = null,Object? imageUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? homeworkId = null,Object? subject = null,Object? description = null,Object? dueDate = freezed,Object? imageUrl = freezed,}) {
   return _then(_self.copyWith(
 homeworkId: null == homeworkId ? _self.homeworkId : homeworkId // ignore: cast_nullable_to_non_nullable
 as String,subject: null == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,dueDate: null == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
-as DateTime,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String,dueDate: freezed == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -157,7 +157,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  String homeworkId,  String subject,  String description,  DateTime dueDate,  String? imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  String homeworkId,  String subject,  String description,  DateTime? dueDate,  String? imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HomeworkApiDto() when $default != null:
 return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_that.imageUrl);case _:
@@ -178,7 +178,7 @@ return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  String homeworkId,  String subject,  String description,  DateTime dueDate,  String? imageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  String homeworkId,  String subject,  String description,  DateTime? dueDate,  String? imageUrl)  $default,) {final _that = this;
 switch (_that) {
 case _HomeworkApiDto():
 return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_that.imageUrl);case _:
@@ -198,7 +198,7 @@ return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  String homeworkId,  String subject,  String description,  DateTime dueDate,  String? imageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  String homeworkId,  String subject,  String description,  DateTime? dueDate,  String? imageUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _HomeworkApiDto() when $default != null:
 return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_that.imageUrl);case _:
@@ -213,13 +213,13 @@ return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_
 @JsonSerializable()
 
 class _HomeworkApiDto implements HomeworkApiDto {
-  const _HomeworkApiDto({@JsonKey(name: 'id') required this.homeworkId, required this.subject, required this.description, required this.dueDate, this.imageUrl});
+  const _HomeworkApiDto({@JsonKey(name: 'id') required this.homeworkId, required this.subject, required this.description, this.dueDate, this.imageUrl});
   factory _HomeworkApiDto.fromJson(Map<String, dynamic> json) => _$HomeworkApiDtoFromJson(json);
 
 @override@JsonKey(name: 'id') final  String homeworkId;
 @override final  String subject;
 @override final  String description;
-@override final  DateTime dueDate;
+@override final  DateTime? dueDate;
 @override final  String? imageUrl;
 
 /// Create a copy of HomeworkApiDto
@@ -255,7 +255,7 @@ abstract mixin class _$HomeworkApiDtoCopyWith<$Res> implements $HomeworkApiDtoCo
   factory _$HomeworkApiDtoCopyWith(_HomeworkApiDto value, $Res Function(_HomeworkApiDto) _then) = __$HomeworkApiDtoCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') String homeworkId, String subject, String description, DateTime dueDate, String? imageUrl
+@JsonKey(name: 'id') String homeworkId, String subject, String description, DateTime? dueDate, String? imageUrl
 });
 
 
@@ -272,13 +272,13 @@ class __$HomeworkApiDtoCopyWithImpl<$Res>
 
 /// Create a copy of HomeworkApiDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? homeworkId = null,Object? subject = null,Object? description = null,Object? dueDate = null,Object? imageUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? homeworkId = null,Object? subject = null,Object? description = null,Object? dueDate = freezed,Object? imageUrl = freezed,}) {
   return _then(_HomeworkApiDto(
 homeworkId: null == homeworkId ? _self.homeworkId : homeworkId // ignore: cast_nullable_to_non_nullable
 as String,subject: null == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,dueDate: null == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
-as DateTime,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String,dueDate: freezed == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

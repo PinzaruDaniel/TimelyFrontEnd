@@ -48,6 +48,9 @@
       <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/path_provider_foundation/example/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/path_provider_foundation/example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/path_provider_foundation/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/cloud_firestore/pipeline_example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/cloud_firestore/pipeline_example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/cloud_firestore/pipeline_example/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:presentation/controllers/controller_imports.dart';
 import 'package:presentation/pages/auth/login_page/login_controller.dart';
 import 'package:presentation/util/base/base_page.dart';
 import 'package:presentation/util/resources/app_colors.dart';
@@ -92,11 +93,18 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 36.verticalSpace,
                 ButtonWidget(
-                  onTap: () {
+                  onTap: () async {
                     TextInput.finishAutofillContext();
                     controller.passwordController.refresh();
                     controller.emailController.refresh();
-                    controller.login(context: context, onSuccess: () => AppRouter.goToHomePage(clearStack: true));
+                    await controller.login(
+                      context: context,
+                      onSuccess: () async {
+                        await userProfileController.getUser();
+
+                        AppRouter.goToHomePage(clearStack: true);
+                      },
+                    );
                   },
                   title: 'Login',
                   textStyle: TextsStyles.titleSmall.copyWith(fontSize: 14.sp, color: Colors.white),

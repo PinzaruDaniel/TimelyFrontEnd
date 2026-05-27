@@ -23,7 +23,6 @@ bool _supportsFcm() {
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  debugPrint('Handling a background message: ${message.messageId}');
 }
 
 Future<void> _initializeFirebaseMessaging() async {
@@ -33,28 +32,19 @@ Future<void> _initializeFirebaseMessaging() async {
   await messaging.setAutoInitEnabled(true);
   await messaging.requestPermission(alert: true, badge: true, sound: true);
 
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    debugPrint('FCM message received in foreground: ${message.messageId}');
-  });
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
 
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    debugPrint('FCM message opened app: ${message.messageId}');
-  });
-
-  final initialMessage = await messaging.getInitialMessage();
-  if (initialMessage != null) {
-    debugPrint('FCM opened app from terminated: ${initialMessage.messageId}');
-  }
-
-  final token = await messaging.getToken();
-  if (token != null) {
-    debugPrint('FCM token: $token');
-  }
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {});
 }
 
 void main() async {
+  bool isSessionExpired = false;
   WidgetsFlutterBinding.ensureInitialized();
-  await initDi(onSessionExpired: () {});
+  await initDi(
+    onSessionExpired: () {
+      isSessionExpired = true;
+    },
+  );
   RootBindings().dependencies();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -65,12 +55,14 @@ void main() async {
   await userProfileController.getUser();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
-    runApp(const MyApp());
+    runApp(MyApp(isSessionExpired: isSessionExpired));
   });
 }
 
 class MyApp extends StatelessWidget with LoginSignIn {
-  const MyApp({super.key});
+  final bool isSessionExpired;
+
+  const MyApp({super.key, required this.isSessionExpired});
 
   // This widget is the root of your application.
   @override
@@ -91,7 +83,7 @@ class MyApp extends StatelessWidget with LoginSignIn {
           appBarTheme: AppBarTheme(backgroundColor: Colors.white),
           colorScheme: .fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: entryPage(userProfileController.userViewModel.value),
+        home: entryPage(userProfileController.userViewModel.value, isSessionExpired),
         // MainNavigationPage(),
       ),
     );
@@ -99,10 +91,11 @@ class MyApp extends StatelessWidget with LoginSignIn {
 }
 
 mixin LoginSignIn {
-  Widget entryPage(UserProfileViewModel? userVM) {
-    if (userVM != null) {
-      return MainNavigationPage();
-    }
-    return LoginPage();
+  Widget entryPage(UserProfileViewModel? userVM, bool isSessionExpired) {
+    return isSessionExpired
+        ? MainNavigationPage(isSessionExpired: isSessionExpired)
+        : userVM != null
+        ? MainNavigationPage()
+        : LoginPage();
   }
 }

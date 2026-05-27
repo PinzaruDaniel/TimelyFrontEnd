@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:presentation/controllers/controller_imports.dart';
 import 'package:presentation/pages/main_page/schedule_page/schedule_controller.dart';
+import 'package:presentation/util/base/base_app_bar_widget.dart';
 import 'package:presentation/util/widgets/main_circular_progress_indicator_widget.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
@@ -18,6 +19,7 @@ class SchedulePage extends StatefulWidget {
 class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMixin {
   late TabController tabController;
   final refreshController = RefreshController();
+
   ScheduleController get scheduleController => Get.find();
 
   @override
@@ -32,7 +34,7 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("My Schedule")),
+      appBar: BaseAppBarWidget(title: 'My Schedule', showBackIcon: false),
       body: SafeArea(
         child: Obx(() {
           if (scheduleController.scheduleVm.value == null) {
@@ -45,12 +47,11 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
               await scheduleController.getSchedule(userProfileController.userViewModel.value?.groupId ?? '');
               refreshController.refreshCompleted();
             },
-            header: ClassicHeader(
-            ),
+            header: ClassicHeader(),
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
@@ -66,6 +67,9 @@ class _SchedulePageState extends State<SchedulePage> with TickerProviderStateMix
                       unselectedLabelColor: Colors.grey,
                       indicator: BoxDecoration(color: AppColors.primaryCian, borderRadius: BorderRadius.circular(50)),
                       indicatorSize: TabBarIndicatorSize.tab,
+                      overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+                        return states.contains(WidgetState.focused) ? null : Colors.transparent;
+                      }),
                       tabs: const [
                         Tab(text: "MON"),
                         Tab(text: "TUE"),

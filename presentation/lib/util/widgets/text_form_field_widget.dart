@@ -14,6 +14,8 @@ class TextFieldViewItem {
   final bool isPassword;
   final TextEditingController? controller;
   final FocusNode? focusNode;
+  final int? minLines;
+  final int? maxLines;
 
   const TextFieldViewItem({
     this.controller,
@@ -25,6 +27,8 @@ class TextFieldViewItem {
     this.validator,
     this.isPassword = false,
     this.focusNode,
+    this.minLines,
+    this.maxLines = 1,
   });
 }
 
@@ -70,6 +74,8 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
       obscureText: item.isPassword ? isObscure : false,
       validator: item.validator,
       style: TextsStyles.input,
+      minLines: item.minLines,
+      maxLines: item.maxLines,
       decoration: InputDecoration(
         prefixIcon: item.prefixIcon,
         suffixIcon: item.isPassword
@@ -88,7 +94,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         hintText: item.hintText,
         labelText: item.labelText,
         isDense: true,
-        hintStyle:  TextsStyles.hint,
+        hintStyle: TextsStyles.hint,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15.r),
           borderSide: const BorderSide(color: AppColors.borderColor),
@@ -103,7 +109,7 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
         ),
       ),
       onTapOutside: (_) {
-        if(item.hintText!= 'Type a message') {
+        if (item.hintText != 'Type a message') {
           FocusManager.instance.primaryFocus?.unfocus();
         }
       },

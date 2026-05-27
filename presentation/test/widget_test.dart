@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
@@ -231,4 +232,4 @@ class _BubbelBarExampleState extends State<BubbelBarExample> {
       // floatingActionButton: FloatingActionButton(onPressed: () {}),
     );
   }
-}
+}*/

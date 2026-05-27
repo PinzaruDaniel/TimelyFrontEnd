@@ -276,7 +276,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addOffset(1, homeworkIdOffset);
         fbb.addOffset(2, subjectOffset);
         fbb.addOffset(3, descriptionOffset);
-        fbb.addInt64(4, object.dueDate.millisecondsSinceEpoch);
+        fbb.addInt64(4, object.dueDate?.millisecondsSinceEpoch);
         fbb.addOffset(5, imageUrlOffset);
         fbb.finish(fbb.endTable());
         return object.id;
@@ -284,6 +284,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
       objectFromFB: (obx.Store store, ByteData fbData) {
         final buffer = fb.BufferContext(fbData);
         final rootOffset = buffer.derefObject(0);
+        final dueDateValue = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          12,
+        );
         final homeworkIdParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 6, '');
@@ -293,9 +298,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final descriptionParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 10, '');
-        final dueDateParam = DateTime.fromMillisecondsSinceEpoch(
-          const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
-        );
+        final dueDateParam = dueDateValue == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(dueDateValue);
         final imageUrlParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGetNullable(buffer, rootOffset, 14);

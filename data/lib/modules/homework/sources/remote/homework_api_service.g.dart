@@ -20,11 +20,33 @@ class _HomeworkApiService implements HomeworkApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HomeworkApiDto> addHomework(FormData formData) async {
+  Future<HomeworkApiDto> addHomework({
+    required String groupId,
+    required String subject,
+    required String description,
+    required String dueDate,
+    File? imageFile,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final _data = FormData();
+    _data.fields.add(MapEntry('groupId', groupId));
+    _data.fields.add(MapEntry('subject', subject));
+    _data.fields.add(MapEntry('description', description));
+    _data.fields.add(MapEntry('dueDate', dueDate));
+    if (imageFile != null) {
+      _data.files.add(
+        MapEntry(
+          'image',
+          MultipartFile.fromFileSync(
+            imageFile.path,
+            filename: imageFile.path.split(Platform.pathSeparator).last,
+          ),
+        ),
+      );
+    }
     final _options = _setStreamType<HomeworkApiDto>(
       Options(
             method: 'POST',

@@ -1,13 +1,20 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
-
 class CreateHomeworkRequest {
   final String groupId;
   final String subject;
   final String description;
-  final String dueDate;
+  final String dueDate; // raw DateTime string passed in
   final File? imageFile;
+
+  // Add this getter
+  String get dueDateFormatted {
+    final parsed = DateTime.tryParse(dueDate);
+    if (parsed == null) return dueDate;
+    return '${parsed.year.toString().padLeft(4, '0')}-'
+        '${parsed.month.toString().padLeft(2, '0')}-'
+        '${parsed.day.toString().padLeft(2, '0')}';
+  }
 
   CreateHomeworkRequest({
     required this.groupId,
@@ -16,16 +23,4 @@ class CreateHomeworkRequest {
     required this.dueDate,
     this.imageFile,
   });
-
-  Future<FormData> toFormData() async {
-    return FormData.fromMap({
-      'groupId': groupId,
-      'subject': subject,
-      'description': description,
-      'dueDate': dueDate,
-
-      if (imageFile != null)
-        'image': await MultipartFile.fromFile(imageFile!.path, filename: imageFile!.path.split('/').last),
-    });
-  }
 }

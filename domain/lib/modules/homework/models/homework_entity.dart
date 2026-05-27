@@ -6,7 +6,7 @@ abstract class HomeworkEntity with _$HomeworkEntity {
     required String homeworkId,
     required String subject,
     required String description,
-    required DateTime dueDate,
-     String? imageUrl,
-  })=_HomeworkEntity;
+    DateTime? dueDate,
+    String? imageUrl,
+  }) = _HomeworkEntity;
 }

@@ -12,7 +12,7 @@ class HomeworkBox {
   String description;
 
   @Property(type: PropertyType.date)
-  DateTime dueDate;
+  DateTime? dueDate;
 
   String? imageUrl;
 
@@ -20,7 +20,7 @@ class HomeworkBox {
     required this.homeworkId,
     required this.subject,
     required this.description,
-    required this.dueDate,
+    this.dueDate,
     this.imageUrl,
   });
 }

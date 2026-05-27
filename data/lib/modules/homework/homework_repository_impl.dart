@@ -17,13 +17,16 @@ class HomeworkRepositoryImpl implements HomeworkRepository {
   @override
   Future<Either<Failure, HomeworkEntity>> addHomework(CreateHomeworkRequest request) async {
     try {
-      final response = await apiService.addHomework(await request.toFormData());
+      final response = await apiService.addHomework(
+        groupId: request.groupId,
+        subject: request.subject,
+        description: request.description,
+        dueDate: request.dueDateFormatted, // see below
+        imageFile: request.imageFile,
+      );
       return Right(response.toEntity);
     } catch (e, stackTrace) {
-      print('Homework POST API failed: $e  ${e.runtimeType}');
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
+      if (e is DioException) return Left(Failure.dio(e));
       return Left(Failure.error(e, stackTrace));
     }
   }

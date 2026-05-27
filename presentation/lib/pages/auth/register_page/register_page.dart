@@ -1,8 +1,8 @@
 import 'package:common/constants/app_constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:presentation/pages/auth/register_page/register_controller.dart';
 import 'package:presentation/util/base/base_app_bar_widget.dart';
@@ -10,6 +10,7 @@ import 'package:presentation/util/base/base_page.dart';
 import 'package:presentation/util/resources/app_colors.dart';
 import 'package:presentation/util/widgets/text_form_field_widget.dart';
 
+import '../../../controllers/controller_imports.dart';
 import '../../../util/resources/texts_styles.dart';
 import '../../../util/routing/app_router.dart';
 import '../../../util/widgets/button_widget.dart';
@@ -80,9 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final selected = await showModalBottomSheet<String>(
       context: context,
       backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20.r))),
       builder: (context) {
         return SafeArea(
           child: SizedBox(
@@ -111,7 +110,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     onSelectedItemChanged: (index) {
                       selectedIndex = index;
                     },
-                    children: _groups.map((group) => Center(child: Text(group, style: TextsStyles.titleMedium,))).toList(),
+                    children: _groups
+                        .map((group) => Center(child: Text(group, style: TextsStyles.titleMedium)))
+                        .toList(),
                   ),
                 ),
               ],
@@ -137,7 +138,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      appBar: const BaseAppBarWidget(),
+      appBar: const BaseAppBarWidget(title: 'Register page',),
       pendingIds: [AppConstants.register],
       builder: (context) {
         return SingleChildScrollView(
@@ -216,11 +217,15 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 36.verticalSpace,
                 ButtonWidget(
-                  onTap: () {
+                  onTap: () async {
                     TextInput.finishAutofillContext();
-                    controller.register(
+                    await controller.register(
                       context: context,
-                      onSuccess: () => AppRouter.goToHomePage(clearStack: true),
+                      onSuccess: () async {
+                        await userProfileController.getUser();
+
+                        AppRouter.goToHomePage(clearStack: true);
+                      },
                     );
                   },
                   title: 'Create account',
