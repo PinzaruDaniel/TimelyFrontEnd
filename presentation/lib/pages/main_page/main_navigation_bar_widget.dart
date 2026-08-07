@@ -18,15 +18,14 @@ import '../../util/resources/app_colors.dart';
 import 'homework_page/homework_page.dart';
 
 class MainNavigationPage extends StatefulWidget {
-  final bool isSessionExpired;
-
-  const MainNavigationPage({super.key, this.isSessionExpired = false});
+  const MainNavigationPage({super.key});
 
   @override
   State<MainNavigationPage> createState() => _MainNavigationPageState();
 }
 
-class _MainNavigationPageState extends State<MainNavigationPage> with WidgetsBindingObserver {
+class _MainNavigationPageState extends State<MainNavigationPage>
+    with WidgetsBindingObserver {
   final controller = PageController();
   int _currentIndex = 0;
   late final TextEditingController subjectController;
@@ -47,11 +46,6 @@ class _MainNavigationPageState extends State<MainNavigationPage> with WidgetsBin
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.isSessionExpired) {
-        AppRouter.showSessionExpiredDialog(context: context);
-      }
-    });
     subjectController = TextEditingController();
     descriptionController = TextEditingController();
     FocusManager.instance.addListener(_onFocusChange);
@@ -59,13 +53,21 @@ class _MainNavigationPageState extends State<MainNavigationPage> with WidgetsBin
 
   void _onFocusChange() {
     final primaryFocus = FocusManager.instance.primaryFocus;
-    final hasFocus = primaryFocus != null && primaryFocus is! FocusScopeNode && primaryFocus.context != null;
+    final hasFocus =
+        primaryFocus != null &&
+        primaryFocus is! FocusScopeNode &&
+        primaryFocus.context != null;
     if (_isFocused != hasFocus) {
       setState(() => _isFocused = hasFocus);
     }
   }
 
-  final List<Widget> _pages = [const SchedulePage(), const HomeworkPage(), const ChatPage(), const ProfilePage()];
+  final List<Widget> _pages = [
+    const SchedulePage(),
+    const HomeworkPage(),
+    const ChatPage(),
+    const ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +96,13 @@ class _MainNavigationPageState extends State<MainNavigationPage> with WidgetsBin
         ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
-            boxShadow: [BoxShadow(color: Colors.black.withAlpha(20), blurRadius: 10, offset: const Offset(0, -2))],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(20),
+                blurRadius: 10,
+                offset: const Offset(0, -2),
+              ),
+            ],
           ),
           child: StylishBottomBar(
             items: [
@@ -156,14 +164,20 @@ class _MainNavigationPageState extends State<MainNavigationPage> with WidgetsBin
                         8.verticalSpace,
                         Row(
                           children: [
-                            Icon(Icons.school_rounded, color: AppColors.primaryCian),
+                            Icon(
+                              Icons.school_rounded,
+                              color: AppColors.primaryCian,
+                            ),
                             4.horizontalSpace,
                             Text('Subject', style: TextsStyles.titleSmall),
                           ],
                         ),
                         4.verticalSpace,
                         TextFormFieldWidget(
-                          item: TextFieldViewItem(hintText: 'ex: Maths, Info, Chimie', controller: subjectController),
+                          item: TextFieldViewItem(
+                            hintText: 'ex: Maths, Info, Chimie',
+                            controller: subjectController,
+                          ),
                         ),
                         16.verticalSpace,
                         DueDateRowWidget(
@@ -174,7 +188,10 @@ class _MainNavigationPageState extends State<MainNavigationPage> with WidgetsBin
                         8.verticalSpace,
                         Row(
                           children: [
-                            Icon(Icons.list_alt_rounded, color: AppColors.primaryCian),
+                            Icon(
+                              Icons.list_alt_rounded,
+                              color: AppColors.primaryCian,
+                            ),
                             4.horizontalSpace,
                             Text('Description', style: TextsStyles.titleSmall),
                           ],
@@ -182,7 +199,8 @@ class _MainNavigationPageState extends State<MainNavigationPage> with WidgetsBin
                         4.verticalSpace,
                         TextFormFieldWidget(
                           item: TextFieldViewItem(
-                            hintText: 'ex: Exercise page 12, ex: Learn the lesson',
+                            hintText:
+                                'ex: Exercise page 12, ex: Learn the lesson',
                             controller: descriptionController,
                             maxLines: 3,
                             minLines: 2,
@@ -209,12 +227,14 @@ class _MainNavigationPageState extends State<MainNavigationPage> with WidgetsBin
                 ),
                 backgroundColor: AppColors.primaryCian,
                 shape: const CircleBorder(),
-                child: const Icon(Icons.add_rounded, color: Colors.white, size: 42),
+                child: const Icon(
+                  Icons.add_rounded,
+                  color: Colors.white,
+                  size: 42,
+                ),
               ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
 }
-
-

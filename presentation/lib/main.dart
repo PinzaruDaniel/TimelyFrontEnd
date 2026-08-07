@@ -13,6 +13,7 @@ import 'package:presentation/controllers/binding/root_bindings_controllers.dart'
 import 'package:presentation/pages/auth/login_page/login_page.dart';
 import 'package:presentation/pages/main_page/main_navigation_bar_widget.dart';
 import 'package:presentation/util/resources/app_colors.dart';
+import 'package:presentation/util/routing/app_router.dart';
 import 'package:presentation/view_models/user_profile_view_model.dart';
 
 import 'controllers/controller_imports.dart';
@@ -38,11 +39,15 @@ Future<void> _initializeFirebaseMessaging() async {
 }
 
 void main() async {
-  bool isSessionExpired = false;
   WidgetsFlutterBinding.ensureInitialized();
   await initDi(
     onSessionExpired: () {
-      isSessionExpired = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final context = Get.context;
+        if (context != null) {
+          AppRouter.showSessionExpiredDialog(context: context);
+        }
+      });
     },
   );
   RootBindings().dependencies();
@@ -54,15 +59,16 @@ void main() async {
   await _initializeFirebaseMessaging();
   await userProfileController.getUser();
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
-    runApp(MyApp(isSessionExpired: isSessionExpired));
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(const MyApp());
   });
 }
 
 class MyApp extends StatelessWidget with LoginSignIn {
-  final bool isSessionExpired;
-
-  const MyApp({super.key, required this.isSessionExpired});
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -83,7 +89,7 @@ class MyApp extends StatelessWidget with LoginSignIn {
           appBarTheme: AppBarTheme(backgroundColor: Colors.white),
           colorScheme: .fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: entryPage(userProfileController.userViewModel.value, isSessionExpired),
+        home: entryPage(userProfileController.userViewModel.value),
         // MainNavigationPage(),
       ),
     );
@@ -91,11 +97,7 @@ class MyApp extends StatelessWidget with LoginSignIn {
 }
 
 mixin LoginSignIn {
-  Widget entryPage(UserProfileViewModel? userVM, bool isSessionExpired) {
-    return isSessionExpired
-        ? MainNavigationPage(isSessionExpired: isSessionExpired)
-        : userVM != null
-        ? MainNavigationPage()
-        : LoginPage();
+  Widget entryPage(UserProfileViewModel? userVM) {
+    return userVM != null ? MainNavigationPage() : LoginPage();
   }
 }

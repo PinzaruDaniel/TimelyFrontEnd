@@ -1,7 +1,10 @@
-import 'package:di/data_injection_container.dart';
-import 'package:di/domain_injection_container.dart';
+import 'package:common/constants/session_expired_callback.dart';
 
-Future<void> initDi({required Function() onSessionExpired}) async {
-  await intiData(onSessionExpired: onSessionExpired);
-  await initDomain();
+import 'injector.dart';
+
+export 'injector.dart' show getIt;
+
+Future<void> initDi({required void Function() onSessionExpired}) async {
+  await configureDependencies();
+  getIt<SessionExpiredCallback>().callback = onSessionExpired;
 }

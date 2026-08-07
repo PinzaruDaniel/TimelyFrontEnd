@@ -35,22 +35,28 @@ class AuthLocalSourceImpl implements AuthLocalSource {
   @override
   Future<void> insertAccessToken(String accessToken) async {
     final existingToken = authTokenBox.get(1);
-    consoleLog('refresh token when inserting AccessToken: ${existingToken?.refreshToken?? 'nothing'}');
+    consoleLog(
+      'refresh token when inserting AccessToken: ${existingToken?.refreshToken ?? 'nothing'}',
+    );
     if (existingToken != null) {
       existingToken.accessToken = accessToken;
       await authTokenBox.putAsync(existingToken);
     } else {
-      await authTokenBox.putAsync(AuthTokenBox(id: 1, accessToken: accessToken));
+      await authTokenBox.putAsync(
+        AuthTokenBox(id: 1, accessToken: accessToken),
+      );
     }
   }
 
   @override
   Future<void> insertTokens(String accessToken, String refreshToken) async {
-    authTokenBox.putAsync(AuthTokenBox(id: 1, accessToken: accessToken, refreshToken: refreshToken));
+    await authTokenBox.putAsync(
+      AuthTokenBox(id: 1, accessToken: accessToken, refreshToken: refreshToken),
+    );
   }
 
   @override
-  Future<void> deleteTokens()async{
+  Future<void> deleteTokens() async {
     authTokenBox.removeAll();
   }
 }

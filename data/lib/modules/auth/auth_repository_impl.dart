@@ -16,9 +16,15 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.apiService, required this.localSource});
 
   @override
-  Future<Either<Failure, AuthTokensEntity>> login(String email, String password) async {
+  Future<Either<Failure, AuthTokensEntity>> login(
+    String email,
+    String password,
+  ) async {
     try {
-      final response = await apiService.login({"email": email, "password": password});
+      final response = await apiService.login({
+        "email": email,
+        "password": password,
+      });
 
       print(response.toEntity);
       return Right(response.toEntity);
@@ -32,7 +38,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> insertTokens(String accessToken, String refreshToken) async {
-    localSource.insertTokens(accessToken, refreshToken);
+    await localSource.insertTokens(accessToken, refreshToken);
     consoleLog('inserted Tokens: $accessToken $refreshToken');
   }
 
@@ -42,9 +48,19 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, AuthTokensEntity>> register(String name, String email, String password, String group) async {
+  Future<Either<Failure, AuthTokensEntity>> register(
+    String name,
+    String email,
+    String password,
+    String group,
+  ) async {
     try {
-      final response = await apiService.register({"email": email, "password": password, "name": name, "group": group});
+      final response = await apiService.register({
+        "email": email,
+        "password": password,
+        "name": name,
+        "group": group,
+      });
       return Right(response.toEntity);
     } catch (e, stackTrace) {
       if (e is DioException) {
@@ -55,9 +71,15 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, AuthTokensEntity>> resetPassword(String email, String password) async {
+  Future<Either<Failure, AuthTokensEntity>> resetPassword(
+    String email,
+    String password,
+  ) async {
     try {
-      final response = await apiService.resetPassword({"email": email, "new-password": password});
+      final response = await apiService.resetPassword({
+        "email": email,
+        "new-password": password,
+      });
       return Right(response.toEntity);
     } catch (e, stackTrace) {
       if (e is DioException) {
