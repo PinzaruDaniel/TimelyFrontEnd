@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:flutter_liquid_glass_kit/flutter_liquid_glass_kit.dart';
+import 'package:get/get.dart';
 import 'package:keyboard_detection/keyboard_detection.dart';
 import 'package:presentation/controllers/controller_imports.dart';
 import 'package:presentation/pages/main_page/chat_page/chat_page.dart';
+import 'package:presentation/pages/main_page/homework_page/homework_page.dart';
 import 'package:presentation/pages/main_page/profile_page/profile_page.dart';
 import 'package:presentation/pages/main_page/schedule_page/schedule_page.dart';
 import 'package:presentation/util/base/base_app_dialog.dart';
-import 'package:presentation/util/resources/texts_styles.dart';
+import 'package:presentation/util/resources/app_colors.dart';
 import 'package:presentation/util/routing/app_router.dart';
-import 'package:presentation/util/widgets/due_date_row_widget.dart';
-import 'package:presentation/util/widgets/text_form_field_widget.dart';
-import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
-
-import '../../util/resources/app_colors.dart';
-import 'homework_page/homework_page.dart';
+import 'package:smart_form_fields/smart_form_fields.dart';
 
 class MainNavigationPage extends StatefulWidget {
   const MainNavigationPage({super.key});
@@ -24,31 +19,46 @@ class MainNavigationPage extends StatefulWidget {
   State<MainNavigationPage> createState() => _MainNavigationPageState();
 }
 
-class _MainNavigationPageState extends State<MainNavigationPage>
-    with WidgetsBindingObserver {
-  final controller = PageController();
+class _MainNavigationPageState extends State<MainNavigationPage> {
+  static const _glassSettings = LiquidGlassSettings(
+    tintColor: Colors.white,
+    tintOpacity: 0.78,
+    blurSigma: 24,
+    androidBlurSigma: 8,
+    borderOpacity: 0.65,
+    shadowOpacity: 0.10,
+    shadowBlurRadius: 18,
+  );
+
+  final PageController _pageController = PageController();
+  final SmartFormKey _homeworkFormKey = SmartFormKey();
+  final TextEditingController _subjectController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final GlobalKey<HomeworkPageState> _homeworkPageKey =
+      GlobalKey<HomeworkPageState>();
+  late final List<Widget> _pages;
   int _currentIndex = 0;
-  late final TextEditingController subjectController;
-  late final TextEditingController descriptionController;
-  final homeworkPageState = GlobalKey<HomeworkPageState>();
   bool _isFocused = false;
-  String? dueDate;
-
-  @override
-  void dispose() {
-    subjectController.dispose();
-    descriptionController.dispose();
-    FocusManager.instance.removeListener(_onFocusChange);
-
-    super.dispose();
-  }
 
   @override
   void initState() {
     super.initState();
-    subjectController = TextEditingController();
-    descriptionController = TextEditingController();
+    _pages = [
+      const SchedulePage(),
+      HomeworkPage(key: _homeworkPageKey),
+      const ChatPage(),
+      const ProfilePage(),
+    ];
     FocusManager.instance.addListener(_onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _subjectController.dispose();
+    _descriptionController.dispose();
+    FocusManager.instance.removeListener(_onFocusChange);
+    super.dispose();
   }
 
   void _onFocusChange() {
@@ -57,183 +67,217 @@ class _MainNavigationPageState extends State<MainNavigationPage>
         primaryFocus != null &&
         primaryFocus is! FocusScopeNode &&
         primaryFocus.context != null;
-    if (_isFocused != hasFocus) {
+    if (_isFocused != hasFocus && mounted) {
       setState(() => _isFocused = hasFocus);
     }
   }
 
-  final List<Widget> _pages = [
-    const SchedulePage(),
-    const HomeworkPage(),
-    const ChatPage(),
-    const ProfilePage(),
-  ];
+  InputDecoration _fieldDecoration({
+    required String label,
+    required String hint,
+    required IconData icon,
+  }) {
+    return InputDecoration(
+      labelText: label,
+      hintText: hint,
+      prefixIcon: Icon(icon, color: AppColors.primaryCian),
+      filled: true,
+      fillColor: AppColors.background,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide.none,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: const BorderSide(color: AppColors.borderColor),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: const BorderSide(color: AppColors.primaryCian, width: 1.5),
+      ),
+    );
+  }
+
+  Future<void> _showAddHomeworkDialog() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    await AppRouter.showBaseDialog(
+      context: context,
+      barrierDismissible: true,
+      dialog: BaseAppDialog(
+        title: 'Add homework',
+        titleIcon: Icons.auto_stories_rounded,
+        confirmLabel: 'Add homework',
+        content: SmartForm(
+          key: _homeworkFormKey,
+          autovalidateMode: AutovalidateMode.onUnfocus,
+          errorAnimation: SmartErrorAnimation.slide,
+          children: [
+            SmartTextField(
+              name: 'subject',
+              controller: _subjectController,
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.next,
+              validators: [
+                SmartValidators.required(message: 'Add a subject.'),
+                SmartValidators.minLength(
+                  2,
+                  message: 'Use at least 2 characters.',
+                ),
+              ],
+              decoration: _fieldDecoration(
+                label: 'Subject',
+                hint: 'Maths, chemistry, history…',
+                icon: Icons.school_rounded,
+              ),
+            ),
+            const SizedBox(height: 14),
+            SmartDateField(
+              name: 'dueDate',
+              required: true,
+              requiredMessage: 'Choose a due date.',
+              firstDate: DateTime.now(),
+              lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
+              decoration: _fieldDecoration(
+                label: 'Due date',
+                hint: 'Choose date',
+                icon: Icons.event_rounded,
+              ),
+            ),
+            const SizedBox(height: 14),
+            SmartTextField(
+              name: 'description',
+              controller: _descriptionController,
+              minLines: 3,
+              maxLines: 5,
+              keyboardType: TextInputType.multiline,
+              textCapitalization: TextCapitalization.sentences,
+              validators: [
+                SmartValidators.required(message: 'Add homework details.'),
+              ],
+              decoration: _fieldDecoration(
+                label: 'Details',
+                hint: 'Exercises, pages, notes…',
+                icon: Icons.notes_rounded,
+              ),
+            ),
+          ],
+        ),
+        onCancel: Get.back,
+        onConfirm: () async {
+          final result = await _homeworkFormKey.validate();
+          if (!result.isValid) return;
+
+          final dueDate = result.valueOf<DateTime>('dueDate')!;
+          await mainAppController.addHomework(
+            subject: result.text('subject').trim(),
+            dueDate: dueDate.toIso8601String(),
+            description: result.text('description').trim(),
+          );
+
+          _homeworkFormKey.reset();
+          if (mounted) Get.back();
+          _homeworkPageKey.currentState?.afterAddHomeworks();
+        },
+      ),
+    );
+  }
+
+  void _selectPage(int index) {
+    if (index == _currentIndex) return;
+    FocusManager.instance.primaryFocus?.unfocus();
+    _pageController.jumpToPage(index);
+  }
 
   @override
   Widget build(BuildContext context) {
     return KeyboardDetection(
       controller: KeyboardDetectionController(
         onChanged: (value) {
-          if (value == .hiding) {
+          if (value == KeyboardState.hiding) {
             FocusManager.instance.primaryFocus?.unfocus();
           }
         },
       ),
       child: Scaffold(
         extendBody: true,
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: PageView(
-            controller: controller,
-            onPageChanged: (index) {
-              setState(() {
-                _currentIndex = index;
-                FocusManager.instance.primaryFocus?.unfocus();
-              });
-            },
-            children: _pages,
-          ),
+        backgroundColor: AppColors.background,
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (index) => setState(() => _currentIndex = index),
+          children: _pages,
         ),
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(20),
-                blurRadius: 10,
-                offset: const Offset(0, -2),
-              ),
-            ],
-          ),
-          child: StylishBottomBar(
-            items: [
-              BottomBarItem(
-                icon: const Icon(Icons.house_outlined),
-                selectedIcon: const Icon(Icons.house_rounded),
-                unSelectedColor: AppColors.grey,
-                selectedColor: AppColors.primaryBlue,
-                title: Text('Home'),
-              ),
-              BottomBarItem(
-                icon: Icon(Icons.calendar_today_rounded),
-                selectedIcon: Icon(Icons.calendar_month),
-                unSelectedColor: AppColors.grey,
-                selectedColor: AppColors.primaryBlue,
-                title: Text('Homework'),
-              ),
-              BottomBarItem(
-                icon: Icon(Icons.chat_outlined),
-                selectedIcon: Icon(Icons.chat_rounded),
-                unSelectedColor: AppColors.grey,
-                selectedColor: AppColors.primaryBlue,
-                title: Text('Chat'),
-              ),
-              BottomBarItem(
-                icon: Icon(Icons.person_outline_rounded),
-                selectedIcon: Icon(Icons.person_rounded),
-                unSelectedColor: AppColors.grey,
-                selectedColor: AppColors.primaryBlue,
-                title: Text('Profile'),
-              ),
-            ],
-            option: AnimatedBarOptions(iconStyle: IconStyle.animated),
-            currentIndex: _currentIndex,
-            fabLocation: StylishBarFabLocation.center,
-            hasNotch: true,
-            notchStyle: NotchStyle.circle,
-            backgroundColor: Colors.white,
-            onTap: (index) {
-              if (index == _currentIndex) return;
-              controller.jumpToPage(index);
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-          ),
-        ),
-        floatingActionButton: _isFocused
+        bottomNavigationBar: _isFocused
             ? null
-            : FloatingActionButton(
-                onPressed: () => AppRouter.showBaseDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  dialog: BaseAppDialog(
-                    title: 'Add Homework',
-                    titleIcon: Icons.edit_rounded,
-                    content: Column(
-                      children: [
-                        8.verticalSpace,
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.school_rounded,
-                              color: AppColors.primaryCian,
-                            ),
-                            4.horizontalSpace,
-                            Text('Subject', style: TextsStyles.titleSmall),
-                          ],
+            : SafeArea(
+                minimum: const EdgeInsets.fromLTRB(14, 8, 14, 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Semantics(
+                      label: 'Add homework',
+                      button: true,
+                      child: LiquidGlassButton(
+                        settings: _glassSettings.copyWith(
+                          tintColor: AppColors.primaryCian,
+                          tintOpacity: 0.92,
                         ),
-                        4.verticalSpace,
-                        TextFormFieldWidget(
-                          item: TextFieldViewItem(
-                            hintText: 'ex: Maths, Info, Chimie',
-                            controller: subjectController,
-                          ),
+                        borderRadius: BorderRadius.circular(28),
+                        padding: const EdgeInsets.all(17),
+                        onPressed: _showAddHomeworkDialog,
+                        child: const Icon(
+                          Icons.add_rounded,
+                          color: Colors.white,
+                          size: 28,
                         ),
-                        16.verticalSpace,
-                        DueDateRowWidget(
-                          onDateSelected: (value) {
-                            dueDate = value.toString();
-                          },
-                        ),
-                        8.verticalSpace,
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.list_alt_rounded,
-                              color: AppColors.primaryCian,
-                            ),
-                            4.horizontalSpace,
-                            Text('Description', style: TextsStyles.titleSmall),
-                          ],
-                        ),
-                        4.verticalSpace,
-                        TextFormFieldWidget(
-                          item: TextFieldViewItem(
-                            hintText:
-                                'ex: Exercise page 12, ex: Learn the lesson',
-                            controller: descriptionController,
-                            maxLines: 3,
-                            minLines: 2,
-                            keyboardType: .multiline,
-                          ),
-                        ),
-                        /*HomeworkImagePickerWidget(
-                          onImagePicked: (file) => _pickedImage = file,
-                        ),*/
-                      ],
+                      ),
                     ),
-                    onCancel: () => Get.back(),
-                    onConfirm: () async {
-                      await mainAppController.addHomework(
-                        subject: subjectController.text,
-                        dueDate: dueDate ?? DateTime.now().toIso8601String(),
-                        description: descriptionController.text,
-                      );
-
-                      Get.back();
-                      homeworkPageState.currentState?.afterAddHomeworks();
-                    },
-                  ),
-                ),
-                backgroundColor: AppColors.primaryCian,
-                shape: const CircleBorder(),
-                child: const Icon(
-                  Icons.add_rounded,
-                  color: Colors.white,
-                  size: 42,
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: LiquidGlassNavBar(
+                        settings: _glassSettings,
+                        currentIndex: _currentIndex,
+                        onTap: _selectPage,
+                        height: 62,
+                        activeColor: AppColors.primaryBlue,
+                        inactiveColor: AppColors.textSecondary,
+                        indicatorColor: AppColors.primaryBlue.withAlpha(26),
+                        androidAnimationStyle:
+                            LiquidGlassNavBarAnimationStyle.smooth,
+                        items: const [
+                          LiquidGlassNavItem(
+                            icon: Icon(Icons.home_outlined),
+                            activeIcon: Icon(Icons.home_rounded),
+                            label: 'Home',
+                            iosSystemImage: 'house',
+                            iosSelectedSystemImage: 'house.fill',
+                          ),
+                          LiquidGlassNavItem(
+                            icon: Icon(Icons.menu_book_outlined),
+                            activeIcon: Icon(Icons.menu_book_rounded),
+                            label: 'Work',
+                            iosSystemImage: 'book.closed',
+                            iosSelectedSystemImage: 'book.closed.fill',
+                          ),
+                          LiquidGlassNavItem(
+                            icon: Icon(Icons.chat_bubble_outline_rounded),
+                            activeIcon: Icon(Icons.chat_bubble_rounded),
+                            label: 'Chat',
+                            iosSystemImage: 'bubble.left',
+                            iosSelectedSystemImage: 'bubble.left.fill',
+                          ),
+                          LiquidGlassNavItem(
+                            icon: Icon(Icons.person_outline_rounded),
+                            activeIcon: Icon(Icons.person_rounded),
+                            label: 'Profile',
+                            iosSystemImage: 'person',
+                            iosSelectedSystemImage: 'person.fill',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
