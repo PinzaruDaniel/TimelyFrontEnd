@@ -29,7 +29,7 @@ class _UserApiService implements UserApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/User/me',
+            '/profile/',
             queryParameters: queryParameters,
             data: _data,
           )

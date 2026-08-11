@@ -8,10 +8,10 @@ part 'auth_api_service.g.dart';
 abstract class AuthApiService {
   factory AuthApiService(Dio dio, {String baseUrl}) = _AuthApiService;
 
-  @POST('/api/Auth/refresh')
+  @POST('/refresh/')
   Future<AuthTokensApiDto> refresh(@Body() Map<String, dynamic> body);
 
-  @POST('/api/Auth/login')
+  @POST('/login/')
   Future<AuthTokensApiDto> login(@Body() Map<String, dynamic> body);
 
   @POST('/api/Auth/register')

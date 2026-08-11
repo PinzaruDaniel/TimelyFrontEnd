@@ -93,7 +93,7 @@ abstract class DataModule {
       ),
       onRefresh: (refreshToken) async {
         final response = await authApiService.refresh({
-          'refreshToken': refreshToken,
+          'refresh_token': refreshToken,
         });
         final accessToken = response.accessToken;
         if (accessToken == null || accessToken.isEmpty) return null;

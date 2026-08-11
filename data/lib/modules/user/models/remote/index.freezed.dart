@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserProfileApiDto {
 
- String get id; String get fullName; String get email; String get groupId; String get groupName;
+ String get id; String get fullName; String get email; String get groupId; String get groupName; String get message;
 /// Create a copy of UserProfileApiDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserProfileApiDtoCopyWith<UserProfileApiDto> get copyWith => _$UserProfileApiDt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfileApiDto&&(identical(other.id, id) || other.id == id)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.groupName, groupName) || other.groupName == groupName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfileApiDto&&(identical(other.id, id) || other.id == id)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.groupName, groupName) || other.groupName == groupName)&&(identical(other.message, message) || other.message == message));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,fullName,email,groupId,groupName);
+int get hashCode => Object.hash(runtimeType,id,fullName,email,groupId,groupName,message);
 
 @override
 String toString() {
-  return 'UserProfileApiDto(id: $id, fullName: $fullName, email: $email, groupId: $groupId, groupName: $groupName)';
+  return 'UserProfileApiDto(id: $id, fullName: $fullName, email: $email, groupId: $groupId, groupName: $groupName, message: $message)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserProfileApiDtoCopyWith<$Res>  {
   factory $UserProfileApiDtoCopyWith(UserProfileApiDto value, $Res Function(UserProfileApiDto) _then) = _$UserProfileApiDtoCopyWithImpl;
 @useResult
 $Res call({
- String id, String fullName, String email, String groupId, String groupName
+ String id, String fullName, String email, String groupId, String groupName, String message
 });
 
 
@@ -65,13 +65,14 @@ class _$UserProfileApiDtoCopyWithImpl<$Res>
 
 /// Create a copy of UserProfileApiDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? fullName = null,Object? email = null,Object? groupId = null,Object? groupName = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? fullName = null,Object? email = null,Object? groupId = null,Object? groupName = null,Object? message = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,groupId: null == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
 as String,groupName: null == groupName ? _self.groupName : groupName // ignore: cast_nullable_to_non_nullable
+as String,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String fullName,  String email,  String groupId,  String groupName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String fullName,  String email,  String groupId,  String groupName,  String message)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserProfileApiDto() when $default != null:
-return $default(_that.id,_that.fullName,_that.email,_that.groupId,_that.groupName);case _:
+return $default(_that.id,_that.fullName,_that.email,_that.groupId,_that.groupName,_that.message);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.id,_that.fullName,_that.email,_that.groupId,_that.groupNam
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String fullName,  String email,  String groupId,  String groupName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String fullName,  String email,  String groupId,  String groupName,  String message)  $default,) {final _that = this;
 switch (_that) {
 case _UserProfileApiDto():
-return $default(_that.id,_that.fullName,_that.email,_that.groupId,_that.groupName);case _:
+return $default(_that.id,_that.fullName,_that.email,_that.groupId,_that.groupName,_that.message);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.id,_that.fullName,_that.email,_that.groupId,_that.groupNam
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String fullName,  String email,  String groupId,  String groupName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String fullName,  String email,  String groupId,  String groupName,  String message)?  $default,) {final _that = this;
 switch (_that) {
 case _UserProfileApiDto() when $default != null:
-return $default(_that.id,_that.fullName,_that.email,_that.groupId,_that.groupName);case _:
+return $default(_that.id,_that.fullName,_that.email,_that.groupId,_that.groupName,_that.message);case _:
   return null;
 
 }
@@ -213,14 +214,15 @@ return $default(_that.id,_that.fullName,_that.email,_that.groupId,_that.groupNam
 @JsonSerializable()
 
 class _UserProfileApiDto implements UserProfileApiDto {
-   _UserProfileApiDto({required this.id, required this.fullName, required this.email, required this.groupId, required this.groupName});
+   _UserProfileApiDto({this.id = '', this.fullName = '', this.email = '', this.groupId = '', this.groupName = '', this.message = ''});
   factory _UserProfileApiDto.fromJson(Map<String, dynamic> json) => _$UserProfileApiDtoFromJson(json);
 
-@override final  String id;
-@override final  String fullName;
-@override final  String email;
-@override final  String groupId;
-@override final  String groupName;
+@override@JsonKey() final  String id;
+@override@JsonKey() final  String fullName;
+@override@JsonKey() final  String email;
+@override@JsonKey() final  String groupId;
+@override@JsonKey() final  String groupName;
+@override@JsonKey() final  String message;
 
 /// Create a copy of UserProfileApiDto
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfileApiDto&&(identical(other.id, id) || other.id == id)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.groupName, groupName) || other.groupName == groupName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfileApiDto&&(identical(other.id, id) || other.id == id)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.groupName, groupName) || other.groupName == groupName)&&(identical(other.message, message) || other.message == message));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,fullName,email,groupId,groupName);
+int get hashCode => Object.hash(runtimeType,id,fullName,email,groupId,groupName,message);
 
 @override
 String toString() {
-  return 'UserProfileApiDto(id: $id, fullName: $fullName, email: $email, groupId: $groupId, groupName: $groupName)';
+  return 'UserProfileApiDto(id: $id, fullName: $fullName, email: $email, groupId: $groupId, groupName: $groupName, message: $message)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$UserProfileApiDtoCopyWith<$Res> implements $UserProfileAp
   factory _$UserProfileApiDtoCopyWith(_UserProfileApiDto value, $Res Function(_UserProfileApiDto) _then) = __$UserProfileApiDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String fullName, String email, String groupId, String groupName
+ String id, String fullName, String email, String groupId, String groupName, String message
 });
 
 
@@ -272,13 +274,14 @@ class __$UserProfileApiDtoCopyWithImpl<$Res>
 
 /// Create a copy of UserProfileApiDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? fullName = null,Object? email = null,Object? groupId = null,Object? groupName = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? fullName = null,Object? email = null,Object? groupId = null,Object? groupName = null,Object? message = null,}) {
   return _then(_UserProfileApiDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,fullName: null == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,groupId: null == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
 as String,groupName: null == groupName ? _self.groupName : groupName // ignore: cast_nullable_to_non_nullable
+as String,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

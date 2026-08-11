@@ -15,8 +15,7 @@ dependencies:
     path: ../data
   common:
     path: ../common
-  refresh_interceptor:
-    path: "../../../personal projects/refresh_interceptor"
+  refresh_interceptor: ^0.2.0
   dio: ^5.8.0+1
   get_it: ^9.2.1
   injectable: ^3.0.0

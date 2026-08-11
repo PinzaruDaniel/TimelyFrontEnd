@@ -6,11 +6,13 @@ part 'user_api_service.g.dart';
 
 @RestApi(baseUrl: '')
 abstract class UserApiService {
-  factory UserApiService(Dio dio ) = _UserApiService;
+  factory UserApiService(Dio dio) = _UserApiService;
 
-  @GET('/api/User/me')
+  @GET('/profile/')
   Future<UserProfileApiDto> getMyProfile();
 
   @GET('/api/User/group/{groupId}')
-  Future<List<UserProfileApiDto>> getUsersByGroup(@Path('groupId') String groupId);
+  Future<List<UserProfileApiDto>> getUsersByGroup(
+    @Path('groupId') String groupId,
+  );
 }

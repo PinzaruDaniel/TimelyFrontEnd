@@ -3,11 +3,13 @@ part of 'index.dart';
 @freezed
 abstract class UserProfileApiDto with _$UserProfileApiDto {
   factory UserProfileApiDto({
-    required String id,
-    required String fullName,
-    required String email,
-    required String groupId,
-    required String groupName,
+    @Default('') String id,
+    @Default('') String fullName,
+    @Default('') String email,
+    @Default('') String groupId,
+    @Default('') String groupName,
+    @Default('') String message,
   }) = _UserProfileApiDto;
-  factory UserProfileApiDto.fromJson(Map<String, dynamic> json) => _$UserProfileApiDtoFromJson(json);
+  factory UserProfileApiDto.fromJson(Map<String, dynamic> json) =>
+      _$UserProfileApiDtoFromJson(json);
 }

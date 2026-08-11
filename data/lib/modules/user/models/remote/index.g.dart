@@ -8,11 +8,12 @@ part of 'index.dart';
 
 _UserProfileApiDto _$UserProfileApiDtoFromJson(Map<String, dynamic> json) =>
     _UserProfileApiDto(
-      id: json['id'] as String,
-      fullName: json['fullName'] as String,
-      email: json['email'] as String,
-      groupId: json['groupId'] as String,
-      groupName: json['groupName'] as String,
+      id: json['id'] as String? ?? '',
+      fullName: json['fullName'] as String? ?? '',
+      email: json['email'] as String? ?? '',
+      groupId: json['groupId'] as String? ?? '',
+      groupName: json['groupName'] as String? ?? '',
+      message: json['message'] as String? ?? '',
     );
 
 Map<String, dynamic> _$UserProfileApiDtoToJson(_UserProfileApiDto instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$UserProfileApiDtoToJson(_UserProfileApiDto instance) =>
       'email': instance.email,
       'groupId': instance.groupId,
       'groupName': instance.groupName,
+      'message': instance.message,
     };

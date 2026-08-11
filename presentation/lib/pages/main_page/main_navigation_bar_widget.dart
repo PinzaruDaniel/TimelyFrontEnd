@@ -6,7 +6,7 @@ import 'package:keyboard_detection/keyboard_detection.dart';
 import 'package:presentation/controllers/controller_imports.dart';
 import 'package:presentation/pages/main_page/chat_page/chat_page.dart';
 import 'package:presentation/pages/main_page/profile_page/profile_page.dart';
-import 'package:presentation/pages/main_page/schedule_page/schedule_page.dart';
+import 'package:presentation/pages/main_page/session_home_page/session_home_page.dart';
 import 'package:presentation/util/base/base_app_dialog.dart';
 import 'package:presentation/util/resources/texts_styles.dart';
 import 'package:presentation/util/routing/app_router.dart';
@@ -63,7 +63,7 @@ class _MainNavigationPageState extends State<MainNavigationPage>
   }
 
   final List<Widget> _pages = [
-    const SchedulePage(),
+    const SessionHomePage(),
     const HomeworkPage(),
     const ChatPage(),
     const ProfilePage(),
@@ -150,7 +150,7 @@ class _MainNavigationPageState extends State<MainNavigationPage>
             },
           ),
         ),
-        floatingActionButton: _isFocused
+        floatingActionButton: _isFocused || _currentIndex != 1
             ? null
             : FloatingActionButton(
                 onPressed: () => AppRouter.showBaseDialog(

@@ -8,5 +8,6 @@ abstract class UserProfileEntity with _$UserProfileEntity {
     required String email,
     required String groupId,
     required String groupName,
+    @Default('') String message,
   }) = _UserProfileEntity;
 }

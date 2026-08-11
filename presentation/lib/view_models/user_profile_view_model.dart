@@ -4,6 +4,7 @@ class UserProfileViewModel {
   final String email;
   final String groupId;
   final String groupName;
+  final String message;
 
   UserProfileViewModel({
     required this.id,
@@ -11,5 +12,6 @@ class UserProfileViewModel {
     required this.email,
     required this.groupId,
     required this.groupName,
+    required this.message,
   });
 }

@@ -1,7 +1,7 @@
 class ApiConstants {
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://192.168.0.75:5267',
+    defaultValue: 'http://127.0.0.1:8000',
   );
   static const Map<String, String> authHeader = {
     'Authorization':
