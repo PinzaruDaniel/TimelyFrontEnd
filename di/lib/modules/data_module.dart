@@ -103,7 +103,6 @@ abstract class DataModule {
         final statusCode = error.response?.statusCode;
         return statusCode == 401 || statusCode == 403;
       },
-      rejectIfTokenMissing: true,
       onError: (error, stackTrace) {
         consoleLog('Refresh interceptor error: $error\n$stackTrace');
       },

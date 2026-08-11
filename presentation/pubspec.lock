@@ -767,9 +767,10 @@ packages:
   refresh_interceptor:
     dependency: "direct main"
     description:
-      path: "../../../personal projects/refresh_interceptor"
-      relative: true
-    source: path
+      name: refresh_interceptor
+      sha256: "2797666a4706bed2f6f17b338afbb5c7abdac666dfffe0e326b3afd1f3d1eb38"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.2.2"
   retrofit:
     dependency: transitive
