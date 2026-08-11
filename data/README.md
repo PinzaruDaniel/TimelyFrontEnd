@@ -1,43 +1,62 @@
 # Timely data layer
 
-## Local refresh-interceptor test
+Data owns Retrofit services, repository implementations, ObjectBox token and
+feature caches, plus a small local API used to exercise token refresh.
 
-Start local API:
+## Session endpoints
+
+Current Retrofit services call:
+
+- `POST /login/`
+- `POST /refresh/`
+- `GET /profile/`
+
+Token JSON uses `access_token` and `refresh_token`.
+
+## Local refresh test API
+
+Start from `data`:
 
 ```sh
-cd data
 dart run lib/tool/local_api.dart
 ```
 
-Run Flutter app in another terminal:
+Server listens on `0.0.0.0:8080`. Run Timely from `presentation`:
 
 ```sh
-cd presentation
+# iOS Simulator
 flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8080
-```
 
-Android emulator uses host alias:
-
-```sh
+# Android emulator
 flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080
+
+# Physical device: replace with Mac LAN address
+flutter run --dart-define=API_BASE_URL=http://192.168.88.25:8080
 ```
 
-Log in with any credentials. Local login returns `expired-access`. First
-`/api/User/me` call returns 401, refresh returns rotated tokens, then original
-profile request retries and returns 200.
+Any login credentials work. Login returns an expired access token and valid
+refresh token. First `/profile/` request returns 401, `/refresh/` rotates both
+tokens, and profile retry returns 200.
 
-`GET /always-401` verifies retry-loop protection: one refresh, one retry, final
-401, one session-expired callback.
-
-To force the app's existing `/api/User/me` request to expire the session even
-after a successful refresh:
+Force profile and schedule endpoints to keep returning 401 after refresh:
 
 ```sh
 curl -X POST http://127.0.0.1:8080/force-session-expired
 ```
+
+Expected result: one refresh, one retry, tokens cleared, one session-expired
+dialog.
 
 Restore normal behavior:
 
 ```sh
 curl -X POST http://127.0.0.1:8080/reset
 ```
+
+`GET /always-401` is available for direct retry-loop tests.
+
+## Token storage rule
+
+ObjectBox writes must be awaited. The interceptor reads stored tokens
+immediately after refresh; an unawaited `putAsync` can make retry use the old
+access token.

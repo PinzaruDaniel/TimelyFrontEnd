@@ -32,8 +32,12 @@ Future<void> main() async {
     );
 
     if (request.method == 'POST' &&
-        (path == '/api/Auth/login' || path == '/api/Auth/register')) {
+        (path == '/login/' ||
+            path == '/api/Auth/login' ||
+            path == '/api/Auth/register')) {
       await _respond(request, 200, {
+        'access_token': 'expired-access',
+        'refresh_token': 'valid-refresh',
         'accessToken': 'expired-access',
         'refreshToken': 'valid-refresh',
       });
@@ -41,9 +45,12 @@ Future<void> main() async {
     }
 
     if (request.method == 'POST' &&
-        (path == '/api/Auth/refresh' || path == '/refresh')) {
+        (path == '/refresh/' ||
+            path == '/api/Auth/refresh' ||
+            path == '/refresh')) {
       final body = await _readJson(request);
-      final refreshToken = body['refreshToken'] ?? body['refresh'];
+      final refreshToken =
+          body['refresh_token'] ?? body['refreshToken'] ?? body['refresh'];
       final valid =
           refreshToken == 'valid-refresh' ||
           refreshToken.toString().startsWith('rotated-refresh-');
@@ -55,6 +62,8 @@ Future<void> main() async {
 
       refreshGeneration++;
       await _respond(request, 200, {
+        'access_token': 'fresh-access-$refreshGeneration',
+        'refresh_token': 'rotated-refresh-$refreshGeneration',
         'accessToken': 'fresh-access-$refreshGeneration',
         'refreshToken': 'rotated-refresh-$refreshGeneration',
       });
@@ -86,7 +95,9 @@ Future<void> main() async {
       continue;
     }
 
-    if (path == '/api/User/me' || path == '/protected') {
+    if (path == '/profile/' ||
+        path == '/api/User/me' ||
+        path == '/protected') {
       if (forceSessionExpired) {
         await _respond(request, 401, {'code': 'forced_session_expired'});
         continue;
