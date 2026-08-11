@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:common/constants/api_constants.dart';
 import 'package:common/constants/logger.dart';
-import 'package:common/constants/session_expired_callback.dart';
 import 'package:data/core/objectbox_store.dart';
 import 'package:data/modules/auth/auth_repository_impl.dart';
 import 'package:data/modules/auth/sources/local/auth_local_source.dart';
@@ -28,8 +27,7 @@ import 'package:domain/modules/user/user_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
-import 'package:refresh_interceptor/refresh_interceptor.dart'
-    hide SessionExpiredCallback;
+import 'package:refresh_interceptor/refresh_interceptor.dart';
 
 @module
 abstract class DataModule {
@@ -42,9 +40,6 @@ abstract class DataModule {
   @lazySingleton
   @preResolve
   Future<ObjectBoxStore> objectBoxStore() => ObjectBoxStore.create();
-
-  @lazySingleton
-  SessionExpiredCallback sessionExpiredCallback() => SessionExpiredCallback();
 
   @lazySingleton
   AuthLocalSource authLocalSource(ObjectBoxStore store) =>
@@ -77,7 +72,6 @@ abstract class DataModule {
   RefreshInterceptor refreshInterceptor(
     AuthLocalSource authLocalSource,
     AuthApiService authApiService,
-    SessionExpiredCallback sessionExpired,
   ) {
     return RefreshInterceptor(
       tokenStore: TokenStoreAdapter(
@@ -105,7 +99,6 @@ abstract class DataModule {
               : null,
         );
       },
-      onSessionExpired: sessionExpired.call,
       shouldRefresh: (error) {
         final statusCode = error.response?.statusCode;
         return statusCode == 401 || statusCode == 403;
@@ -123,7 +116,7 @@ abstract class DataModule {
     final dio = Dio(
       _baseOptions().copyWith(headers: {'saas-app-token': 'YourSaasAppToken'}),
     );
-    refreshInterceptor.attachToAll([dio]);
+    refreshInterceptor.attachTo(dio);
     dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
     return dio;
   }

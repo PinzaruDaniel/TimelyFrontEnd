@@ -4,17 +4,20 @@ import 'package:common/core/config/firebase_options.dart';
 import 'package:di/di.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:domain/modules/auth/auth_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 import 'package:presentation/controllers/binding/root_bindings_controllers.dart';
 import 'package:presentation/pages/auth/login_page/login_page.dart';
 import 'package:presentation/pages/main_page/main_navigation_bar_widget.dart';
 import 'package:presentation/util/resources/app_colors.dart';
-import 'package:presentation/util/routing/app_router.dart';
+import 'package:presentation/util/widgets/session_expired_dialog.dart';
 import 'package:presentation/view_models/user_profile_view_model.dart';
+import 'package:refresh_interceptor/refresh_interceptor.dart';
 
 import 'controllers/controller_imports.dart';
 
@@ -40,16 +43,8 @@ Future<void> _initializeFirebaseMessaging() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initDi(
-    onSessionExpired: () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final context = Get.context;
-        if (context != null) {
-          AppRouter.showSessionExpiredDialog(context: context);
-        }
-      });
-    },
-  );
+  await RefreshInit.instance.initialize(sessionExpiredWidget: const SessionExpiredDialog());
+  await initDI(get: GetIt.instance);
   RootBindings().dependencies();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -57,12 +52,12 @@ void main() async {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
   await _initializeFirebaseMessaging();
-  await userProfileController.getUser();
+  final accessToken = await GetIt.instance<AuthRepository>().getAccessToken();
+  if (accessToken?.isNotEmpty == true) {
+    await userProfileController.getUser();
+  }
 
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]).then((_) {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
     runApp(const MyApp());
   });
 }
@@ -76,6 +71,7 @@ class MyApp extends StatelessWidget with LoginSignIn {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       child: GetMaterialApp(
+        navigatorKey: RefreshInit.instance.navigatorKey,
         title: 'Timely',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

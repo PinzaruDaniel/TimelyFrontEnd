@@ -10,7 +10,6 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
-import 'package:common/constants/session_expired_callback.dart' as _i2;
 import 'package:data/core/objectbox_store.dart' as _i456;
 import 'package:data/modules/auth/sources/local/auth_local_source.dart'
     as _i145;
@@ -112,9 +111,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => dataModule.objectBoxStore(),
       preResolve: true,
     );
-    gh.lazySingleton<_i2.SessionExpiredCallback>(
-      () => dataModule.sessionExpiredCallback(),
-    );
     gh.lazySingleton<_i974.FirebaseFirestore>(
       () => dataModule.firebaseFirestore(),
     );
@@ -142,17 +138,16 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           dataModule.firebaseMessagingDataSource(gh<_i892.FirebaseMessaging>()),
     );
-    gh.lazySingleton<_i736.AuthRepository>(
-      () => dataModule.authRepository(
-        gh<_i724.AuthApiService>(),
-        gh<_i145.AuthLocalSource>(),
-      ),
-    );
     gh.lazySingleton<_i616.RefreshInterceptor>(
       () => dataModule.refreshInterceptor(
         gh<_i145.AuthLocalSource>(),
         gh<_i724.AuthApiService>(),
-        gh<_i2.SessionExpiredCallback>(),
+      ),
+    );
+    gh.lazySingleton<_i736.AuthRepository>(
+      () => dataModule.authRepository(
+        gh<_i724.AuthApiService>(),
+        gh<_i145.AuthLocalSource>(),
       ),
     );
     gh.lazySingleton<_i908.AuthLoginUseCase>(

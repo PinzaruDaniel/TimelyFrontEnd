@@ -1,5 +1,4 @@
 import 'package:common/constants/app_constants.dart';
-import 'package:common/constants/logger.dart';
 import 'package:domain/modules/auth/use_cases/auth_login_use_case.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,12 +9,18 @@ import '../../../controllers/controller_imports.dart';
 class LoginController extends GetxController {
   final AuthLoginUseCase _authLoginUseCase = GetIt.instance<AuthLoginUseCase>();
 
-   Rx<TextEditingController> emailController = .new(TextEditingController());
-   Rx<TextEditingController> passwordController = .new(TextEditingController());
-
+  Rx<TextEditingController> emailController = .new(TextEditingController());
+  Rx<TextEditingController> passwordController = .new(TextEditingController());
 
   final RegExp _emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+
+  @override
+  void onClose() {
+    emailController.value.dispose();
+    passwordController.value.dispose();
+    super.onClose();
+  }
 
   String? validateEmail(String? value) {
     final email = value?.trim() ?? '';
@@ -49,7 +54,7 @@ class LoginController extends GetxController {
     final password = passwordController.value.text.trim();
 
     mainAppController.addPendingIds([AppConstants.login]);
-    final result = await _authLoginUseCase(AuthLoginParams(email: email, password: password??''));
+    final result = await _authLoginUseCase(AuthLoginParams(email: email, password: password));
     result.fold((failure) => _showSnack(context, failure.message), (_) => onSuccess?.call());
     mainAppController.removePendingIds([AppConstants.login]);
   }

@@ -32,6 +32,8 @@ dependencies:
     path: ../common
   di:
     path: ../di
+  refresh_interceptor:
+    path: "../../../personal projects/refresh_interceptor"
 
   domain:
     path: ../domain

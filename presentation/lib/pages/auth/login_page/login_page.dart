@@ -2,7 +2,6 @@ import 'package:common/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:presentation/controllers/controller_imports.dart';
 import 'package:presentation/pages/auth/login_page/login_controller.dart';
 import 'package:presentation/util/base/base_page.dart';
@@ -22,12 +21,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  LoginController get controller => Get.find();
+  final LoginController controller = LoginController();
 
   @override
-  void initState() {
-    super.initState();
-    Get.put(LoginController());
+  void dispose() {
+    controller.onClose();
+    super.dispose();
   }
 
   @override
