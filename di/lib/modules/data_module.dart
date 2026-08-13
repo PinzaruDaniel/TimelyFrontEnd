@@ -80,17 +80,15 @@ abstract class DataModule {
     SessionExpiredCallback sessionExpired,
   ) {
     return RefreshInterceptor(
-      tokenStore: TokenStoreAdapter(
-        readAccessToken: authLocalSource.getAccessToken,
-        readRefreshToken: authLocalSource.getRefreshToken,
-        saveTokens: (accessToken, refreshToken) {
-          if (refreshToken == null || refreshToken.isEmpty) {
-            return authLocalSource.insertAccessToken(accessToken);
-          }
-          return authLocalSource.insertTokens(accessToken, refreshToken);
-        },
-        clearTokens: authLocalSource.deleteTokens,
-      ),
+      readAccessToken: authLocalSource.getAccessToken,
+      readRefreshToken: authLocalSource.getRefreshToken,
+      saveTokens: (accessToken, refreshToken) {
+        if (refreshToken == null || refreshToken.isEmpty) {
+          return authLocalSource.insertAccessToken(accessToken);
+        }
+        return authLocalSource.insertTokens(accessToken, refreshToken);
+      },
+      clearTokens: authLocalSource.deleteTokens,
       onRefresh: (refreshToken) async {
         final response = await authApiService.refresh({
           'refreshToken': refreshToken,
