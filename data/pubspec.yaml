@@ -34,6 +34,8 @@ dependencies:
   # path: ^1.8.0
 
 dev_dependencies:
+  smart_repository_generator:
+    path: "../../../personal projects/smart_repository/smart_repository_generator"
   retrofit_generator: ^10.2.6
   build_runner: ^2.15.0
   freezed: ^3.2.5
@@ -42,3 +44,7 @@ dev_dependencies:
   lints: ^6.0.0
   test: ^1.24.0
   objectbox_generator: ^5.3.2
+
+dependency_overrides:
+  smart_repository:
+    path: "../../../personal projects/smart_repository"

@@ -945,6 +945,13 @@
             </list>
           </value>
         </entry>
+        <entry key="smart_repository_generator">
+          <value>
+            <list>
+              <option value="$USER_HOME$/personal projects/smart_repository/smart_repository_generator/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="source_gen">
           <value>
             <list>
@@ -1327,6 +1334,7 @@
       <root url="file://$USER_HOME$/flutterSDK/flutter/packages/flutter_web_plugins/lib" />
       <root url="file://$USER_HOME$/personal projects/refresh_interceptor/lib" />
       <root url="file://$USER_HOME$/personal projects/smart_repository/lib" />
+      <root url="file://$USER_HOME$/personal projects/smart_repository/smart_repository_generator/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

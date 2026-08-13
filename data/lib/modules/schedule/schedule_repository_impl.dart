@@ -13,27 +13,39 @@ import 'package:smart_repository/smart_repository.dart';
 
 import '../../mapper/schedule_mapper.dart';
 
-class ScheduleRepositoryImpl implements ScheduleRepository {
+part 'schedule_repository_impl.g.dart';
+
+@SmartRepositoryFamilyAdapter<String, ScheduleEntity, ScheduleApiDto, ScheduleBox>()
+class ScheduleRepositoryImpl with _$ScheduleRepositoryImpl implements ScheduleRepository {
   final ScheduleApiService apiService;
   final ScheduleLocalSource localSource;
-  late final MappedRepositoryFamily<String, ScheduleEntity, ScheduleApiDto, ScheduleBox> _schedules;
 
-  ScheduleRepositoryImpl({required this.apiService, required this.localSource}) {
-    _schedules = MappedRepositoryFamily<String, ScheduleEntity, ScheduleApiDto, ScheduleBox>(
-      remote: apiService.getSchedule,
-      local: localSource.getScheduleFromCache,
-      saveLocal: (_, schedule) => localSource.setSchedule(schedule),
-      mapRemote: (schedule) => schedule.toEntity,
-      mapLocal: (schedule) => schedule.toEntity,
-      mapToLocal: (schedule) => schedule.toBox,
-      fallbackWhen: _shouldUseCachedSchedule,
-      config: const SmartRepositoryConfig(defaultPolicy: RepositoryPolicy.networkFirst),
-    );
-  }
+  ScheduleRepositoryImpl({required this.apiService, required this.localSource});
+
+  @override
+  Future<ScheduleApiDto> smartLoadRemote(String groupId) => apiService.getSchedule(groupId);
+
+  @override
+  Future<ScheduleBox?> smartLoadLocal(String groupId) => localSource.getScheduleFromCache(groupId);
+
+  @override
+  Future<void> smartSaveLocal(String groupId, ScheduleBox schedule) => localSource.setSchedule(schedule);
+
+  @override
+  ScheduleEntity smartMapRemote(ScheduleApiDto schedule) => schedule.toEntity;
+
+  @override
+  ScheduleEntity smartMapLocal(ScheduleBox schedule) => schedule.toEntity;
+
+  @override
+  ScheduleBox smartMapToLocal(ScheduleEntity schedule) => schedule.toBox;
+
+  @override
+  bool smartFallbackWhen(String key, Object error) => _shouldUseCachedSchedule(error);
 
   @override
   Future<Either<Failure, ScheduleEntity>> getSchedule(String groupId) async {
-    final result = await _schedules.get(groupId);
+    final result = await smartGet(groupId);
     return result.fold(
       onSuccess: (schedule) => Right(schedule),
       onFailure: (error, stackTrace) => Left(_toFailure(error, stackTrace)),
@@ -48,7 +60,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
         image != null ? await MultipartFile.fromFile(image.path, filename: image.path.split('/').last) : null,
       );
       final schedule = response.toEntity;
-      final persistence = await _schedules.setLocal(groupId, schedule);
+      final persistence = await smartSetLocal(groupId, schedule);
       return persistence.fold(
         onSuccess: (_) => Right(schedule),
         onFailure: (error, stackTrace) => Left(_toFailure(error, stackTrace)),
@@ -63,17 +75,17 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 
   @override
   Future<ScheduleEntity> getScheduleFromCache(String groupId) async {
-    return (await _schedules.get(groupId, policy: RepositoryPolicy.cacheOnly)).getOrThrow();
+    return (await smartGet(groupId, policy: RepositoryPolicy.cacheOnly)).getOrThrow();
   }
 
   @override
   Future<void> setSchedule(ScheduleEntity schedule) async {
-    (await _schedules.setLocal(schedule.groupId, schedule)).getOrThrow();
+    (await smartSetLocal(schedule.groupId, schedule)).getOrThrow();
   }
 
-  Future<void> dispose() => _schedules.dispose();
+  Future<void> dispose() => disposeSmartRepository();
 
-  static bool _shouldUseCachedSchedule(String groupId, Object error) {
+  static bool _shouldUseCachedSchedule(Object error) {
     if (error is SocketException) return true;
     if (error is! DioException) return false;
 
