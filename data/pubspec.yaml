@@ -28,6 +28,8 @@ dependencies:
   firebase_messaging: ^16.2.0
   firebase_storage: ^13.1.1
   path: ^1.9.0
+  smart_repository:
+    path: "../../../personal projects/smart_repository"
 
   # path: ^1.8.0
 

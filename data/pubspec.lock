@@ -819,6 +819,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  smart_repository:
+    dependency: "direct main"
+    description:
+      path: "../../../personal projects/smart_repository"
+      relative: true
+    source: path
+    version: "0.2.0"
   source_gen:
     dependency: transitive
     description:

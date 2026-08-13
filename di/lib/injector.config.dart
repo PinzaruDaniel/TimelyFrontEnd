@@ -253,6 +253,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i72.ScheduleApiService>(),
         gh<_i534.ScheduleLocalSource>(),
       ),
+      dispose: _i922.disposeScheduleRepository,
     );
     gh.lazySingleton<_i762.GetScheduleUseCase>(
       () => domainModule.getScheduleUseCase(gh<_i660.ScheduleRepository>()),

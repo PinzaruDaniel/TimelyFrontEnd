@@ -770,7 +770,7 @@ packages:
       path: "../../../personal projects/refresh_interceptor"
       relative: true
     source: path
-    version: "0.2.0"
+    version: "0.4.0"
   retrofit:
     dependency: transitive
     description:
@@ -784,6 +784,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  smart_repository:
+    dependency: transitive
+    description:
+      path: "../../../personal projects/smart_repository"
+      relative: true
+    source: path
+    version: "0.2.0"
   source_span:
     dependency: transitive
     description:

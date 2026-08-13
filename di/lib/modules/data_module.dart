@@ -80,17 +80,15 @@ abstract class DataModule {
     SessionExpiredCallback sessionExpired,
   ) {
     return RefreshInterceptor(
-      tokenStore: TokenStoreAdapter(
-        readAccessToken: authLocalSource.getAccessToken,
-        readRefreshToken: authLocalSource.getRefreshToken,
-        saveTokens: (accessToken, refreshToken) {
-          if (refreshToken == null || refreshToken.isEmpty) {
-            return authLocalSource.insertAccessToken(accessToken);
-          }
-          return authLocalSource.insertTokens(accessToken, refreshToken);
-        },
-        clearTokens: authLocalSource.deleteTokens,
-      ),
+      readAccessToken: authLocalSource.getAccessToken,
+      readRefreshToken: authLocalSource.getRefreshToken,
+      saveTokens: (accessToken, refreshToken) {
+        if (refreshToken == null || refreshToken.isEmpty) {
+          return authLocalSource.insertAccessToken(accessToken);
+        }
+        return authLocalSource.insertTokens(accessToken, refreshToken);
+      },
+      clearTokens: authLocalSource.deleteTokens,
       onRefresh: (refreshToken) async {
         final response = await authApiService.refresh({
           'refreshToken': refreshToken,
@@ -146,7 +144,7 @@ abstract class DataModule {
     AuthLocalSource localSource,
   ) => AuthRepositoryImpl(apiService: apiService, localSource: localSource);
 
-  @lazySingleton
+  @LazySingleton(dispose: disposeScheduleRepository)
   ScheduleRepository scheduleRepository(
     ScheduleApiService apiService,
     ScheduleLocalSource localSource,
@@ -190,4 +188,9 @@ abstract class DataModule {
   @lazySingleton
   ChatRepository chatRepository(FirebaseChatDataSource dataSource) =>
       ChatRepositoryImpl(dataSource: dataSource);
+}
+
+Future<void> disposeScheduleRepository(ScheduleRepository repository) {
+  if (repository is ScheduleRepositoryImpl) return repository.dispose();
+  return Future.value();
 }
