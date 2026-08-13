@@ -825,14 +825,14 @@ packages:
       path: "../../../personal projects/smart_repository"
       relative: true
     source: path
-    version: "0.3.0"
+    version: "0.4.1"
   smart_repository_generator:
     dependency: "direct dev"
     description:
       path: "../../../personal projects/smart_repository/smart_repository_generator"
       relative: true
     source: path
-    version: "0.3.0"
+    version: "0.4.1"
   source_gen:
     dependency: transitive
     description:
