@@ -26,6 +26,8 @@ class _SessionHomePageState extends State<SessionHomePage> {
     if (_isRefreshing || !mounted) return;
     setState(() => _isRefreshing = true);
     await userProfileController.getUser();
+    await userProfileController.getUser();
+    await userProfileController.getUser();
     if (mounted) setState(() => _isRefreshing = false);
   }
 
