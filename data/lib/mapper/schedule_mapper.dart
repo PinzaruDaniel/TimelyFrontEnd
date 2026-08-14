@@ -12,8 +12,15 @@ abstract class ScheduleMapper {
 
   ScheduleItemEntity itemFromRemote(ScheduleItemDto source);
 
+  @MapIgnore('id')
+  @MapRelation(target: 'monday', source: 'monday', using: 'itemToLocal')
+  @MapRelation(target: 'tuesday', source: 'tuesday', using: 'itemToLocal')
+  @MapRelation(target: 'wednesday', source: 'wednesday', using: 'itemToLocal')
+  @MapRelation(target: 'thursday', source: 'thursday', using: 'itemToLocal')
+  @MapRelation(target: 'friday', source: 'friday', using: 'itemToLocal')
   ScheduleBox toLocal(ScheduleEntity source);
 
+  @MapIgnore('id')
   ScheduleItemBox itemToLocal(ScheduleItemEntity source);
 
   ScheduleEntity fromLocal(ScheduleBox source);
