@@ -863,7 +863,7 @@ packages:
       path: "../../../personal projects/smart_repository"
       relative: true
     source: path
-    version: "0.4.1"
+    version: "0.5.0"
   source_gen:
     dependency: transitive
     description:

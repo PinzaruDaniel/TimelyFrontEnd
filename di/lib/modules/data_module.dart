@@ -138,11 +138,11 @@ abstract class DataModule {
   UserApiService userApiService(@Named('appDio') Dio dio) =>
       UserApiService(dio);
 
-  @lazySingleton
+  @LazySingleton(dispose: disposeAuthRepository)
   AuthRepository authRepository(
     AuthApiService apiService,
     AuthLocalSource localSource,
-  ) => AuthRepositoryImpl(apiService: apiService, localSource: localSource);
+  ) => AuthRepositoryImpl(remote: apiService, local: localSource);
 
   @LazySingleton(dispose: disposeScheduleRepository)
   ScheduleRepository scheduleRepository(
@@ -192,5 +192,10 @@ abstract class DataModule {
 
 Future<void> disposeScheduleRepository(ScheduleRepository repository) {
   if (repository is ScheduleRepositoryImpl) return repository.dispose();
+  return Future.value();
+}
+
+Future<void> disposeAuthRepository(AuthRepository repository) {
+  if (repository is AuthRepositoryImpl) return repository.dispose();
   return Future.value();
 }

@@ -1,114 +1,74 @@
 import 'package:common/constants/failure_class.dart';
-import 'package:common/constants/logger.dart';
 import 'package:dartz/dartz.dart';
+import 'package:data/modules/auth/models/remote/index.dart';
 import 'package:data/modules/auth/sources/local/auth_local_source.dart';
 import 'package:data/modules/auth/sources/remote/auth_api_service.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/modules/auth/auth_repository.dart';
 import 'package:domain/modules/auth/models/index.dart';
+import 'package:smart_repository/smart_repository.dart';
 
 import '../../mapper/auth_tokens_mapper.dart';
 
-class AuthRepositoryImpl implements AuthRepository {
-  final AuthApiService apiService;
-  final AuthLocalSource localSource;
+part 'auth_repository_impl.g.dart';
 
-  AuthRepositoryImpl({required this.apiService, required this.localSource});
+AuthTokensEntity mapAuthTokensRemote(AuthTokensApiDto tokens) =>
+    tokens.toEntity;
 
+Failure mapAuthFailure(Object error, StackTrace stackTrace) =>
+    error is DioException
+        ? Failure.dio(error)
+        : Failure.error(error, stackTrace);
+
+Either<Failure, AuthTokensEntity> adaptAuthResult(RepositoryResult<AuthTokensEntity> result,) =>
+    result.fold(
+      onSuccess: Right.new,
+      onFailure: (error, stackTrace) =>
+          Left(error is Failure ? error : Failure.error(error, stackTrace)),
+    );
+
+@GenerateRepositoryImplementation<AuthApiService, AuthLocalSource>(
+  defaultPolicy: RepositoryPolicy.networkOnly,
+  resultType: AuthTokensEntity,
+  mapRemote: #mapAuthTokensRemote,
+  mapError: #mapAuthFailure,
+  resultAdapter: #adaptAuthResult,
+  persistRemote: false,
+  retainKeyedRepository: false,
+)
+abstract class AuthRepositoryImpl implements AuthRepository {
+  factory AuthRepositoryImpl({
+    required AuthApiService remote,
+    required AuthLocalSource local,
+  }) = _$AuthRepositoryImpl;
+
+  @RepositoryMethod(remoteBody: {'email': #email, 'password': #password})
   @override
-  Future<Either<Failure, AuthTokensEntity>> login(
-    String email,
-    String password,
-  ) async {
-    try {
-      final response = await apiService.login({
-        "email": email,
-        "password": password,
-      });
+  Future<Either<Failure, AuthTokensEntity>> login(String email,
+      String password,);
 
-      print(response.toEntity);
-      return Right(response.toEntity);
-    } catch (e, stackTrace) {
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
-  }
-
+  @RepositoryMethod(
+    remoteBody: {
+      'email': #email,
+      'password': #password,
+      'name': #name,
+      'group': #group,
+    },
+  )
   @override
-  Future<void> insertTokens(String accessToken, String refreshToken) async {
-    await localSource.insertTokens(accessToken, refreshToken);
-    consoleLog('inserted Tokens: $accessToken $refreshToken');
-  }
+  Future<Either<Failure, AuthTokensEntity>> register(String name,
+      String email,
+      String password,
+      String group,);
 
+  @RepositoryMethod(remoteBody: {'email': #email, 'new-password': #password})
   @override
-  Future<void> deleteTokens() async {
-    localSource.deleteTokens();
-  }
+  Future<Either<Failure, AuthTokensEntity>> resetPassword(String email,
+      String password,);
 
+  @RepositoryMethod(remoteBody: {'refreshToken': #refreshToken})
   @override
-  Future<Either<Failure, AuthTokensEntity>> register(
-    String name,
-    String email,
-    String password,
-    String group,
-  ) async {
-    try {
-      final response = await apiService.register({
-        "email": email,
-        "password": password,
-        "name": name,
-        "group": group,
-      });
-      return Right(response.toEntity);
-    } catch (e, stackTrace) {
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
-  }
+  Future<Either<Failure, AuthTokensEntity>> refresh(String refreshToken);
 
-  @override
-  Future<Either<Failure, AuthTokensEntity>> resetPassword(
-    String email,
-    String password,
-  ) async {
-    try {
-      final response = await apiService.resetPassword({
-        "email": email,
-        "new-password": password,
-      });
-      return Right(response.toEntity);
-    } catch (e, stackTrace) {
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
-  }
-
-  @override
-  Future<Either<Failure, AuthTokensEntity>> refresh(String refreshToken) async {
-    try {
-      final response = await apiService.refresh({"refreshToken": refreshToken});
-      return Right(response.toEntity);
-    } catch (e, stackTrace) {
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
-  }
-
-  @override
-  Future<String?> getAccessToken() async {
-    return localSource.getAccessToken();
-  }
-
-  @override
-  Future<String?> getRefreshToken() async {
-    return localSource.getRefreshToken();
-  }
+  Future<void> dispose();
 }

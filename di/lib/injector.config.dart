@@ -147,6 +147,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i724.AuthApiService>(),
         gh<_i145.AuthLocalSource>(),
       ),
+      dispose: _i922.disposeAuthRepository,
     );
     gh.lazySingleton<_i616.RefreshInterceptor>(
       () => dataModule.refreshInterceptor(
