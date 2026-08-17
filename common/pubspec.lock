@@ -429,6 +429,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  smart_domain:
+    dependency: "direct main"
+    description:
+      path: "../../../personal projects/smart_domain"
+      relative: true
+    source: path
+    version: "0.2.0"
   source_map_stack_trace:
     dependency: transitive
     description:

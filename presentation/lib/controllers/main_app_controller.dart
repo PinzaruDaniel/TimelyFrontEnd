@@ -19,7 +19,11 @@ class MainAppController extends GetxController {
     this.pendingIds.refresh();
   }
 
-  Future<void> addHomework({required String subject, required String dueDate, required String description}) async {
+  Future<void> addHomework({
+    required String subject,
+    required String dueDate,
+    required String description,
+  }) async {
     final result = await addHomeworkUseCase(
       AddHomeworkParams(
         request: CreateHomeworkRequest(
@@ -31,11 +35,11 @@ class MainAppController extends GetxController {
       ),
     );
     result.fold(
-      (failure) {
+      onFailure: (failure) {
         _showSnack('Failed to add homework: ${failure.message}');
         print('Failed to add homework: ${failure.message}');
       },
-      (success) {
+      onSuccess: (success) {
         _showSnack('Homework added successfully');
         print('Homework added successfully');
       },
@@ -43,8 +47,8 @@ class MainAppController extends GetxController {
   }
 
   void _showSnack(String message) {
-    ScaffoldMessenger.of(
-      Get.context!,
-    ).showSnackBar(SnackBar(content: Text(message), behavior: SnackBarBehavior.floating));
+    ScaffoldMessenger.of(Get.context!).showSnackBar(
+      SnackBar(content: Text(message), behavior: SnackBarBehavior.floating),
+    );
   }
 }

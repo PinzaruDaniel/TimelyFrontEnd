@@ -35,6 +35,8 @@ dependencies:
 
   domain:
     path: ../domain
+  smart_domain:
+    path: "../../../personal projects/smart_domain"
 
   flutter:
     sdk: flutter

@@ -1,5 +1,4 @@
 import 'package:common/constants/failure_class.dart';
-import 'package:dartz/dartz.dart';
 import 'package:domain/core/usecase.dart';
 import 'package:domain/modules/schedule/models/index.dart';
 
@@ -11,7 +10,7 @@ class GetScheduleUseCase extends UseCase<ScheduleEntity, GetScheduleParams> {
   GetScheduleUseCase({required this.repository});
 
   @override
-  Future<Either<Failure, ScheduleEntity>> call(params) {
+  Future<Result<ScheduleEntity, Failure>> execute(GetScheduleParams params) {
     return repository.getSchedule(params.groupId);
   }
 }

@@ -1,6 +1,7 @@
 name: data
 description: A sample command-line application.
 version: 1.0.0
+publish_to: 'none'
 # repository: https://github.com/my_org/my_repo
 
 environment:
@@ -13,9 +14,10 @@ dependencies:
 
   domain:
     path: ../domain
+  smart_domain:
+    path: "../../../personal projects/smart_domain"
   dio: ^5.8.0+1
 
-  dartz: ^0.10.1
   freezed_annotation: ^3.1.0
   retrofit: ^4.9.2
   logger: ^2.6.0

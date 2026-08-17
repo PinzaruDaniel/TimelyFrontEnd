@@ -1,25 +1,27 @@
 import 'package:dio/dio.dart';
+import 'package:smart_domain/smart_domain.dart' as smart_domain;
 
-class Failure {
-  final String message;
+class Failure extends smart_domain.Failure {
+  final String _message;
+
+  @override
+  String get message => _message;
   final String? code;
   final String? type;
   final dynamic originalError;
   final Map<String, dynamic>? details;
 
   const Failure({
-    required this.message,
+    required String message,
     this.code,
     this.type,
     this.originalError,
     this.details,
-  });
+  }) : _message = message,
+       super(message: message, cause: originalError);
 
   factory Failure.dio(DioException e) {
-    String errorType = e.type
-        .toString()
-        .split('.')
-        .last;
+    String errorType = e.type.toString().split('.').last;
 
     String message;
     if (e.response?.statusCode == 404) {
@@ -47,9 +49,7 @@ class Failure {
       message: e.toString(),
       type: 'error',
       originalError: e,
-      details: {
-        'stackTrace': stackTrace?.toString() ?? 'No stack trace',
-      },
+      details: {'stackTrace': stackTrace?.toString() ?? 'No stack trace'},
     );
   }
 }

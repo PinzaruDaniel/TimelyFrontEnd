@@ -1,13 +1,13 @@
-
 import 'dart:io';
 
 import 'package:common/constants/failure_class.dart';
-import 'package:dartz/dartz.dart';
+import 'package:data/core/app_failure_mapper.dart';
 import 'package:data/modules/schedule/sources/local/schedule_local_source.dart';
 import 'package:data/modules/schedule/sources/remote/schedule_api_service.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/modules/schedule/models/index.dart';
 import 'package:domain/modules/schedule/schedule_repository.dart';
+import 'package:smart_domain/smart_domain.dart' show Result;
 
 import '../../mapper/schedule_mapper.dart';
 
@@ -18,36 +18,32 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   ScheduleRepositoryImpl({required this.apiService, required this.localSource});
 
   @override
-  Future<Either<Failure, ScheduleEntity>> getSchedule(String groupId) async {
-    try {
+  Future<Result<ScheduleEntity, Failure>> getSchedule(String groupId) {
+    return Result.guardAsync(() async {
       final value = await apiService.getSchedule(groupId);
       print('Schedule received: ${value.group}');
-      return Right(value.toEntity);
-    } catch (e, stackTrace) {
-      print('Schedule API failed: $e  ${e.runtimeType}');
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
+      return value.toEntity;
+    }, onError: appFailureMapper.map);
   }
 
   @override
-  Future<Either<Failure, ScheduleEntity>> addSchedule(String groupId, File? image) async {
-    try {
+  Future<Result<ScheduleEntity, Failure>> addSchedule(
+    String groupId,
+    File? image,
+  ) {
+    return Result.guardAsync(() async {
       final response = await apiService.addSchedule(
         groupId,
-        image != null ? await MultipartFile.fromFile(image.path, filename: image.path.split('/').last) : null,
+        image != null
+            ? await MultipartFile.fromFile(
+                image.path,
+                filename: image.path.split('/').last,
+              )
+            : null,
       );
       print('schedule received: ${response.groupId}');
-      return Right(response.toEntity);
-    } catch (e, stackTrace) {
-      print('Schedule API failed: $e  ${e.runtimeType}');
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
+      return response.toEntity;
+    }, onError: appFailureMapper.map);
   }
 
   @override
@@ -61,4 +57,3 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     localSource.setSchedule(schedule);
   }
 }
-

@@ -1,11 +1,11 @@
 import 'package:common/constants/failure_class.dart';
 import 'package:common/constants/logger.dart';
-import 'package:dartz/dartz.dart';
+import 'package:data/core/app_failure_mapper.dart';
 import 'package:data/modules/auth/sources/local/auth_local_source.dart';
 import 'package:data/modules/auth/sources/remote/auth_api_service.dart';
-import 'package:dio/dio.dart';
 import 'package:domain/modules/auth/auth_repository.dart';
 import 'package:domain/modules/auth/models/index.dart';
+import 'package:smart_domain/smart_domain.dart' show Result;
 
 import '../../mapper/auth_tokens_mapper.dart';
 
@@ -16,24 +16,19 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.apiService, required this.localSource});
 
   @override
-  Future<Either<Failure, AuthTokensEntity>> login(
+  Future<Result<AuthTokensEntity, Failure>> login(
     String email,
     String password,
   ) async {
-    try {
+    return Result.guardAsync(() async {
       final response = await apiService.login({
         "email": email,
         "password": password,
       });
 
       print(response.toEntity);
-      return Right(response.toEntity);
-    } catch (e, stackTrace) {
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
+      return response.toEntity;
+    }, onError: appFailureMapper.map);
   }
 
   @override
@@ -48,58 +43,43 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, AuthTokensEntity>> register(
+  Future<Result<AuthTokensEntity, Failure>> register(
     String name,
     String email,
     String password,
     String group,
   ) async {
-    try {
+    return Result.guardAsync(() async {
       final response = await apiService.register({
         "email": email,
         "password": password,
         "name": name,
         "group": group,
       });
-      return Right(response.toEntity);
-    } catch (e, stackTrace) {
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
+      return response.toEntity;
+    }, onError: appFailureMapper.map);
   }
 
   @override
-  Future<Either<Failure, AuthTokensEntity>> resetPassword(
+  Future<Result<AuthTokensEntity, Failure>> resetPassword(
     String email,
     String password,
   ) async {
-    try {
+    return Result.guardAsync(() async {
       final response = await apiService.resetPassword({
         "email": email,
         "new-password": password,
       });
-      return Right(response.toEntity);
-    } catch (e, stackTrace) {
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
+      return response.toEntity;
+    }, onError: appFailureMapper.map);
   }
 
   @override
-  Future<Either<Failure, AuthTokensEntity>> refresh(String refreshToken) async {
-    try {
+  Future<Result<AuthTokensEntity, Failure>> refresh(String refreshToken) {
+    return Result.guardAsync(() async {
       final response = await apiService.refresh({"refreshToken": refreshToken});
-      return Right(response.toEntity);
-    } catch (e, stackTrace) {
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
+      return response.toEntity;
+    }, onError: appFailureMapper.map);
   }
 
   @override

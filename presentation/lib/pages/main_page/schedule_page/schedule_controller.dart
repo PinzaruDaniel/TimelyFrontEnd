@@ -13,14 +13,16 @@ class ScheduleController extends GetxController {
 
   Future<void> getSchedule(String groupId) async {
     await userProfileController.getUser();
-    getScheduleUseCase.call(GetScheduleParams(groupId)).then((either) {
-      either.fold(
-        (failure) {
+    getScheduleUseCase(GetScheduleParams(groupId)).then((result) {
+      result.fold(
+        onFailure: (failure) {
           print('failure');
         },
-        (scheduleEntity) {
+        onSuccess: (scheduleEntity) {
           scheduleVm.value = scheduleEntity.toModel;
-          setScheduleUseCase.call(SetScheduleParams(scheduleEntity: scheduleEntity));
+          setScheduleUseCase.call(
+            SetScheduleParams(scheduleEntity: scheduleEntity),
+          );
         },
       );
     });

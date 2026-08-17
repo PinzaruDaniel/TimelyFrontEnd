@@ -1,15 +1,26 @@
 import 'package:common/constants/failure_class.dart';
-import 'package:dartz/dartz.dart';
 import 'package:domain/modules/auth/models/index.dart';
+import 'package:smart_domain/smart_domain.dart' show Result;
 
 abstract class AuthRepository {
-  Future<Either<Failure, AuthTokensEntity>> login(String email, String password);
+  Future<Result<AuthTokensEntity, Failure>> login(
+    String email,
+    String password,
+  );
 
-  Future<Either<Failure, AuthTokensEntity>> register(String name, String email, String password, String group);
+  Future<Result<AuthTokensEntity, Failure>> register(
+    String name,
+    String email,
+    String password,
+    String group,
+  );
 
-  Future<Either<Failure, AuthTokensEntity>> resetPassword(String email, String password);
+  Future<Result<AuthTokensEntity, Failure>> resetPassword(
+    String email,
+    String password,
+  );
 
-  Future<Either<Failure, AuthTokensEntity>> refresh(String refreshToken);
+  Future<Result<AuthTokensEntity, Failure>> refresh(String refreshToken);
 
   Future<void> insertTokens(String accessToken, String refreshToken);
 

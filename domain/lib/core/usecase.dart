@@ -1,34 +1,35 @@
-import 'package:common/constants/failure_class.dart';
-import 'package:dartz/dartz.dart';
+export 'package:smart_domain/smart_domain.dart'
+    show
+        FailureResult,
+        NoParams,
+        NoParamsUseCase,
+        Result,
+        ResultStreamUseCase,
+        ResultUseCase,
+        StreamUseCase,
+        Success,
+        UseCase;
 
-abstract class UseCase<T, Params> {
-  Future<Either<Failure, T>> call(Params params);
-}
-abstract class UseCaseStream<T, Params>{
+abstract class UseCaseStream<T, Params> {
   Stream<T> call(Params params);
 }
-abstract class UseCaseStreamEither<T, Params>{
-  Stream<Either<Failure, T>> call(Params params);
-}
 
-abstract class UseCaseNoParams<T> {
-  Future<Either<Failure, T>> call();
-}
-abstract class UseCaseNoEither<T, Params>{
+abstract class UseCaseNoEither<T, Params> {
   Future<T> call(Params params);
 }
-abstract class UseCaseNoEitherNoParams<T>{
+
+abstract class UseCaseNoEitherNoParams<T> {
   Stream<T> call();
 }
-abstract class UseCaseNoEitherNoParamsNoStream<T>{
-  Future<T>call();
+
+abstract class UseCaseNoEitherNoParamsNoStream<T> {
+  Future<T> call();
 }
 
-abstract class UseCaseStreamNullable<T, Params>{
+abstract class UseCaseStreamNullable<T, Params> {
   Stream<T?> call(Params params);
 }
-abstract class UseCaseNoEitherNoStreamNullable<T, Params>{
+
+abstract class UseCaseNoEitherNoStreamNullable<T, Params> {
   Future<T?> call(Params params);
 }
-
-

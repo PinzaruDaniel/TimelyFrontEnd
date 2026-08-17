@@ -1,5 +1,4 @@
 import 'package:common/constants/failure_class.dart';
-import 'package:dartz/dartz.dart';
 import 'package:domain/core/usecase.dart';
 import 'package:domain/modules/chat/chat_repository.dart';
 
@@ -9,13 +8,15 @@ class MarkMessageAsReadUseCase extends UseCase<void, MarkMessageAsReadParams> {
   MarkMessageAsReadUseCase({required this.repository});
 
   @override
-  Future<Either<Failure, void>> call(MarkMessageAsReadParams params) async {
-    try {
-      await repository.markMessageAsRead(params.chatId, params.messageId, params.userId);
-      return Right(null);
-    } catch (e) {
-      return Left(e as Failure);
-    }
+  Future<Result<void, Failure>> execute(MarkMessageAsReadParams params) {
+    return Result.guardAsync(
+      () => repository.markMessageAsRead(
+        params.chatId,
+        params.messageId,
+        params.userId,
+      ),
+      onError: Failure.error,
+    );
   }
 }
 
@@ -24,5 +25,9 @@ class MarkMessageAsReadParams {
   final String messageId;
   final String userId;
 
-  MarkMessageAsReadParams({required this.chatId, required this.messageId, required this.userId});
+  MarkMessageAsReadParams({
+    required this.chatId,
+    required this.messageId,
+    required this.userId,
+  });
 }

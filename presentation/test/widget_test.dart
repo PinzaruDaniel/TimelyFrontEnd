@@ -233,3 +233,16 @@ class _BubbelBarExampleState extends State<BubbelBarExample> {
     );
   }
 }*/
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  testWidgets('renders application content', (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(home: Scaffold(body: Text('Timely'))),
+    );
+
+    expect(find.text('Timely'), findsOneWidget);
+  });
+}

@@ -7,7 +7,8 @@ import 'package:get_it/get_it.dart';
 import '../../../controllers/controller_imports.dart';
 
 class RegisterController extends GetxController {
-  final AuthRegisterUseCase _authRegisterUseCase = GetIt.instance<AuthRegisterUseCase>();
+  final AuthRegisterUseCase _authRegisterUseCase =
+      GetIt.instance<AuthRegisterUseCase>();
 
   Rx<TextEditingController> nameController = .new(TextEditingController());
   Rx<TextEditingController> emailController = .new(TextEditingController());
@@ -55,7 +56,10 @@ class RegisterController extends GetxController {
     return null;
   }
 
-  Future<void> register({required BuildContext context, VoidCallback? onSuccess}) async {
+  Future<void> register({
+    required BuildContext context,
+    VoidCallback? onSuccess,
+  }) async {
     final isValid = registerFormKey.currentState?.validate() ?? false;
     if (!isValid) {
       return;
@@ -68,9 +72,18 @@ class RegisterController extends GetxController {
 
     mainAppController.addPendingIds([AppConstants.register]);
     final result = await _authRegisterUseCase(
-      AuthRegisterParams(name: name, email: email, password: password, group: group),
+      AuthRegisterParams(
+        name: name,
+        email: email,
+        password: password,
+        group: group,
+      ),
     );
-    result.fold((failure) => _showSnack(context, failure.message), (_) => onSuccess?.call());
+    result.fold(
+      onFailure: (failure) =>
+          _showSnack(context, failure.message ?? 'Registration failed'),
+      onSuccess: (_) => onSuccess?.call(),
+    );
     mainAppController.removePendingIds([AppConstants.register]);
   }
 

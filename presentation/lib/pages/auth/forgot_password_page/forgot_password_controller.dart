@@ -7,7 +7,8 @@ import 'package:get_it/get_it.dart';
 import '../../../controllers/controller_imports.dart';
 
 class ForgotPasswordController extends GetxController {
-  final AuthResetPasswordUseCase _authResetPasswordUseCase = GetIt.instance<AuthResetPasswordUseCase>();
+  final AuthResetPasswordUseCase _authResetPasswordUseCase =
+      GetIt.instance<AuthResetPasswordUseCase>();
 
   Rx<TextEditingController> emailController = .new(TextEditingController());
   Rx<TextEditingController> passwordController = .new(TextEditingController());
@@ -37,7 +38,10 @@ class ForgotPasswordController extends GetxController {
     return null;
   }
 
-  Future<void> resetPassword({required BuildContext context, VoidCallback? onSuccess}) async {
+  Future<void> resetPassword({
+    required BuildContext context,
+    VoidCallback? onSuccess,
+  }) async {
     final isValid = forgotPasswordFormKey.currentState?.validate() ?? false;
     if (!isValid) {
       return;
@@ -47,8 +51,14 @@ class ForgotPasswordController extends GetxController {
     final password = passwordController.value.text.trim();
 
     mainAppController.addPendingIds([AppConstants.forgotPassword]);
-    final result = await _authResetPasswordUseCase(AuthResetPasswordParams(email: email, password: password));
-    result.fold((failure) => _showSnack(context, failure.message), (_) => onSuccess?.call());
+    final result = await _authResetPasswordUseCase(
+      AuthResetPasswordParams(email: email, password: password),
+    );
+    result.fold(
+      onFailure: (failure) =>
+          _showSnack(context, failure.message ?? 'Password reset failed'),
+      onSuccess: (_) => onSuccess?.call(),
+    );
     mainAppController.removePendingIds([AppConstants.forgotPassword]);
   }
 

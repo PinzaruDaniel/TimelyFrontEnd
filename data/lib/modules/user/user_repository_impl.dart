@@ -1,10 +1,10 @@
 import 'package:common/constants/failure_class.dart';
-import 'package:dartz/dartz.dart';
+import 'package:data/core/app_failure_mapper.dart';
 import 'package:data/mapper/user_mapper.dart';
 import 'package:data/modules/user/sources/remote/user_api_service.dart';
-import 'package:dio/dio.dart';
 import 'package:domain/modules/user/models/index.dart';
 import 'package:domain/modules/user/user_repository.dart';
+import 'package:smart_domain/smart_domain.dart' show Result;
 
 class UserRepositoryImpl implements UserRepository {
   final UserApiService apiService;
@@ -12,31 +12,20 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({required this.apiService});
 
   @override
-  Future<Either<Failure, UserProfileEntity>> getMyProfile() async {
-    try {
+  Future<Result<UserProfileEntity, Failure>> getMyProfile() {
+    return Result.guardAsync(() async {
       var response = await apiService.getMyProfile();
-      return Right(response.toEntity);
-    } catch (e, stackTrace) {
-      print('error in getMyProfile() :${e} $stackTrace');
-      if (e is DioException) {
-
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
+      return response.toEntity;
+    }, onError: appFailureMapper.map);
   }
 
   @override
-  Future<Either<Failure, List<UserProfileEntity>>> getUsersByGroup(String groupId) async {
-    try {
+  Future<Result<List<UserProfileEntity>, Failure>> getUsersByGroup(
+    String groupId,
+  ) {
+    return Result.guardAsync(() async {
       final response = await apiService.getUsersByGroup(groupId);
-      return Right(response.map((dto) => dto.toEntity).toList());
-    } catch (e, stackTrace) {
-      print('error in getUsersByGroup() :${e} $stackTrace');
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
+      return response.map((dto) => dto.toEntity).toList();
+    }, onError: appFailureMapper.map);
   }
 }

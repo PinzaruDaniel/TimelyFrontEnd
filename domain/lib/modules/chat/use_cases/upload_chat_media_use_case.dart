@@ -1,5 +1,4 @@
 import 'package:common/constants/failure_class.dart';
-import 'package:dartz/dartz.dart';
 import 'package:domain/core/usecase.dart';
 import 'package:domain/modules/chat/chat_repository.dart';
 
@@ -9,18 +8,16 @@ class UploadChatMediaUseCase extends UseCase<String, UploadChatMediaParams> {
   UploadChatMediaUseCase({required this.repository});
 
   @override
-  Future<Either<Failure, String>> call(UploadChatMediaParams params) async {
-    try {
-      final url = await repository.uploadChatMedia(
+  Future<Result<String, Failure>> execute(UploadChatMediaParams params) {
+    return Result.guardAsync(
+      () => repository.uploadChatMedia(
         chatId: params.chatId,
         senderId: params.senderId,
         filePath: params.filePath,
         mediaType: params.mediaType,
-      );
-      return Right(url);
-    } catch (e, stackTrace) {
-      return Left(Failure.error(e, stackTrace));
-    }
+      ),
+      onError: Failure.error,
+    );
   }
 }
 

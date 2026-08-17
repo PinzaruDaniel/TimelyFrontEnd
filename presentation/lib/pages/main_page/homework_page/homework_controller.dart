@@ -8,23 +8,30 @@ import 'package:presentation/view_models/homework_view_model.dart';
 import '../../../util/mappers/homework_mapper.dart';
 
 class HomeworkController extends GetxController {
-  GetHomeworksUseCase getHomeworksUseCase = GetIt.instance<GetHomeworksUseCase>();
+  GetHomeworksUseCase getHomeworksUseCase =
+      GetIt.instance<GetHomeworksUseCase>();
   SetHomeworkUseCase setHomeworkUseCase = GetIt.instance<SetHomeworkUseCase>();
   RxList<HomeworkViewModel> homeworks = RxList([]);
 
   void getHomeworks() {
     mainAppController.addPendingIds(['getHomeworks']);
     getHomeworksUseCase
-        .call(GetHomeworksParams(groupId: userProfileController.userViewModel.value?.groupId ?? ''))
-        .then((either) {
-          either.fold(
-            (failure) {
+        .call(
+          GetHomeworksParams(
+            groupId: userProfileController.userViewModel.value?.groupId ?? '',
+          ),
+        )
+        .then((result) {
+          result.fold(
+            onFailure: (failure) {
               print('failure: $failure');
             },
-            (homeworkList) {
+            onSuccess: (homeworkList) {
               homeworks.value = homeworkList.map((hw) => hw.toModel).toList();
               if (homeworks.isNotEmpty) {
-                setHomeworkUseCase.call(SetHomeworkParams(homeworksEntity: homeworkList));
+                setHomeworkUseCase.call(
+                  SetHomeworkParams(homeworksEntity: homeworkList),
+                );
               }
             },
           );

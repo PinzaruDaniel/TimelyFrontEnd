@@ -1,26 +1,27 @@
 import 'package:common/constants/failure_class.dart';
-import 'package:dartz/dartz.dart';
 import 'package:domain/core/usecase.dart';
 import 'package:domain/modules/chat/chat_repository.dart';
 import 'package:domain/modules/chat/models/index.dart';
 
-class GetChatMessagesUseCase extends UseCaseStreamEither<List<MessageEntity>, GetChatMessagesParams> {
+class GetChatMessagesUseCase
+    extends
+        ResultStreamUseCase<
+          List<MessageEntity>,
+          GetChatMessagesParams,
+          Failure
+        > {
   final ChatRepository repository;
   GetChatMessagesUseCase({required this.repository});
 
   @override
-  Stream<Either<Failure, List<MessageEntity>>> call(GetChatMessagesParams params) {
-    try {
-      return repository.getChatMessages(params.chatId).map(
-            (messages) => Right(messages),
-      );
-    } catch (e) {
-      return Stream.value(Left(e as Failure));
-    }
+  Stream<Result<List<MessageEntity>, Failure>> execute(
+    GetChatMessagesParams params,
+  ) {
+    return Result.guardStream(
+      () => repository.getChatMessages(params.chatId),
+      onError: Failure.error,
+    );
   }
-  
-  
-  
 }
 
 class GetChatMessagesParams {
