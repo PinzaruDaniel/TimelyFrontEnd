@@ -51,6 +51,36 @@
       <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/cloud_firestore/pipeline_example/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/cloud_firestore/pipeline_example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/cloud_firestore/pipeline_example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/firebase_messaging/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/firebase_messaging/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/firebase_messaging/build" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/firebase_messaging/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/firebase_messaging/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/firebase_messaging/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/firebase_storage/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/firebase_storage/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/firebase_storage/build" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/firebase_storage/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/firebase_storage/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/firebase_storage/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/flutter_liquid_glass_kit/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/flutter_liquid_glass_kit/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/flutter_liquid_glass_kit/build" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/flutter_liquid_glass_kit/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/flutter_liquid_glass_kit/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/flutter_liquid_glass_kit/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/image_picker_ios/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/image_picker_ios/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/image_picker_ios/build" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/image_picker_ios/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/image_picker_ios/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/image_picker_ios/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/video_player_avfoundation/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/video_player_avfoundation/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/video_player_avfoundation/build" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/video_player_avfoundation/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/video_player_avfoundation/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/presentation/ios/.symlinks/plugins/video_player_avfoundation/example/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

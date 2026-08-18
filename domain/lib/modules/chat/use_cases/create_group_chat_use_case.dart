@@ -1,13 +1,14 @@
-import 'package:domain/core/usecase.dart';
+import 'package:smart_domain/smart_domain.dart' hide Failure;
 import 'package:domain/modules/chat/chat_repository.dart';
 
-class CreateGroupChatUseCase extends UseCaseNoEither<String, CreateGroupChatParams> {
+class CreateGroupChatUseCase
+    extends FutureUseCase<String, CreateGroupChatParams> {
   final ChatRepository repository;
 
   CreateGroupChatUseCase({required this.repository});
 
   @override
-  Future<String> call(CreateGroupChatParams params) {
+  Future<String> execute(CreateGroupChatParams params) {
     return repository.createGroupChat(
       groupName: params.groupName,
       participants: params.participants,
@@ -30,4 +31,3 @@ class CreateGroupChatParams {
     this.groupAvatar,
   });
 }
-

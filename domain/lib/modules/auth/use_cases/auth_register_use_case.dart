@@ -1,7 +1,7 @@
 import 'package:common/constants/failure_class.dart';
 import 'package:domain/modules/auth/auth_repository.dart';
 
-import '../../../core/usecase.dart';
+import 'package:smart_domain/smart_domain.dart' hide Failure;
 
 class AuthRegisterUseCase extends UseCase<void, AuthRegisterParams> {
   final AuthRepository authRepository;

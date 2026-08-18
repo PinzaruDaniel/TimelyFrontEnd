@@ -1,13 +1,14 @@
-import 'package:domain/core/usecase.dart';
+import 'package:smart_domain/smart_domain.dart' hide Failure;
 import 'package:domain/modules/chat/chat_repository.dart';
 
-class CreateDirectChatUseCase extends UseCaseNoEither<String, CreateDirectChatParams> {
+class CreateDirectChatUseCase
+    extends FutureUseCase<String, CreateDirectChatParams> {
   final ChatRepository repository;
 
   CreateDirectChatUseCase({required this.repository});
 
   @override
-  Future<String> call(CreateDirectChatParams params) {
+  Future<String> execute(CreateDirectChatParams params) {
     return repository.createDirectChat(params.userId1, params.userId2);
   }
 }

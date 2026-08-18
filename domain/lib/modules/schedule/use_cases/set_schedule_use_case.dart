@@ -1,14 +1,14 @@
-import 'package:domain/core/usecase.dart';
+import 'package:smart_domain/smart_domain.dart' hide Failure;
 import 'package:domain/modules/schedule/models/index.dart';
 import 'package:domain/modules/schedule/schedule_repository.dart';
 
-class SetScheduleUseCase extends UseCaseNoEither<void, SetScheduleParams> {
+class SetScheduleUseCase extends FutureUseCase<void, SetScheduleParams> {
   final ScheduleRepository scheduleRepository;
 
   SetScheduleUseCase({required this.scheduleRepository});
 
   @override
-  Future<void> call(SetScheduleParams params) async {
+  Future<void> execute(SetScheduleParams params) async {
     scheduleRepository.setSchedule(params.scheduleEntity);
   }
 }

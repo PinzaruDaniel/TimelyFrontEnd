@@ -1,5 +1,5 @@
 import 'package:common/constants/failure_class.dart';
-import 'package:domain/core/usecase.dart';
+import 'package:smart_domain/smart_domain.dart' hide Failure;
 import 'package:domain/modules/chat/chat_repository.dart';
 
 class MarkMessageAsReadUseCase extends UseCase<void, MarkMessageAsReadParams> {

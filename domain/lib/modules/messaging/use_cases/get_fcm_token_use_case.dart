@@ -1,13 +1,13 @@
-import 'package:domain/core/usecase.dart';
+import 'package:smart_domain/smart_domain.dart' hide Failure;
 import 'package:domain/modules/messaging/messaging_repository.dart';
 
-class GetFcmTokenUseCase extends UseCaseNoEitherNoParamsNoStream<String?> {
+class GetFcmTokenUseCase extends NoParamsFutureUseCase<String?> {
   final MessagingRepository repository;
 
   GetFcmTokenUseCase({required this.repository});
 
   @override
-  Future<String?> call() {
+  Future<String?> execute() {
     return repository.getToken();
   }
 }

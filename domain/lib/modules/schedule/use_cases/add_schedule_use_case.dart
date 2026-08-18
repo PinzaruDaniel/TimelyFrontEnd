@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:common/constants/failure_class.dart';
-import 'package:domain/core/usecase.dart';
+import 'package:smart_domain/smart_domain.dart' hide Failure;
 import 'package:domain/modules/schedule/models/index.dart';
 import 'package:domain/modules/schedule/schedule_repository.dart';
 
