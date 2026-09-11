@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomeworkEntity {
 
- String get homeworkId; String get subject; String get description; DateTime? get dueDate; String? get imageUrl;
+ String get homeworkId; String get subject; String get description; DateTime? get dueDate; String? get imageUrl; bool get isDone;
 /// Create a copy of HomeworkEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $HomeworkEntityCopyWith<HomeworkEntity> get copyWith => _$HomeworkEntityCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeworkEntity&&(identical(other.homeworkId, homeworkId) || other.homeworkId == homeworkId)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.description, description) || other.description == description)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeworkEntity&&(identical(other.homeworkId, homeworkId) || other.homeworkId == homeworkId)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.description, description) || other.description == description)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.isDone, isDone) || other.isDone == isDone));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,homeworkId,subject,description,dueDate,imageUrl);
+int get hashCode => Object.hash(runtimeType,homeworkId,subject,description,dueDate,imageUrl,isDone);
 
 @override
 String toString() {
-  return 'HomeworkEntity(homeworkId: $homeworkId, subject: $subject, description: $description, dueDate: $dueDate, imageUrl: $imageUrl)';
+  return 'HomeworkEntity(homeworkId: $homeworkId, subject: $subject, description: $description, dueDate: $dueDate, imageUrl: $imageUrl, isDone: $isDone)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $HomeworkEntityCopyWith<$Res>  {
   factory $HomeworkEntityCopyWith(HomeworkEntity value, $Res Function(HomeworkEntity) _then) = _$HomeworkEntityCopyWithImpl;
 @useResult
 $Res call({
- String homeworkId, String subject, String description, DateTime? dueDate, String? imageUrl
+ String homeworkId, String subject, String description, DateTime? dueDate, String? imageUrl, bool isDone
 });
 
 
@@ -62,14 +62,15 @@ class _$HomeworkEntityCopyWithImpl<$Res>
 
 /// Create a copy of HomeworkEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? homeworkId = null,Object? subject = null,Object? description = null,Object? dueDate = freezed,Object? imageUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? homeworkId = null,Object? subject = null,Object? description = null,Object? dueDate = freezed,Object? imageUrl = freezed,Object? isDone = null,}) {
   return _then(_self.copyWith(
 homeworkId: null == homeworkId ? _self.homeworkId : homeworkId // ignore: cast_nullable_to_non_nullable
 as String,subject: null == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,dueDate: freezed == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,isDone: null == isDone ? _self.isDone : isDone // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String homeworkId,  String subject,  String description,  DateTime? dueDate,  String? imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String homeworkId,  String subject,  String description,  DateTime? dueDate,  String? imageUrl,  bool isDone)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HomeworkEntity() when $default != null:
-return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_that.imageUrl);case _:
+return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_that.imageUrl,_that.isDone);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String homeworkId,  String subject,  String description,  DateTime? dueDate,  String? imageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String homeworkId,  String subject,  String description,  DateTime? dueDate,  String? imageUrl,  bool isDone)  $default,) {final _that = this;
 switch (_that) {
 case _HomeworkEntity():
-return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_that.imageUrl);case _:
+return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_that.imageUrl,_that.isDone);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String homeworkId,  String subject,  String description,  DateTime? dueDate,  String? imageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String homeworkId,  String subject,  String description,  DateTime? dueDate,  String? imageUrl,  bool isDone)?  $default,) {final _that = this;
 switch (_that) {
 case _HomeworkEntity() when $default != null:
-return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_that.imageUrl);case _:
+return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_that.imageUrl,_that.isDone);case _:
   return null;
 
 }
@@ -210,7 +211,7 @@ return $default(_that.homeworkId,_that.subject,_that.description,_that.dueDate,_
 
 
 class _HomeworkEntity implements HomeworkEntity {
-  const _HomeworkEntity({required this.homeworkId, required this.subject, required this.description, this.dueDate, this.imageUrl});
+  const _HomeworkEntity({required this.homeworkId, required this.subject, required this.description, this.dueDate, this.imageUrl, this.isDone = false});
   
 
 @override final  String homeworkId;
@@ -218,6 +219,7 @@ class _HomeworkEntity implements HomeworkEntity {
 @override final  String description;
 @override final  DateTime? dueDate;
 @override final  String? imageUrl;
+@override@JsonKey() final  bool isDone;
 
 /// Create a copy of HomeworkEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +231,16 @@ _$HomeworkEntityCopyWith<_HomeworkEntity> get copyWith => __$HomeworkEntityCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeworkEntity&&(identical(other.homeworkId, homeworkId) || other.homeworkId == homeworkId)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.description, description) || other.description == description)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeworkEntity&&(identical(other.homeworkId, homeworkId) || other.homeworkId == homeworkId)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.description, description) || other.description == description)&&(identical(other.dueDate, dueDate) || other.dueDate == dueDate)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.isDone, isDone) || other.isDone == isDone));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,homeworkId,subject,description,dueDate,imageUrl);
+int get hashCode => Object.hash(runtimeType,homeworkId,subject,description,dueDate,imageUrl,isDone);
 
 @override
 String toString() {
-  return 'HomeworkEntity(homeworkId: $homeworkId, subject: $subject, description: $description, dueDate: $dueDate, imageUrl: $imageUrl)';
+  return 'HomeworkEntity(homeworkId: $homeworkId, subject: $subject, description: $description, dueDate: $dueDate, imageUrl: $imageUrl, isDone: $isDone)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$HomeworkEntityCopyWith<$Res> implements $HomeworkEntityCo
   factory _$HomeworkEntityCopyWith(_HomeworkEntity value, $Res Function(_HomeworkEntity) _then) = __$HomeworkEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String homeworkId, String subject, String description, DateTime? dueDate, String? imageUrl
+ String homeworkId, String subject, String description, DateTime? dueDate, String? imageUrl, bool isDone
 });
 
 
@@ -266,14 +268,15 @@ class __$HomeworkEntityCopyWithImpl<$Res>
 
 /// Create a copy of HomeworkEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? homeworkId = null,Object? subject = null,Object? description = null,Object? dueDate = freezed,Object? imageUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? homeworkId = null,Object? subject = null,Object? description = null,Object? dueDate = freezed,Object? imageUrl = freezed,Object? isDone = null,}) {
   return _then(_HomeworkEntity(
 homeworkId: null == homeworkId ? _self.homeworkId : homeworkId // ignore: cast_nullable_to_non_nullable
 as String,subject: null == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,dueDate: freezed == dueDate ? _self.dueDate : dueDate // ignore: cast_nullable_to_non_nullable
 as DateTime?,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,isDone: null == isDone ? _self.isDone : isDone // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

@@ -1,8 +1,6 @@
-
 // ignore_for_file: invalid_annotation_target
 
 part of 'index.dart';
-
 
 @freezed
 abstract class HomeworkApiDto with _$HomeworkApiDto {
@@ -11,7 +9,9 @@ abstract class HomeworkApiDto with _$HomeworkApiDto {
     required String subject,
     required String description,
     DateTime? dueDate,
-     String? imageUrl,
-})=_HomeworkApiDto;
-  factory HomeworkApiDto.fromJson(Map<String, dynamic> json)=> _$HomeworkApiDtoFromJson(json);
+    String? imageUrl,
+    @Default(false) bool isDone,
+  }) = _HomeworkApiDto;
+  factory HomeworkApiDto.fromJson(Map<String, dynamic> json) =>
+      _$HomeworkApiDtoFromJson(json);
 }

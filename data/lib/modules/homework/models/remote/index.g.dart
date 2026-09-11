@@ -15,6 +15,7 @@ _HomeworkApiDto _$HomeworkApiDtoFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['dueDate'] as String),
       imageUrl: json['imageUrl'] as String?,
+      isDone: json['isDone'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$HomeworkApiDtoToJson(_HomeworkApiDto instance) =>
@@ -24,4 +25,5 @@ Map<String, dynamic> _$HomeworkApiDtoToJson(_HomeworkApiDto instance) =>
       'description': instance.description,
       'dueDate': instance.dueDate?.toIso8601String(),
       'imageUrl': instance.imageUrl,
+      'isDone': instance.isDone,
     };

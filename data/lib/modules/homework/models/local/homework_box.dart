@@ -15,6 +15,7 @@ class HomeworkBox {
   DateTime? dueDate;
 
   String? imageUrl;
+  bool isDone;
 
   HomeworkBox({
     required this.homeworkId,
@@ -22,5 +23,6 @@ class HomeworkBox {
     required this.description,
     this.dueDate,
     this.imageUrl,
+    this.isDone = false,
   });
 }

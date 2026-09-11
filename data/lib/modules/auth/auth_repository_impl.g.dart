@@ -7,7 +7,7 @@ part of 'auth_repository_impl.dart';
 // **************************************************************************
 
 /// Generated implementation of `AuthRepositoryImpl`.
-class _$AuthRepositoryImpl implements AuthRepositoryImpl {
+final class _$AuthRepositoryImpl implements AuthRepositoryImpl {
   _$AuthRepositoryImpl({
     required AuthApiService remote,
     required AuthLocalSource local,

@@ -10,6 +10,7 @@ extension HomeworkToEntityMapper on HomeworkApiDto {
       description: description,
       dueDate: dueDate,
       imageUrl: imageUrl,
+      isDone: isDone,
     );
   }
 }
@@ -22,12 +23,20 @@ extension HomeworkToBoxMapper on HomeworkEntity {
       description: description,
       dueDate: dueDate,
       imageUrl: imageUrl,
+      isDone: isDone,
     );
   }
 }
 
 extension HomeworkBoxToEntityMapper on HomeworkBox {
   HomeworkEntity get toEntity {
-    return HomeworkEntity(homeworkId: homeworkId, subject: subject, description: description, dueDate: dueDate);
+    return HomeworkEntity(
+      homeworkId: homeworkId,
+      subject: subject,
+      description: description,
+      dueDate: dueDate,
+      imageUrl: imageUrl,
+      isDone: isDone,
+    );
   }
 }

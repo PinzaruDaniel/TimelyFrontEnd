@@ -8,5 +8,6 @@ abstract class HomeworkEntity with _$HomeworkEntity {
     required String description,
     DateTime? dueDate,
     String? imageUrl,
+    @Default(false) bool isDone,
   }) = _HomeworkEntity;
 }

@@ -25,7 +25,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(1, 9053494043617025232),
     name: 'HomeworkBox',
-    lastPropertyId: const obx_int.IdUid(6, 1007424516597279154),
+    lastPropertyId: const obx_int.IdUid(7, 7873946937773559597),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -63,6 +63,12 @@ final _entities = <obx_int.ModelEntity>[
         id: const obx_int.IdUid(6, 1007424516597279154),
         name: 'imageUrl',
         type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 7873946937773559597),
+        name: 'isDone',
+        type: 1,
         flags: 0,
       ),
     ],
@@ -271,13 +277,14 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final imageUrlOffset = object.imageUrl == null
             ? null
             : fbb.writeString(object.imageUrl!);
-        fbb.startTable(7);
+        fbb.startTable(8);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, homeworkIdOffset);
         fbb.addOffset(2, subjectOffset);
         fbb.addOffset(3, descriptionOffset);
         fbb.addInt64(4, object.dueDate?.millisecondsSinceEpoch);
         fbb.addOffset(5, imageUrlOffset);
+        fbb.addBool(6, object.isDone);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -304,12 +311,19 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final imageUrlParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGetNullable(buffer, rootOffset, 14);
+        final isDoneParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          16,
+          false,
+        );
         final object = HomeworkBox(
           homeworkId: homeworkIdParam,
           subject: subjectParam,
           description: descriptionParam,
           dueDate: dueDateParam,
           imageUrl: imageUrlParam,
+          isDone: isDoneParam,
         )..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
         return object;
@@ -532,6 +546,11 @@ class HomeworkBox_ {
   /// See [HomeworkBox.imageUrl].
   static final imageUrl = obx.QueryStringProperty<HomeworkBox>(
     _entities[0].properties[5],
+  );
+
+  /// See [HomeworkBox.isDone].
+  static final isDone = obx.QueryBooleanProperty<HomeworkBox>(
+    _entities[0].properties[6],
   );
 }
 

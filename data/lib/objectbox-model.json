@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:9053494043617025232",
-      "lastPropertyId": "6:1007424516597279154",
+      "lastPropertyId": "7:7873946937773559597",
       "name": "HomeworkBox",
       "properties": [
         {
@@ -40,6 +40,11 @@
           "id": "6:1007424516597279154",
           "name": "imageUrl",
           "type": 9
+        },
+        {
+          "id": "7:7873946937773559597",
+          "name": "isDone",
+          "type": 1
         }
       ],
       "relations": []

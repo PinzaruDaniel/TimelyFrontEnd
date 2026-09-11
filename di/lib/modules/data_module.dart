@@ -154,7 +154,7 @@ abstract class DataModule {
   HomeworkRepository homeworkRepository(
     HomeworkApiService apiService,
     HomeworkLocalSource localSource,
-  ) => HomeworkRepositoryImpl(apiService: apiService, localSource: localSource);
+  ) => HomeworkRepositoryImpl(remote: apiService, cache: localSource);
 
   @lazySingleton
   UserRepository userRepository(UserApiService apiService) =>

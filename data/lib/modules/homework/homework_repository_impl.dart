@@ -2,56 +2,42 @@ import 'package:common/constants/failure_class.dart';
 import 'package:common/constants/post_classes.dart';
 import 'package:dartz/dartz.dart';
 import 'package:data/mapper/homework_mapper.dart';
+import 'package:data/modules/homework/models/remote/index.dart';
 import 'package:data/modules/homework/sources/local/homework_local_source.dart';
 import 'package:data/modules/homework/sources/remote/homework_api_service.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/modules/homework/homework_repository.dart';
 import 'package:domain/modules/homework/models/index.dart';
+import 'package:smart_repository/smart_repository.dart';
 
-class HomeworkRepositoryImpl implements HomeworkRepository {
-  final HomeworkApiService apiService;
-  final HomeworkLocalSource localSource;
+part 'homework_repository_impl.g.dart';
 
-  HomeworkRepositoryImpl({required this.apiService, required this.localSource});
+Failure mapHomeworkFailure(Object error, StackTrace? stackTrace) =>
+    error is DioException
+    ? Failure.dio(error)
+    : Failure.error(error, stackTrace);
 
-  @override
-  Future<Either<Failure, HomeworkEntity>> addHomework(CreateHomeworkRequest request) async {
-    try {
-      final response = await apiService.addHomework(
-        groupId: request.groupId,
-        subject: request.subject,
-        description: request.description,
-        dueDate: request.dueDateFormatted, // see below
-        imageFile: request.imageFile,
-      );
-      return Right(response.toEntity);
-    } catch (e, stackTrace) {
-      if (e is DioException) return Left(Failure.dio(e));
-      return Left(Failure.error(e, stackTrace));
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<HomeworkEntity>>> getHomeworks(String groupId) async {
-    try {
-      final response = await apiService.getHomeworks(groupId);
-      return Right(response.map((e) => e.toEntity).toList());
-    } catch (e, stackTrace) {
-      print('Homework GET API failed: $e  ${e.runtimeType}');
-      if (e is DioException) {
-        return Left(Failure.dio(e));
-      }
-      return Left(Failure.error(e, stackTrace));
-    }
-  }
-
-  @override
-  Stream<List<HomeworkEntity>> getHomeworksFromCache() {
-    return localSource.getHomeworkFromCache().map((e) => e.map((homework) => homework.toEntity).toList());
-  }
-
-  @override
-  Future<void> setHomework(List<HomeworkEntity> homeworks) {
-    return localSource.setHomework(homeworks);
-  }
-}
+@GenerateRepository(
+  contract: HomeworkRepository,
+  remote: HomeworkApiService,
+  cache: HomeworkLocalSource,
+  mapError: mapHomeworkFailure,
+  methods: {
+    #addHomework: RepositoryOperation.mutation(
+      argumentsFrom: #request,
+      callArguments: {
+        #dueDate: RepositoryArgument(#request, property: #dueDateFormatted),
+      },
+    ),
+    #getHomeworks: RepositoryOperation.remoteOnly(),
+    #getHomework: RepositoryOperation.remoteOnly(),
+    #editHomework: RepositoryOperation.mutation(argumentsFrom: #request),
+    #deleteHomework: RepositoryOperation.mutation(),
+    #markHomeworkDone: RepositoryOperation.mutation(),
+    #reopenHomework: RepositoryOperation.mutation(),
+    #getHomeworksFromCache: RepositoryLocalStream(
+      source: #getHomeworkFromCache,
+    ),
+  },
+)
+abstract class HomeworkRepositoryBinding {}
